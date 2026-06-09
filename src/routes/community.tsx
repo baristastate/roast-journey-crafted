@@ -103,7 +103,7 @@ function FeedCard({ post, liked, saved, onLike, onSave, delay }: {
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[0.7rem] uppercase tracking-[0.24em] text-amber">{post.category}</span>
+            <span className="text-[0.7rem] uppercase tracking-[0.24em] text-cyan-bloom">{post.category}</span>
             <span className="text-xs text-muted-foreground">{post.readTime}</span>
           </div>
           <h3 className="mt-2 font-display text-2xl leading-tight">{post.title}</h3>
@@ -112,12 +112,12 @@ function FeedCard({ post, liked, saved, onLike, onSave, delay }: {
             <span className="text-xs text-muted-foreground">{post.author}</span>
             <div className="flex items-center gap-1">
               <button onClick={onLike} aria-label="Like" className="h-8 w-8 grid place-items-center rounded-full hover:bg-muted">
-                <motion.span key={String(liked)} animate={liked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.4 }} className={liked ? "text-amber" : "text-muted-foreground"}>
+                <motion.span key={String(liked)} animate={liked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.4 }} className={liked ? "text-cyan-bloom" : "text-muted-foreground"}>
                   {liked ? "●" : "○"}
                 </motion.span>
               </button>
               <button onClick={onSave} aria-label="Speichern" className="h-8 w-8 grid place-items-center rounded-full hover:bg-muted text-sm">
-                <span className={saved ? "text-amber" : "text-muted-foreground"}>{saved ? "▮" : "▯"}</span>
+                <span className={saved ? "text-cyan-bloom" : "text-muted-foreground"}>{saved ? "▮" : "▯"}</span>
               </button>
               <button aria-label="Lesen" className="ml-1 text-sm text-amber pl-2">Lesen →</button>
             </div>

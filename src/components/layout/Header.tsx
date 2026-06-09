@@ -42,7 +42,7 @@ export function Header() {
                 key={n.to}
                 to={n.to}
                 className="text-foreground/80 hover:text-foreground transition-colors relative py-1"
-                activeProps={{ className: "text-foreground" }}
+                activeProps={{ className: "text-cyan-bloom" }}
               >
                 {n.label}
               </Link>

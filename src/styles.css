@@ -27,11 +27,11 @@
   --color-raw-green: var(--raw-green);
 
   /* New brand tokens */
-  --color-state-black: var(--state-black);
-  --color-warm-canvas: var(--warm-canvas);
-  --color-roast-coral: var(--roast-coral);
-  --color-electric-pistachio: var(--electric-pistachio);
-  --color-origin-olive: var(--origin-olive);
+  --color-ink-black: var(--ink-black);
+  --color-pearl-white: var(--pearl-white);
+  --color-magenta-coral: var(--magenta-coral);
+  --color-cyan-bloom: var(--cyan-bloom);
+  --color-soft-silver: var(--soft-silver);
 
   /* Semantic */
   --color-background: var(--background);
@@ -58,64 +58,64 @@
 :root {
   --radius: 0.5rem;
 
-  /* New brand palette */
-  --state-black: #0A0908;
-  --warm-canvas: #F5EFE6;
-  --roast-coral: #FF4A1C;
-  --electric-pistachio: #D4FF3A;
-  --origin-olive: #4A5D2A;
+  /* Marketing brand palette */
+  --ink-black: #0E0E12;
+  --pearl-white: #FBFAF7;
+  --magenta-coral: #FF4F8B;
+  --cyan-bloom: #29C7FF;
+  --soft-silver: #C8CCD6;
 
-  /* Legacy aliases mapped to new brand */
-  --espresso: var(--state-black);
-  --espresso-soft: #1d1c1a;
-  --cream: var(--warm-canvas);
-  --cream-warm: #efdfc6;
-  --beige: #e6d6ba;
-  --roast: var(--roast-coral);
-  --amber: var(--roast-coral);
-  --amber-soft: #ec8a70;
-  --raw-green: var(--electric-pistachio);
+  /* Legacy aliases → new brand */
+  --espresso: var(--ink-black);
+  --espresso-soft: #141419;
+  --cream: var(--pearl-white);
+  --cream-warm: #F3F1EC;
+  --beige: #E8E9EB;
+  --roast: var(--magenta-coral);
+  --amber: var(--magenta-coral);
+  --amber-soft: #FF8FB0;
+  --raw-green: var(--cyan-bloom);
 
-  /* Light (canvas) section */
-  --background: var(--warm-canvas);
-  --foreground: var(--state-black);
-  --card: #fbf2e1;
-  --card-foreground: var(--state-black);
-  --popover: var(--warm-canvas);
-  --popover-foreground: var(--state-black);
-  --primary: var(--state-black);
-  --primary-foreground: var(--warm-canvas);
-  --secondary: #e6d6ba;
-  --secondary-foreground: var(--state-black);
-  --muted: #ecdec3;
-  --muted-foreground: #5a5650;
-  --accent: var(--roast-coral);
-  --accent-foreground: var(--warm-canvas);
-  --destructive: #c0392b;
-  --destructive-foreground: var(--warm-canvas);
-  --border: #ddcdb0;
-  --input: #d6c5a6;
-  --ring: var(--roast-coral);
+  /* Light (Pearl White) section */
+  --background: var(--pearl-white);
+  --foreground: var(--ink-black);
+  --card: #FFFFFF;
+  --card-foreground: var(--ink-black);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--ink-black);
+  --primary: var(--ink-black);
+  --primary-foreground: var(--pearl-white);
+  --secondary: #E8E9EB;
+  --secondary-foreground: var(--ink-black);
+  --muted: #E8E9EB;
+  --muted-foreground: #6B7280;
+  --accent: var(--magenta-coral);
+  --accent-foreground: var(--pearl-white);
+  --destructive: #EF4444;
+  --destructive-foreground: var(--pearl-white);
+  --border: var(--soft-silver);
+  --input: #D1D5DB;
+  --ring: var(--magenta-coral);
 }
 
-/* Dark section override (state black surfaces) */
+/* Dark section override (Ink Black surfaces) */
 .theme-dark {
-  --background: var(--state-black);
-  --foreground: var(--warm-canvas);
-  --card: #1a1916;
-  --card-foreground: var(--warm-canvas);
-  --popover: #1a1916;
-  --popover-foreground: var(--warm-canvas);
-  --primary: var(--electric-pistachio);
-  --primary-foreground: var(--state-black);
-  --secondary: #22211e;
-  --secondary-foreground: var(--warm-canvas);
-  --muted: #1f1e1b;
-  --muted-foreground: #a8a397;
-  --accent: var(--roast-coral);
-  --accent-foreground: var(--warm-canvas);
-  --border: #2a2926;
-  --input: #2a2926;
+  --background: var(--ink-black);
+  --foreground: var(--pearl-white);
+  --card: #141419;
+  --card-foreground: var(--pearl-white);
+  --popover: #141419;
+  --popover-foreground: var(--pearl-white);
+  --primary: var(--magenta-coral);
+  --primary-foreground: var(--ink-black);
+  --secondary: #1A1A1F;
+  --secondary-foreground: var(--pearl-white);
+  --muted: #1A1A1F;
+  --muted-foreground: #9CA3AF;
+  --accent: var(--cyan-bloom);
+  --accent-foreground: var(--ink-black);
+  --border: #2A2A30;
+  --input: #2A2A30;
 }
 
 @layer base {
@@ -134,7 +134,7 @@
     font-weight: 900;
     letter-spacing: -0.035em;
   }
-  ::selection { background: var(--amber); color: var(--espresso); }
+  ::selection { background: var(--magenta-coral); color: var(--pearl-white); }
 }
 
 /* Grain texture overlay */
