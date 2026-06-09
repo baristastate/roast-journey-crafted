@@ -3,7 +3,11 @@ import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { createFileRoute } from "@tanstack/react-router";
 import { PRODUCTS, AROMAS, type Aroma, type Roast, type Brew, type Product } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
+import { Scrolly } from "@/components/shared/Scrolly";
 import kaffeeHero from "@/assets/kaffee-hero.jpg";
+import journeyRaw from "@/assets/journey-raw.jpg";
+import journeyRoast from "@/assets/journey-roast.jpg";
+import journeyEspresso from "@/assets/journey-espresso.jpg";
 
 export const Route = createFileRoute("/kaffee")({
   head: () => ({
