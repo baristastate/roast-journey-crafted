@@ -11,7 +11,7 @@ export function HomeHero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={ref} className="theme-dark relative isolate overflow-hidden bg-ink-black text-pearl-white min-h-[100svh] grain">
+    <section ref={ref} className="theme-dark relative isolate overflow-hidden bg-ink-black text-pearl-white grain">
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
         <img src={heroImg} alt="Frisch gerösteter Specialty Coffee" className="h-full w-full object-cover" width={1920} height={1080} />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/55 to-ink-black/75" />
@@ -26,7 +26,7 @@ export function HomeHero() {
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px z-[6] bg-gradient-to-r from-transparent via-magenta-coral/60 to-transparent" />
 
 
-      <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-32 md:pt-40 pb-12 md:pb-14 min-h-[92svh] flex flex-col justify-between gap-12">
+      <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-28 md:pt-36 pb-10 flex flex-col gap-10">
         <div className="max-w-5xl">
           <motion.span
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
