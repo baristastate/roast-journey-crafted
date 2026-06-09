@@ -31,8 +31,12 @@ function CommunityPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden bg-cream-warm">
-        <div className="absolute inset-0 -z-10 opacity-30">
+      <section className="relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden bg-cream-warm min-h-[70svh]">
+        <div className="absolute inset-0 -z-10">
+          <img src={heroImg} alt="" aria-hidden className="parallax-img h-full w-full object-cover opacity-40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-cream-warm/70 via-cream-warm/40 to-cream-warm" />
+        </div>
+        <div className="absolute inset-0 -z-10 opacity-20">
           <div className="drift-y absolute inset-0 grid grid-cols-3 gap-2">
             {[...POSTS, ...POSTS].map((p, i) => (
               <img key={i} src={p.image} alt="" aria-hidden className="aspect-square object-cover rounded-xl" loading="lazy" />
@@ -49,7 +53,6 @@ function CommunityPage() {
             Lerne, entdecke, speichere und teile Wissen rund um besseren Kaffee.
           </p>
         </div>
-        <img src={heroImg} alt="" aria-hidden className="sr-only" />
       </section>
 
       {/* CATEGORIES */}
