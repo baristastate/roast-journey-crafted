@@ -103,7 +103,7 @@ function FeedCard({ post, liked, saved, onLike, onSave, delay }: {
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[0.7rem] uppercase tracking-[0.24em] text-amber">{post.category}</span>
+            <span className="text-[0.7rem] uppercase tracking-[0.24em] text-cyan-bloom">{post.category}</span>
             <span className="text-xs text-muted-foreground">{post.readTime}</span>
           </div>
           <h3 className="mt-2 font-display text-2xl leading-tight">{post.title}</h3>
