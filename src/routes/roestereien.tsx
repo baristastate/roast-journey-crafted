@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import { ROASTERIES } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { Scrolly } from "@/components/shared/Scrolly";
 import heroImg from "@/assets/roesterei-hero.jpg";
+import journeyRaw from "@/assets/journey-raw.jpg";
+import journeyRoast from "@/assets/journey-roast.jpg";
+import journeyEspresso from "@/assets/journey-espresso.jpg";
 
 export const Route = createFileRoute("/roestereien")({
   head: () => ({
