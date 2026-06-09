@@ -83,21 +83,24 @@ function StickyImage({
 }: { step: ScrollyStep; index: number; total: number; progress: MotionValue<number> }) {
   const start = index / total;
   const end = (index + 1) / total;
-  const fadeIn = start === 0 ? 0 : start - 0.06;
+  const fadeIn = Math.max(0, start === 0 ? 0 : start - 0.06);
   const fadeOut = end === 1 ? 1 : end - 0.02;
-  const opacity = useTransform(progress, [fadeIn, start + 0.02, fadeOut - 0.02, fadeOut], [0, 1, 1, 0]);
+  const inHi = Math.min(start + 0.02, fadeOut - 0.001);
+  const outLo = Math.max(fadeOut - 0.02, inHi + 0.001);
+  const opacity = useTransform(progress, [fadeIn, inHi, outLo, fadeOut], [0, 1, 1, 0]);
   const scale = useTransform(progress, [start, end], [1.12, 1.0]);
-  const y = useTransform(progress, [start, end], ["6%", "-6%"]);
+  const y = useTransform(progress, [start, end], [40, -40]);
 
   return (
-    <motion.div style={{ opacity }} className="absolute inset-0">
-      <motion.img
-        src={step.image}
-        alt={step.alt ?? step.title}
-        style={{ scale, y }}
-        className="h-full w-full object-cover"
-        loading="lazy"
-      />
+    <motion.div style={{ opacity }} className="absolute inset-0 will-change-transform">
+      <motion.div style={{ scale, y }} className="h-full w-full">
+        <img
+          src={step.image}
+          alt={step.alt ?? step.title}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink-black/55 via-transparent to-transparent" />
     </motion.div>
   );
