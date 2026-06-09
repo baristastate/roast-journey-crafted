@@ -9,7 +9,7 @@ export function HeimroesterTeaser() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10 py-28 md:py-40 grid lg:grid-cols-2 gap-12 items-center">
         <div className="relative">
           {/* signature glow */}
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(255,79,139,0.22),transparent_60%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(255,215,0,0.22),transparent_60%)]" />
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_right,rgba(41,199,255,0.18),transparent_60%)]" />
           <Reveal>
             <Eyebrow>Heimrösten · Tech</Eyebrow>
@@ -20,7 +20,7 @@ export function HeimroesterTeaser() {
               Rohkaffee rein. Profil wählen. Rösten. Genießen. Mit unseren Heimröstern steuerst du Frische, Röstgrad und Geschmack direkt zuhause.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/heimroester" className="rounded-full bg-magenta-coral text-pearl-white px-7 py-4 text-sm font-medium shadow-[0_20px_60px_-15px_rgba(255,79,139,0.6)]">Heimröster entdecken</Link>
+              <Link to="/heimroester" className="rounded-full bg-magenta-coral text-ink-black px-7 py-4 text-sm font-medium shadow-[0_20px_60px_-15px_rgba(255,215,0,0.6)]">Heimröster entdecken</Link>
               <Link to="/heimroester" className="rounded-full border border-pearl-white/25 px-7 py-4 text-sm hover:border-cyan-bloom hover:text-cyan-bloom transition-colors">So funktioniert es</Link>
             </div>
             <ul className="mt-10 grid sm:grid-cols-3 gap-4 text-sm">
