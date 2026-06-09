@@ -61,7 +61,7 @@
   /* Marketing brand palette */
   --ink-black: #0E0E12;
   --pearl-white: #FBFAF7;
-  --magenta-coral: #FF4F8B;
+  --magenta-coral: #F5E63D;
   --cyan-bloom: #29C7FF;
   --soft-silver: #C8CCD6;
 
@@ -73,7 +73,7 @@
   --beige: #E8E9EB;
   --roast: var(--magenta-coral);
   --amber: var(--magenta-coral);
-  --amber-soft: #FF8FB0;
+  --amber-soft: #FAF08A;
   --raw-green: var(--cyan-bloom);
 
   /* Light (Pearl White) section */
