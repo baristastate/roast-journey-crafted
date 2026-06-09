@@ -90,7 +90,7 @@
   --muted: #E8E9EB;
   --muted-foreground: #6B7280;
   --accent: var(--magenta-coral);
-  --accent-foreground: var(--pearl-white);
+  --accent-foreground: var(--ink-black);
   --destructive: #EF4444;
   --destructive-foreground: var(--pearl-white);
   --border: var(--soft-silver);
