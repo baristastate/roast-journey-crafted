@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as RoestereienRouteImport } from './routes/roestereien'
+import { Route as KaffeeRouteImport } from './routes/kaffee'
+import { Route as HeimroesterRouteImport } from './routes/heimroester'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UeberUnsRoute = UeberUnsRouteImport.update({
+  id: '/ueber-uns',
+  path: '/ueber-uns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoestereienRoute = RoestereienRouteImport.update({
+  id: '/roestereien',
+  path: '/roestereien',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KaffeeRoute = KaffeeRouteImport.update({
+  id: '/kaffee',
+  path: '/kaffee',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeimroesterRoute = HeimroesterRouteImport.update({
+  id: '/heimroester',
+  path: '/heimroester',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/heimroester': typeof HeimroesterRoute
+  '/kaffee': typeof KaffeeRoute
+  '/roestereien': typeof RoestereienRoute
+  '/shop': typeof ShopRoute
+  '/ueber-uns': typeof UeberUnsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/heimroester': typeof HeimroesterRoute
+  '/kaffee': typeof KaffeeRoute
+  '/roestereien': typeof RoestereienRoute
+  '/shop': typeof ShopRoute
+  '/ueber-uns': typeof UeberUnsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/community': typeof CommunityRoute
+  '/heimroester': typeof HeimroesterRoute
+  '/kaffee': typeof KaffeeRoute
+  '/roestereien': typeof RoestereienRoute
+  '/shop': typeof ShopRoute
+  '/ueber-uns': typeof UeberUnsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/community'
+    | '/heimroester'
+    | '/kaffee'
+    | '/roestereien'
+    | '/shop'
+    | '/ueber-uns'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/community'
+    | '/heimroester'
+    | '/kaffee'
+    | '/roestereien'
+    | '/shop'
+    | '/ueber-uns'
+  id:
+    | '__root__'
+    | '/'
+    | '/community'
+    | '/heimroester'
+    | '/kaffee'
+    | '/roestereien'
+    | '/shop'
+    | '/ueber-uns'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CommunityRoute: typeof CommunityRoute
+  HeimroesterRoute: typeof HeimroesterRoute
+  KaffeeRoute: typeof KaffeeRoute
+  RoestereienRoute: typeof RoestereienRoute
+  ShopRoute: typeof ShopRoute
+  UeberUnsRoute: typeof UeberUnsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ueber-uns': {
+      id: '/ueber-uns'
+      path: '/ueber-uns'
+      fullPath: '/ueber-uns'
+      preLoaderRoute: typeof UeberUnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roestereien': {
+      id: '/roestereien'
+      path: '/roestereien'
+      fullPath: '/roestereien'
+      preLoaderRoute: typeof RoestereienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kaffee': {
+      id: '/kaffee'
+      path: '/kaffee'
+      fullPath: '/kaffee'
+      preLoaderRoute: typeof KaffeeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/heimroester': {
+      id: '/heimroester'
+      path: '/heimroester'
+      fullPath: '/heimroester'
+      preLoaderRoute: typeof HeimroesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +177,23 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CommunityRoute: CommunityRoute,
+  HeimroesterRoute: HeimroesterRoute,
+  KaffeeRoute: KaffeeRoute,
+  RoestereienRoute: RoestereienRoute,
+  ShopRoute: ShopRoute,
+  UeberUnsRoute: UeberUnsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
