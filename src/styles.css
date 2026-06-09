@@ -26,6 +26,13 @@
   --color-amber-soft: var(--amber-soft);
   --color-raw-green: var(--raw-green);
 
+  /* New brand tokens */
+  --color-state-black: var(--state-black);
+  --color-warm-canvas: var(--warm-canvas);
+  --color-roast-coral: var(--roast-coral);
+  --color-electric-pistachio: var(--electric-pistachio);
+  --color-origin-olive: var(--origin-olive);
+
   /* Semantic */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
