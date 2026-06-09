@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { Scrolly } from "@/components/shared/Scrolly";
 import heroImg from "@/assets/about-hero.jpg";
 import f1 from "@/assets/feed-1.jpg";
 import f2 from "@/assets/feed-2.jpg";
