@@ -26,7 +26,7 @@ function Page() {
     <>
       <section className="relative min-h-[80svh] flex items-end theme-dark bg-espresso text-cream overflow-hidden pt-24">
         <div className="absolute inset-0 -z-10">
-          <img src={heroImg} alt="Rösterei: Hände am Sack vor Trommelröster" className="h-full w-full object-cover opacity-80" />
+          <img src={heroImg} alt="Rösterei: Hände am Sack vor Trommelröster" className="parallax-img h-full w-full object-cover opacity-80" />
           <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/40 to-espresso/30" />
         </div>
         <div className="mx-auto max-w-[1400px] px-5 md:px-10 pb-16 md:pb-24 w-full">
