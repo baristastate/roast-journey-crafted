@@ -43,11 +43,29 @@ function Page() {
           </div>
           <div className="lg:col-span-5">
             <div className="rounded-3xl overflow-hidden aspect-[5/4]">
-              <img src={heroImg} alt="Tasse Kaffee neben Notizbuch und Bohnen" className="h-full w-full object-cover" />
+              <img src={heroImg} alt="Tasse Kaffee neben Notizbuch und Bohnen" className="parallax-img h-full w-full object-cover" />
             </div>
           </div>
         </div>
       </section>
+
+      {/* SCROLLYTELLING — Werte */}
+      <Scrolly
+        side="left"
+        theme="dark"
+        intro={{
+          eyebrow: "Was uns trägt",
+          title: "Fünf Werte. Eine Haltung.",
+          body: "Scroll dich durch die Prinzipien, an denen wir uns jeden Tag messen lassen.",
+        }}
+        steps={VALUES.map((v, i) => ({
+          eyebrow: `Wert ${String(i + 1).padStart(2, "0")}`,
+          title: v.t,
+          body: v.b,
+          image: v.img,
+          alt: v.t,
+        }))}
+      />
 
       <section className="bg-background py-28 md:py-36">
         <div className="mx-auto max-w-[1100px] px-5 md:px-10">
