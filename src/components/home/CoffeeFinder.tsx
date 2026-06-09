@@ -50,7 +50,7 @@ export function CoffeeFinder() {
               <span>{done ? "Ergebnis" : `Frage ${step + 1} von ${Q.length}`}</span>
               <div className="flex gap-1.5">
                 {Q.map((_, i) => (
-                  <span key={i} className={`h-1 w-8 rounded-full ${i <= step ? "bg-amber" : "bg-border"}`} />
+                  <span key={i} className={`h-1 w-8 rounded-full transition-colors ${i <= step ? "bg-cyan-bloom" : "bg-border"}`} />
                 ))}
               </div>
             </div>
@@ -69,10 +69,10 @@ export function CoffeeFinder() {
                       <button
                         key={val}
                         onClick={() => onPick(val)}
-                        className="group relative overflow-hidden rounded-2xl border border-border bg-background px-5 py-6 text-left transition-all hover:border-amber hover:-translate-y-0.5"
+                        className="group relative overflow-hidden rounded-2xl border border-border bg-background px-5 py-6 text-left transition-all hover:border-cyan-bloom hover:-translate-y-0.5"
                       >
                         <span className="font-display text-2xl">{label}</span>
-                        <span className="absolute right-5 top-1/2 -translate-y-1/2 text-amber opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="absolute right-5 top-1/2 -translate-y-1/2 text-cyan-bloom opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                       </button>
                     ))}
                   </div>
@@ -85,24 +85,24 @@ export function CoffeeFinder() {
                     {matches.map((m) => (
                       <Link
                         key={m.id} to="/kaffee"
-                        className="group flex items-center gap-4 rounded-2xl border border-border bg-background p-3 hover:border-amber transition-colors"
+                        className="group flex items-center gap-4 rounded-2xl border border-border bg-background p-3 hover:border-cyan-bloom transition-colors"
                       >
                         <img src={m.image} alt={m.name} className="h-20 w-20 rounded-xl object-cover" loading="lazy" />
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs uppercase tracking-[0.24em] text-muted-foreground">{m.roastery}</div>
+                          <div className="text-xs uppercase tracking-[0.24em] text-cyan-bloom">{m.roastery}</div>
                           <div className="font-display text-xl truncate">{m.name}</div>
                           <div className="mt-1 flex flex-wrap gap-1.5">
                             {m.notes.slice(0, 3).map((n) => (
-                              <span key={n} className="text-[0.7rem] rounded-full bg-amber/15 text-espresso px-2 py-0.5">{n}</span>
+                              <span key={n} className="text-[0.7rem] rounded-full bg-magenta-coral/15 text-magenta-coral px-2 py-0.5">{n}</span>
                             ))}
                           </div>
                         </div>
-                        <span className="text-amber opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        <span className="text-magenta-coral opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                       </Link>
                     ))}
                   </div>
                   <div className="mt-6 flex gap-3">
-                    <Link to="/kaffee" className="rounded-full bg-espresso text-cream px-5 py-2.5 text-sm">Alle Kaffees ansehen</Link>
+                    <Link to="/kaffee" className="rounded-full bg-magenta-coral text-pearl-white px-5 py-2.5 text-sm">Alle Kaffees ansehen</Link>
                     <button onClick={reset} className="rounded-full border border-border px-5 py-2.5 text-sm">Neu starten</button>
                   </div>
                 </motion.div>
