@@ -11,7 +11,7 @@ export function HomeHero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={ref} className="theme-dark relative isolate overflow-hidden bg-ink-black text-pearl-white min-h-[100svh] grain">
+    <section ref={ref} className="theme-dark relative isolate overflow-hidden bg-ink-black text-pearl-white grain">
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
         <img src={heroImg} alt="Frisch gerösteter Specialty Coffee" className="h-full w-full object-cover" width={1920} height={1080} />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/55 to-ink-black/75" />
