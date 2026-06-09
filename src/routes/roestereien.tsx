@@ -71,6 +71,37 @@ function Page() {
         </div>
       </section>
 
+      {/* SCROLLYTELLING — So arbeiten wir zusammen */}
+      <Scrolly
+        side="right"
+        intro={{
+          eyebrow: "Partnerschaft · Schritt für Schritt",
+          title: "So arbeiten wir mit Röstereien.",
+          body: "Vom ersten Gespräch bis zum laufenden Listing — transparent, persönlich und ohne Reibung.",
+        }}
+        steps={[
+          {
+            eyebrow: "01 · Kennenlernen",
+            title: "Wir lernen euch persönlich kennen.",
+            body: "Besuch, Call, Tasting — wir wollen verstehen, was euer Kaffee besonders macht, bevor irgendetwas online geht.",
+            image: journeyRaw,
+          },
+          {
+            eyebrow: "02 · Storytelling",
+            title: "Eure Geschichte wird sichtbar.",
+            body: "Rösterei-Profil, Aroma-Notizen, echte Bilder. Kein Stockfoto-Look — eure Handschrift bleibt eure.",
+            image: journeyRoast,
+          },
+          {
+            eyebrow: "03 · Reichweite",
+            title: "Wir holen Käufer ab, ihr behaltet die Marke.",
+            body: "Wir kümmern uns um Sichtbarkeit, Versand und Service — Preis und Brand bleiben in eurer Hand.",
+            image: journeyEspresso,
+          },
+        ]}
+      />
+
+
       {/* PARTNERS */}
       <section className="bg-cream-warm py-24 md:py-32 border-t border-border">
         <div className="mx-auto max-w-[1400px] px-5 md:px-10">
