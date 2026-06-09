@@ -25,7 +25,7 @@ export function Footer() {
                 ["/shop", "Shop"],
               ].map(([to, label]) => (
                 <li key={to}>
-                  <Link to={to} className="text-cream/80 hover:text-amber transition-colors">{label}</Link>
+                  <Link to={to} className="text-cream/80 hover:text-cyan-bloom transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
