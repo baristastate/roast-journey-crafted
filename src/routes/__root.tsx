@@ -63,7 +63,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Barista State — Frisch gerösteter Kaffee & Heimrösten" },
       { name: "description", content: "Kuratierte Specialty-Kaffees von ausgewählten Röstereien und Heimröster, mit denen du Kaffee zuhause selbst röstest." },
-      { name: "theme-color", content: "#1a1410" },
+      { name: "theme-color", content: "#0E0E12" },
       { property: "og:title", content: "Barista State — Roast Journey" },
       { property: "og:description", content: "Kuratierte Specialty-Kaffees und Heimröster — eine ruhige, moderne Coffee-Welt." },
       { property: "og:type", content: "website" },
