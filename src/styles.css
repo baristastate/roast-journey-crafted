@@ -233,15 +233,16 @@ main.scroll-fx > section + section { position: relative; }
 main.scroll-fx > section + section::before {
   content: "";
   position: absolute;
-  inset: -80px 0 auto 0;
-  height: 160px;
+  inset: -1px 0 auto 0;
+  height: 120px;
   pointer-events: none;
   z-index: 1;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
   background: linear-gradient(
     to bottom,
-    color-mix(in oklab, var(--background) 0%, transparent),
-    color-mix(in oklab, var(--background) 55%, transparent) 50%,
-    color-mix(in oklab, var(--background) 0%, transparent)
+    rgba(255, 255, 255, 0.18),
+    transparent 70%
   );
 }
 
