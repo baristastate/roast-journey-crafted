@@ -1,25 +1,52 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import heroImg from "@/assets/hero-home.jpg";
 
-const TICKER_ITEMS = [
+const TICKER = [
   "Specialty Coffee",
   "Frisch geröstet",
   "Heimröster",
-  "Community",
+  "Single Origin",
   "Rohkaffee",
-  "Aromarad",
+  "Community",
   "Barista State",
+  "12 Röstereien",
   "Digital Bloom 2026",
+  "Pour Over",
 ];
+
+// Split into word tokens for the staggered blur-up animation
+const LINE_1 = "Specialty Coffee.".split(" ");
+const LINE_2 = "Endlich für zu Hause.".split(" ");
 
 export function HomeHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const yFg = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const yFg = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+
+  // Cursor-reactive warm glow
+  const cursorX = useMotionValue(-600);
+  const cursorY = useMotionValue(-600);
+  const glowX = useSpring(cursorX, { damping: 28, stiffness: 90 });
+  const glowY = useSpring(cursorY, { damping: 28, stiffness: 90 });
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [cursorX, cursorY]);
 
   return (
     <section
@@ -27,7 +54,7 @@ export function HomeHero() {
       className="theme-dark relative isolate overflow-hidden bg-ink-black text-pearl-white grain"
       style={{ minHeight: "100svh" }}
     >
-      {/* Parallax background */}
+      {/* Parallax image */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
         <img
           src={heroImg}
@@ -37,127 +64,187 @@ export function HomeHero() {
           height={1080}
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-black/95 via-ink-black/50 to-ink-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-black/96 via-ink-black/40 to-ink-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-black/60 via-transparent to-transparent" />
       </motion.div>
 
-      {/* Signature glows */}
-      <div className="pointer-events-none absolute -top-32 -left-32 -z-0 h-[55vh] w-[55vh] rounded-full bg-magenta-coral/20 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/3 -right-20 -z-0 h-[40vh] w-[40vh] rounded-full bg-cyan-bloom/12 blur-[100px]" />
+      {/* Cursor-following glow */}
+      <motion.div
+        className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full bg-magenta-coral/[0.11] blur-[120px]"
+        style={{
+          left: glowX,
+          top: glowY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      />
+
+      {/* Ambient static glows */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <motion.div
+          className="absolute -top-40 -left-40 h-[70vh] w-[70vh] rounded-full bg-magenta-coral/[0.13] blur-[130px]"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-1/3 -right-32 h-[45vh] w-[45vh] rounded-full bg-cyan-bloom/[0.08] blur-[110px]"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        />
+      </div>
 
       {/* Bottom fade */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[12svh] z-[5] bg-gradient-to-b from-transparent to-ink-black"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[14svh] bg-gradient-to-b from-transparent to-ink-black"
       />
 
-      {/* Content */}
+      {/* Main content */}
       <motion.div
         style={{ y: yFg, opacity }}
-        className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-32 md:pt-44 pb-20 flex flex-col gap-12"
+        className="relative z-10 mx-auto flex max-w-[1400px] flex-col gap-0 px-5 pt-32 pb-24 md:px-10 md:pt-44 md:pb-32"
       >
-        <div className="max-w-5xl">
-          {/* Eyebrow */}
-          <motion.span
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2.5 text-[0.68rem] uppercase tracking-[0.34em] text-pearl-white/60"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-magenta-coral animate-pulse" />
-            The Coffee Movement
-            <span className="h-px w-10 bg-pearl-white/20" />
-            <span className="text-cyan-bloom">Digital Bloom · 2026</span>
-          </motion.span>
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.38em] text-pearl-white/50"
+        >
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-magenta-coral" />
+          The Coffee Movement
+          <span className="h-px w-8 bg-pearl-white/20" />
+          <span className="text-cyan-bloom/80">Barista State · 2026</span>
+        </motion.div>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 font-display tracking-display text-[clamp(3.5rem,10vw,9rem)] leading-[0.88] font-bold"
+        {/* Headline — word-by-word blur-up */}
+        <h1 className="mt-8 font-display font-bold leading-[0.88] tracking-display">
+          {/* Line 1 */}
+          <span className="block" style={{ fontSize: "clamp(4rem,11vw,10.5rem)" }}>
+            {LINE_1.map((word, i) => (
+              <motion.span
+                key={word + i}
+                initial={{ opacity: 0, y: 60, filter: "blur(24px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  delay: 0.18 + i * 0.1,
+                  duration: 1.0,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="mr-[0.22em] inline-block last:mr-0"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </span>
+          {/* Line 2 — gold italic */}
+          <span
+            className="block text-magenta-coral display-italic"
+            style={{ fontSize: "clamp(3.2rem,9.5vw,9rem)" }}
           >
-            Coffee Culture
-            <br />
-            <em className="not-italic text-magenta-coral display-italic">Reimagined.</em>
-          </motion.h1>
+            {LINE_2.map((word, i) => (
+              <motion.span
+                key={word + i}
+                initial={{ opacity: 0, y: 60, filter: "blur(24px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  delay: 0.42 + i * 0.1,
+                  duration: 1.0,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="mr-[0.22em] inline-block last:mr-0"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </span>
+        </h1>
 
-          {/* Sub */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.38 }}
-            className="mt-8 max-w-lg text-pearl-white/65 text-base md:text-lg leading-relaxed font-light"
-          >
-            Frisch gerösteter Kaffee, Heimröster und eine Community — für alle, die Kaffee neu
-            erleben wollen.
-          </motion.p>
+        {/* Sub + CTA row */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
+        >
+          <div className="max-w-md">
+            <p className="text-pearl-white/60 text-base md:text-lg leading-relaxed font-light">
+              Kuratierte Specialty-Kaffees von 12 deutschen Röstereien —
+              frisch geröstet, ehrlich ausgewählt, direkt bei dir.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                to="/shop"
+                className="btn-shimmer inline-flex items-center gap-2.5 rounded-full bg-magenta-coral px-8 py-4 text-sm font-semibold text-ink-black shadow-[0_0_50px_-8px_rgba(245,200,66,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_70px_-8px_rgba(245,200,66,0.8)]"
+              >
+                Kollektion entdecken
+                <span aria-hidden className="translate-x-0 transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+              <Link
+                to="/community"
+                className="inline-flex items-center gap-2 rounded-full border border-pearl-white/15 px-8 py-4 text-sm text-pearl-white/70 transition-all duration-300 hover:border-cyan-bloom/50 hover:text-cyan-bloom hover:bg-cyan-bloom/5"
+              >
+                Community erleben
+              </Link>
+            </div>
+          </div>
 
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.56 }}
-            className="mt-10 flex flex-wrap gap-3"
-          >
-            <Link
-              to="/kaffee"
-              className="btn-shimmer inline-flex items-center gap-2 rounded-full bg-magenta-coral px-7 py-4 text-sm font-semibold text-ink-black shadow-[0_0_40px_-8px_rgba(245,200,66,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_55px_-8px_rgba(245,200,66,0.75)]"
-            >
-              Kaffee entdecken
-              <span aria-hidden className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </Link>
-            <Link
-              to="/community"
-              className="inline-flex items-center gap-2 rounded-full border border-pearl-white/18 px-7 py-4 text-sm text-pearl-white/80 transition-all duration-300 hover:border-cyan-bloom/60 hover:text-cyan-bloom hover:bg-cyan-bloom/5"
-            >
-              Community erleben
-            </Link>
-          </motion.div>
-        </div>
+          {/* Stats column */}
+          <div className="hidden lg:flex flex-col gap-6 text-right">
+            {[
+              ["12+", "Röstereien"],
+              ["80+", "Kaffees"],
+              ["2", "Heimröster"],
+            ].map(([n, l], i) => (
+              <motion.div
+                key={l}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.3 + i * 0.1, duration: 0.6 }}
+                className="border-r border-pearl-white/10 pr-6"
+              >
+                <div className="font-display text-4xl font-bold text-pearl-white">{n}</div>
+                <div className="text-pearl-white/40 text-[0.62rem] uppercase tracking-[0.26em] mt-1">
+                  {l}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
-        {/* Stats row */}
+        {/* Scroll hint */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.9 }}
-          className="hidden md:flex items-end justify-between text-[0.7rem] text-pearl-white/50"
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
         >
-          <div className="flex gap-10">
-            {[
-              ["12+", "Röstereien"],
-              ["80+", "Kaffees kuratiert"],
-              ["2", "Heimröster"],
-            ].map(([n, l]) => (
-              <div key={l}>
-                <div className="font-display text-3xl font-bold text-pearl-white tabular-nums">
-                  {n}
-                </div>
-                <div className="mt-1 uppercase tracking-[0.22em]">{l}</div>
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="h-px w-10 bg-cyan-bloom/50" />
-            <span className="text-cyan-bloom tracking-[0.2em] uppercase text-[0.65rem]">
-              Scroll · Roast Journey
-            </span>
-          </div>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex h-9 w-5 items-start justify-center rounded-full border border-pearl-white/20 pt-1.5"
+          >
+            <div className="h-1.5 w-px rounded-full bg-pearl-white/50" />
+          </motion.div>
+          <span className="text-[0.6rem] uppercase tracking-[0.4em] text-pearl-white/30">
+            Scroll
+          </span>
         </motion.div>
       </motion.div>
 
-      {/* Bottom ticker marquee */}
-      <div className="absolute inset-x-0 bottom-0 z-20 overflow-hidden border-t border-pearl-white/8 bg-ink-black/60 backdrop-blur-sm py-3">
+      {/* Bottom ticker */}
+      <div className="absolute inset-x-0 bottom-0 z-20 overflow-hidden border-t border-pearl-white/[0.07] bg-ink-black/70 backdrop-blur-md py-3">
         <div className="flex whitespace-nowrap">
           <span className="marquee-x">
-            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+            {[...TICKER, ...TICKER].map((item, i) => (
               <span
                 key={i}
-                className="inline-flex items-center gap-5 px-8 text-[0.65rem] uppercase tracking-[0.3em] text-pearl-white/35"
+                className="inline-flex items-center gap-6 px-8 text-[0.62rem] uppercase tracking-[0.32em] text-pearl-white/30"
               >
                 {item}
-                <span className="h-1 w-1 rounded-full bg-magenta-coral/50" />
+                <span className="h-[3px] w-[3px] rounded-full bg-magenta-coral/60" />
               </span>
             ))}
           </span>

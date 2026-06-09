@@ -15,8 +15,19 @@ import {
   type Aroma,
   type Roast,
   type Brew,
+  type Gear,
   type Product,
 } from "@/lib/data";
+
+const GEAR_LABELS: Record<Gear, string> = {
+  siebtraeger: "Siebträger",
+  vollautomat: "Vollautomat",
+  pourover: "Pour Over",
+  frenchpress: "French Press",
+  aeropress: "AeroPress",
+  kaffeemaschine: "Kaffeemaschine",
+  moka: "Moka-Kanne",
+};
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
 import shopHero from "@/assets/kaffee-hero.jpg";
@@ -51,6 +62,7 @@ function ShopPage() {
   const [aroma, setAroma] = useState<Aroma | null>(null);
   const [roasts, setRoasts] = useState<Roast[]>([]);
   const [brews, setBrews] = useState<Brew[]>([]);
+  const [gears, setGears] = useState<Gear[]>([]);
   const [bio, setBio] = useState(false);
   const [open, setOpen] = useState<Product | null>(null);
 
@@ -60,17 +72,19 @@ function ShopPage() {
         if (aroma && !p.aromas.includes(aroma)) return false;
         if (roasts.length > 0 && !roasts.includes(p.roast)) return false;
         if (brews.length > 0 && !brews.some((b) => p.brews.includes(b))) return false;
+        if (gears.length > 0 && !gears.some((g) => p.gear.includes(g))) return false;
         if (bio && !p.bio) return false;
         return true;
       }),
-    [aroma, roasts, brews, bio],
+    [aroma, roasts, brews, gears, bio],
   );
 
-  const hasFilters = !!(aroma || roasts.length > 0 || brews.length > 0 || bio);
+  const hasFilters = !!(aroma || roasts.length > 0 || brews.length > 0 || gears.length > 0 || bio);
   const resetFilters = () => {
     setAroma(null);
     setRoasts([]);
     setBrews([]);
+    setGears([]);
     setBio(false);
   };
 
@@ -78,6 +92,8 @@ function ShopPage() {
     setRoasts((prev) => (prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]));
   const toggleBrew = (b: Brew) =>
     setBrews((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]));
+  const toggleGear = (g: Gear) =>
+    setGears((prev) => (prev.includes(g) ? prev.filter((x) => x !== g) : [...prev, g]));
 
   const showKaffee = tab === "alle" || tab === "kaffee";
   const showHeimroester = tab === "alle" || tab === "heimroester";
@@ -187,7 +203,7 @@ function ShopPage() {
                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-wrap items-center gap-2 pt-2 pb-1 text-xs">
+                <div className="flex flex-wrap items-center gap-2 pt-2 pb-1 text-xs border-b border-border/40">
                   <FilterChips
                     label="Röstgrad"
                     selected={roasts}
@@ -236,6 +252,19 @@ function ShopPage() {
                       </motion.button>
                     )}
                   </AnimatePresence>
+                </div>
+
+                {/* Equipment filter row */}
+                <div className="flex flex-wrap items-center gap-2 py-1.5 pb-2 text-xs">
+                  <FilterChips
+                    label="Mein Equipment"
+                    selected={gears}
+                    options={(Object.entries(GEAR_LABELS) as [Gear, string][]).map(
+                      ([v, l]) => [v, l],
+                    )}
+                    onToggle={toggleGear}
+                    onClear={() => setGears([])}
+                  />
                 </div>
 
                 {/* Active combination summary */}
@@ -493,6 +522,21 @@ function ShopPage() {
                                   className="text-[0.62rem] rounded-full bg-muted text-foreground/65 px-2 py-0.5"
                                 >
                                   {a}
+                                </span>
+                              ))}
+                            </div>
+                            {/* Gear badges */}
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {p.gear.map((g) => (
+                                <span
+                                  key={g}
+                                  className={`text-[0.58rem] rounded-full border px-1.5 py-0.5 transition-colors ${
+                                    gears.includes(g)
+                                      ? "border-magenta-coral/60 text-magenta-coral bg-magenta-coral/8"
+                                      : "border-border/60 text-muted-foreground/60"
+                                  }`}
+                                >
+                                  {GEAR_LABELS[g]}
                                 </span>
                               ))}
                             </div>
@@ -850,6 +894,17 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
                 <dd className="font-medium">{product.aromas.join(", ")}</dd>
                 <dt className="text-muted-foreground">Herkunft</dt>
                 <dd className="font-medium">{product.origin}</dd>
+                <dt className="text-muted-foreground col-span-2 pt-2 border-t border-border mt-1">Geeignet für</dt>
+                <dd className="col-span-2 flex flex-wrap gap-1.5 mt-1">
+                  {product.gear.map((g) => (
+                    <span
+                      key={g}
+                      className="text-xs rounded-full border border-border px-2.5 py-1 text-foreground/70"
+                    >
+                      {GEAR_LABELS[g]}
+                    </span>
+                  ))}
+                </dd>
               </dl>
               <div className="mt-8 flex items-center justify-between">
                 <span className="font-display font-bold text-3xl">

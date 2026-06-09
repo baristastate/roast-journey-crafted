@@ -10,6 +10,14 @@ import f6 from "@/assets/feed-6.jpg";
 
 export type Roast = "hell" | "mittel" | "dunkel" | "omni";
 export type Brew = "espresso" | "filter" | "milch";
+export type Gear =
+  | "siebtraeger"
+  | "vollautomat"
+  | "pourover"
+  | "frenchpress"
+  | "aeropress"
+  | "kaffeemaschine"
+  | "moka";
 export type Aroma =
   | "Schokoladig"
   | "Nussig"
@@ -28,6 +36,7 @@ export type Product = {
   region: string;
   roast: Roast;
   brews: Brew[];
+  gear: Gear[];
   aromas: Aroma[];
   notes: string[];
   price: number;
@@ -44,6 +53,7 @@ export const PRODUCTS: Product[] = [
     region: "Nyeri",
     roast: "hell",
     brews: ["filter"],
+    gear: ["pourover", "aeropress", "kaffeemaschine"],
     aromas: ["Fruchtig", "Floral"],
     notes: ["Schwarze Johannisbeere", "Hibiskus", "Honig"],
     price: 14.5,
@@ -58,6 +68,7 @@ export const PRODUCTS: Product[] = [
     region: "Mogiana",
     roast: "dunkel",
     brews: ["espresso", "milch"],
+    gear: ["siebtraeger", "vollautomat", "moka"],
     aromas: ["Schokoladig", "Nussig", "Kräftig"],
     notes: ["Kakao", "Haselnuss", "Karamell"],
     price: 12.9,
@@ -71,6 +82,7 @@ export const PRODUCTS: Product[] = [
     region: "Yirgacheffe",
     roast: "hell",
     brews: ["filter"],
+    gear: ["pourover", "aeropress", "frenchpress"],
     aromas: ["Fruchtig", "Floral", "Mild"],
     notes: ["Bergamotte", "Jasmin", "Pfirsich"],
     price: 16.0,
@@ -85,6 +97,7 @@ export const PRODUCTS: Product[] = [
     region: "Huila",
     roast: "mittel",
     brews: ["espresso", "filter"],
+    gear: ["siebtraeger", "pourover", "aeropress", "kaffeemaschine"],
     aromas: ["Karamellig", "Nussig", "Schokoladig"],
     notes: ["Milchschokolade", "Mandel", "Rohrzucker"],
     price: 13.5,
@@ -98,6 +111,7 @@ export const PRODUCTS: Product[] = [
     region: "Huehuetenango",
     roast: "mittel",
     brews: ["espresso", "filter", "milch"],
+    gear: ["siebtraeger", "vollautomat", "kaffeemaschine", "frenchpress"],
     aromas: ["Schokoladig", "Würzig"],
     notes: ["Zartbitter", "Zimt", "Orangenschale"],
     price: 13.9,
@@ -111,6 +125,7 @@ export const PRODUCTS: Product[] = [
     region: "Sumatra",
     roast: "dunkel",
     brews: ["espresso", "milch"],
+    gear: ["siebtraeger", "vollautomat", "moka", "frenchpress"],
     aromas: ["Würzig", "Kräftig", "Schokoladig"],
     notes: ["Erde", "Tabak", "Bitterschokolade"],
     price: 12.5,
@@ -124,6 +139,7 @@ export const PRODUCTS: Product[] = [
     region: "Tarrazú",
     roast: "mittel",
     brews: ["filter", "espresso"],
+    gear: ["pourover", "kaffeemaschine", "siebtraeger", "aeropress"],
     aromas: ["Karamellig", "Fruchtig"],
     notes: ["Aprikose", "Honig", "Vanille"],
     price: 14.0,
@@ -138,6 +154,7 @@ export const PRODUCTS: Product[] = [
     region: "Multi-Origin",
     roast: "omni",
     brews: ["espresso", "filter", "milch"],
+    gear: ["siebtraeger", "vollautomat", "pourover", "kaffeemaschine", "frenchpress", "aeropress", "moka"],
     aromas: ["Schokoladig", "Nussig", "Mild"],
     notes: ["Karamell", "Walnuss", "Toffee"],
     price: 11.9,
