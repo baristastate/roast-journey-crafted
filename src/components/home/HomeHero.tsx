@@ -21,6 +21,11 @@ export function HomeHero() {
       <div className="pointer-events-none absolute -top-40 -left-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-magenta-coral/25 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-cyan-bloom/15 blur-3xl" />
 
+      {/* bottom bridge — soft, long fade into the next section */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[40svh] z-[5] bg-gradient-to-b from-transparent via-ink-black/70 to-ink-black" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px z-[6] bg-gradient-to-r from-transparent via-magenta-coral/60 to-transparent" />
+
+
       <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-40 md:pt-48 pb-24 min-h-[100svh] flex flex-col justify-between">
         <div className="max-w-5xl">
           <motion.span
