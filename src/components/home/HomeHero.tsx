@@ -22,7 +22,7 @@ export function HomeHero() {
       <div className="pointer-events-none absolute -bottom-40 -right-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-cyan-bloom/15 blur-3xl" />
 
       {/* bottom bridge — soft, long fade into the next section */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[40svh] z-[5] bg-gradient-to-b from-transparent via-ink-black/70 to-ink-black" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[14svh] z-[5] bg-gradient-to-b from-transparent to-ink-black" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px z-[6] bg-gradient-to-r from-transparent via-magenta-coral/60 to-transparent" />
 
 
