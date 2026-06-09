@@ -39,7 +39,7 @@ export function HeimroesterTeaser() {
         </div>
         <Reveal delay={0.1}>
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden">
-            <img src={img} alt="Barista State Heimröster mit Rohkaffee" className="h-full w-full object-cover" loading="lazy" />
+            <img src={img} alt="Barista State Heimröster mit Rohkaffee" className="parallax-img h-full w-full object-cover" loading="lazy" />
             {/* hotspots */}
             {[{t:"22%",l:"58%",lbl:"Profil wählen"},{t:"48%",l:"66%",lbl:"Temperatur"},{t:"74%",l:"42%",lbl:"Rohkaffee"}].map((h, i) => (
               <div key={i} className="absolute" style={{ top: h.t, left: h.l }}>
