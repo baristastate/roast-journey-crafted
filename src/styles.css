@@ -175,11 +175,86 @@
 }
 .drift-y { animation: drift-y 60s linear infinite; }
 
+/* ============================================================
+   Scroll-driven section transitions (modern, all pages)
+   Uses CSS animation-timeline: view() — auto-applies to every
+   top-level <section> rendered inside <main.scroll-fx>.
+   ============================================================ */
+@keyframes section-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) scale(0.96);
+    filter: blur(14px) saturate(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0) saturate(1);
+  }
+}
+
+@keyframes parallax-rise {
+  from { transform: translate3d(0, 10%, 0) scale(1.08); }
+  to   { transform: translate3d(0, -8%, 0) scale(1.08); }
+}
+
+@keyframes mask-sweep {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@supports (animation-timeline: view()) {
+  main.scroll-fx > section,
+  main.scroll-fx section[data-fx="rise"] {
+    animation: section-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+    will-change: transform, opacity, filter;
+  }
+
+  /* Parallax image — add class .parallax-img */
+  .parallax-img {
+    animation: parallax-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+    will-change: transform;
+  }
+
+  /* Sweep reveal — add class .fx-sweep */
+  .fx-sweep {
+    animation: mask-sweep cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 40%;
+  }
+}
+
+/* Soft transition stripe between consecutive sections */
+main.scroll-fx > section + section { position: relative; }
+main.scroll-fx > section + section::before {
+  content: "";
+  position: absolute;
+  inset: -80px 0 auto 0;
+  height: 160px;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--background) 0%, transparent),
+    color-mix(in oklab, var(--background) 55%, transparent) 50%,
+    color-mix(in oklab, var(--background) 0%, transparent)
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  main.scroll-fx > section {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
