@@ -117,7 +117,7 @@ function FeedCard({ post, liked, saved, onLike, onSave, delay }: {
                 </motion.span>
               </button>
               <button onClick={onSave} aria-label="Speichern" className="h-8 w-8 grid place-items-center rounded-full hover:bg-muted text-sm">
-                <span className={saved ? "text-amber" : "text-muted-foreground"}>{saved ? "▮" : "▯"}</span>
+                <span className={saved ? "text-cyan-bloom" : "text-muted-foreground"}>{saved ? "▮" : "▯"}</span>
               </button>
               <button aria-label="Lesen" className="ml-1 text-sm text-amber pl-2">Lesen →</button>
             </div>
