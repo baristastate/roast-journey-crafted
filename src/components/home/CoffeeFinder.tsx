@@ -102,7 +102,7 @@ export function CoffeeFinder() {
                     ))}
                   </div>
                   <div className="mt-6 flex gap-3">
-                    <Link to="/kaffee" className="rounded-full bg-magenta-coral text-pearl-white px-5 py-2.5 text-sm">Alle Kaffees ansehen</Link>
+                    <Link to="/kaffee" className="rounded-full bg-magenta-coral text-ink-black px-5 py-2.5 text-sm">Alle Kaffees ansehen</Link>
                     <button onClick={reset} className="rounded-full border border-border px-5 py-2.5 text-sm">Neu starten</button>
                   </div>
                 </motion.div>

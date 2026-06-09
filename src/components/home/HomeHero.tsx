@@ -18,7 +18,7 @@ export function HomeHero() {
       </motion.div>
 
       {/* signature glow */}
-      <div className="pointer-events-none absolute -top-40 -left-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-magenta-coral/20 blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 -left-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-magenta-coral/25 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 -z-0 h-[60vh] w-[60vh] rounded-full bg-cyan-bloom/15 blur-3xl" />
 
       <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-40 md:pt-48 pb-24 min-h-[100svh] flex flex-col justify-between">
@@ -49,7 +49,7 @@ export function HomeHero() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.6 }}
             className="mt-10 flex flex-wrap gap-3"
           >
-            <Link to="/kaffee" className="inline-flex items-center gap-2 rounded-full bg-magenta-coral px-7 py-4 text-sm font-medium text-pearl-white shadow-[0_20px_60px_-15px_rgba(255,79,139,0.6)] transition-transform hover:-translate-y-0.5">
+            <Link to="/kaffee" className="inline-flex items-center gap-2 rounded-full bg-magenta-coral px-7 py-4 text-sm font-medium text-ink-black shadow-[0_20px_60px_-15px_rgba(255,215,0,0.6)] transition-transform hover:-translate-y-0.5">
               Kaffee entdecken <span aria-hidden>→</span>
             </Link>
             <Link to="/community" className="inline-flex items-center gap-2 rounded-full border border-pearl-white/25 px-7 py-4 text-sm text-pearl-white hover:border-cyan-bloom hover:text-cyan-bloom transition-colors">
