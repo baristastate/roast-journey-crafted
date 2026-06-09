@@ -44,9 +44,17 @@ export function Scrolly({
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div className="mx-auto h-full max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           {/* Sticky visual */}
-          <div className={`relative h-[55svh] lg:h-[72svh] rounded-3xl overflow-hidden ${side === "right" ? "lg:order-2" : ""}`}>
+          <div
+            className={`relative h-[55svh] lg:h-[72svh] rounded-3xl overflow-hidden ${side === "right" ? "lg:order-2" : ""}`}
+          >
             {steps.map((s, i) => (
-              <StickyImage key={i} step={s} index={i} total={steps.length} progress={scrollYProgress} />
+              <StickyImage
+                key={i}
+                step={s}
+                index={i}
+                total={steps.length}
+                progress={scrollYProgress}
+              />
             ))}
             <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-pearl-white/10 rounded-3xl" />
             {/* Step counter */}
@@ -58,17 +66,34 @@ export function Scrolly({
             {intro && (
               <div className="mb-10">
                 {intro.eyebrow && (
-                  <div className={`text-xs uppercase tracking-[0.28em] ${dark ? "text-cyan-bloom" : "text-magenta-coral"}`}>
+                  <div
+                    className={`text-xs uppercase tracking-[0.28em] ${dark ? "text-cyan-bloom" : "text-magenta-coral"}`}
+                  >
                     {intro.eyebrow}
                   </div>
                 )}
-                <h2 className="mt-3 font-display tracking-display text-4xl md:text-5xl leading-[1]">{intro.title}</h2>
-                {intro.body && <p className={`mt-4 max-w-md ${dark ? "text-pearl-white/70" : "text-muted-foreground"}`}>{intro.body}</p>}
+                <h2 className="mt-3 font-display tracking-display text-4xl md:text-5xl leading-[1]">
+                  {intro.title}
+                </h2>
+                {intro.body && (
+                  <p
+                    className={`mt-4 max-w-md ${dark ? "text-pearl-white/70" : "text-muted-foreground"}`}
+                  >
+                    {intro.body}
+                  </p>
+                )}
               </div>
             )}
             <div className="relative h-[32svh] lg:h-[40svh]">
               {steps.map((s, i) => (
-                <StepText key={i} step={s} index={i} total={steps.length} progress={scrollYProgress} dark={dark} />
+                <StepText
+                  key={i}
+                  step={s}
+                  index={i}
+                  total={steps.length}
+                  progress={scrollYProgress}
+                  dark={dark}
+                />
               ))}
             </div>
           </div>
@@ -79,8 +104,16 @@ export function Scrolly({
 }
 
 function StickyImage({
-  step, index, total, progress,
-}: { step: ScrollyStep; index: number; total: number; progress: MotionValue<number> }) {
+  step,
+  index,
+  total,
+  progress,
+}: {
+  step: ScrollyStep;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
   const start = index / total;
   const end = (index + 1) / total;
   const fadeIn = Math.max(0, start === 0 ? 0 : start - 0.06);
@@ -107,8 +140,18 @@ function StickyImage({
 }
 
 function StepText({
-  step, index, total, progress, dark,
-}: { step: ScrollyStep; index: number; total: number; progress: MotionValue<number>; dark: boolean }) {
+  step,
+  index,
+  total,
+  progress,
+  dark,
+}: {
+  step: ScrollyStep;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  dark: boolean;
+}) {
   const start = index / total;
   const end = (index + 1) / total;
   const a = Math.max(0, start - 0.05);
@@ -120,13 +163,17 @@ function StepText({
 
   return (
     <motion.div style={{ opacity, y }} className="absolute inset-0">
-      <div className={`text-xs uppercase tracking-[0.32em] ${dark ? "text-cyan-bloom" : "text-magenta-coral"}`}>
+      <div
+        className={`text-xs uppercase tracking-[0.32em] ${dark ? "text-cyan-bloom" : "text-magenta-coral"}`}
+      >
         {step.eyebrow ?? `Step ${String(index + 1).padStart(2, "0")}`}
       </div>
       <h3 className="mt-4 font-display tracking-display text-4xl md:text-5xl lg:text-6xl leading-[0.95]">
         {step.title}
       </h3>
-      <p className={`mt-5 max-w-lg text-lg ${dark ? "text-pearl-white/80" : "text-muted-foreground"}`}>
+      <p
+        className={`mt-5 max-w-lg text-lg ${dark ? "text-pearl-white/80" : "text-muted-foreground"}`}
+      >
         {step.body}
       </p>
     </motion.div>
@@ -145,7 +192,15 @@ function StepCounter({ total, progress }: { total: number; progress: MotionValue
   );
 }
 
-function Tick({ index, total, progress }: { index: number; total: number; progress: MotionValue<number> }) {
+function Tick({
+  index,
+  total,
+  progress,
+}: {
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
   const start = index / total;
   const end = (index + 1) / total;
   const fill = useTransform(progress, [start, end], ["0%", "100%"]);
@@ -161,7 +216,11 @@ function Tick({ index, total, progress }: { index: number; total: number; progre
  * any route to give it cinematic depth.
  */
 export function ParallaxHero({
-  image, alt = "", overlay = "dark", children, minH = "92svh",
+  image,
+  alt = "",
+  overlay = "dark",
+  children,
+  minH = "92svh",
 }: {
   image: string;
   alt?: string;
@@ -191,7 +250,10 @@ export function ParallaxHero({
           <div className="absolute inset-0 bg-gradient-to-t from-pearl-white via-pearl-white/55 to-pearl-white/20" />
         )}
       </motion.div>
-      <motion.div style={{ y: textY, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-32 md:pt-44 pb-20 md:pb-28" >
+      <motion.div
+        style={{ y: textY, opacity }}
+        className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-32 md:pt-44 pb-20 md:pb-28"
+      >
         {children}
       </motion.div>
     </section>

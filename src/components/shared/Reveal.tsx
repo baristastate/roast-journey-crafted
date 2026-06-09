@@ -33,7 +33,8 @@ const VARIANTS: Record<Variant, Variants> = {
   mask: {
     hidden: { opacity: 0, clipPath: "inset(0 100% 0 0)" },
     visible: {
-      opacity: 1, clipPath: "inset(0 0% 0 0)",
+      opacity: 1,
+      clipPath: "inset(0 0% 0 0)",
       transition: { duration: 0.95, ease: [0.77, 0, 0.18, 1] },
     },
   },

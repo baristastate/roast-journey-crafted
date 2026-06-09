@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -21,9 +21,16 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="font-display text-7xl tracking-display">404</h1>
         <h2 className="mt-4 text-lg">Diese Seite gibt es nicht.</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Vielleicht hilft dir ein frischer Espresso.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Vielleicht hilft dir ein frischer Espresso.
+        </p>
         <div className="mt-6">
-          <Link to="/" className="inline-flex items-center rounded-full bg-amber px-5 py-2.5 text-sm font-medium text-espresso">Zur Startseite</Link>
+          <Link
+            to="/"
+            className="inline-flex items-center rounded-full bg-amber px-5 py-2.5 text-sm font-medium text-espresso"
+          >
+            Zur Startseite
+          </Link>
         </div>
       </div>
     </div>
@@ -41,15 +48,22 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-3xl tracking-display">Etwas ist schiefgegangen.</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Versuch es nochmal, oder kehr zur Startseite zurück.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Versuch es nochmal, oder kehr zur Startseite zurück.
+        </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="rounded-full bg-amber px-4 py-2 text-sm font-medium text-espresso"
           >
             Nochmal versuchen
           </button>
-          <a href="/" className="rounded-full border border-border px-4 py-2 text-sm">Startseite</a>
+          <a href="/" className="rounded-full border border-border px-4 py-2 text-sm">
+            Startseite
+          </a>
         </div>
       </div>
     </div>
@@ -62,10 +76,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Barista State — Frisch gerösteter Kaffee & Heimrösten" },
-      { name: "description", content: "Kuratierte Specialty-Kaffees von ausgewählten Röstereien und Heimröster, mit denen du Kaffee zuhause selbst röstest." },
+      {
+        name: "description",
+        content:
+          "Kuratierte Specialty-Kaffees von ausgewählten Röstereien und Heimröster, mit denen du Kaffee zuhause selbst röstest.",
+      },
       { name: "theme-color", content: "#0E0E12" },
       { property: "og:title", content: "Barista State — Roast Journey" },
-      { property: "og:description", content: "Kuratierte Specialty-Kaffees und Heimröster — eine ruhige, moderne Coffee-Welt." },
+      {
+        property: "og:description",
+        content: "Kuratierte Specialty-Kaffees und Heimröster — eine ruhige, moderne Coffee-Welt.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -93,7 +114,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
-      <head><HeadContent /></head>
+      <head>
+        <HeadContent />
+      </head>
       <body>
         {children}
         <Scripts />
@@ -102,10 +125,43 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function CursorDot() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let rx = 0,
+      ry = 0;
+    const onMove = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
+      if (dotRef.current) {
+        dotRef.current.style.left = `${x}px`;
+        dotRef.current.style.top = `${y}px`;
+      }
+      rx += (x - rx) * 0.14;
+      ry += (y - ry) * 0.14;
+      if (ringRef.current) {
+        ringRef.current.style.left = `${x}px`;
+        ringRef.current.style.top = `${y}px`;
+      }
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  return (
+    <>
+      <div id="cursor-dot" ref={dotRef} />
+      <div id="cursor-ring" ref={ringRef} />
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <CursorDot />
       <Header />
       <main className="scroll-fx">
         <Outlet />

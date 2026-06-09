@@ -4,6 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Animierbare CSS Custom Properties ──────────────────── */
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --shimmer-pos {
+  syntax: "<percentage>";
+  initial-value: -40%;
+  inherits: false;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -59,68 +71,88 @@
   --radius: 0.5rem;
 
   /* Marketing brand palette */
-  --ink-black: #0E0E12;
-  --pearl-white: #FBFAF7;
-  --magenta-coral: #FFD700;
-  --cyan-bloom: #29C7FF;
-  --soft-silver: #C8CCD6;
+  --ink-black: #0c0c10;
+  --pearl-white: #fafaf7;
+  --magenta-coral: #f5c842;
+  --cyan-bloom: #29c7ff;
+  --soft-silver: #c0c4ce;
 
-  /* Legacy aliases → new brand */
+  /* Legacy aliases */
   --espresso: var(--ink-black);
-  --espresso-soft: #141419;
+  --espresso-soft: #13131a;
   --cream: var(--pearl-white);
-  --cream-warm: #F3F1EC;
-  --beige: #E8E9EB;
+  --cream-warm: #f2efe9;
+  --beige: #e6e7e9;
   --roast: var(--magenta-coral);
   --amber: var(--magenta-coral);
-  --amber-soft: #FFF59D;
-  --raw-green: var(--cyan-bloom);
+  --amber-soft: #fff3a0;
+  --raw-green: #2dd4a0;
 
-  /* Light (Pearl White) section */
+  /* Light section */
   --background: var(--pearl-white);
   --foreground: var(--ink-black);
-  --card: #FFFFFF;
+  --card: #ffffff;
   --card-foreground: var(--ink-black);
-  --popover: #FFFFFF;
+  --popover: #ffffff;
   --popover-foreground: var(--ink-black);
   --primary: var(--ink-black);
   --primary-foreground: var(--pearl-white);
-  --secondary: #E8E9EB;
+  --secondary: #e6e7e9;
   --secondary-foreground: var(--ink-black);
-  --muted: #E8E9EB;
-  --muted-foreground: #6B7280;
+  --muted: #e6e7e9;
+  --muted-foreground: #6b7280;
   --accent: var(--magenta-coral);
   --accent-foreground: var(--ink-black);
-  --destructive: #EF4444;
+  --destructive: #ef4444;
   --destructive-foreground: var(--pearl-white);
-  --border: var(--soft-silver);
-  --input: #D1D5DB;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: #d1d5db;
   --ring: var(--magenta-coral);
 }
 
-/* Dark section override (Ink Black surfaces) */
+/* Dark section override */
 .theme-dark {
   --background: var(--ink-black);
   --foreground: var(--pearl-white);
-  --card: #141419;
+  --card: #141418;
   --card-foreground: var(--pearl-white);
-  --popover: #141419;
+  --popover: #141418;
   --popover-foreground: var(--pearl-white);
   --primary: var(--magenta-coral);
   --primary-foreground: var(--ink-black);
-  --secondary: #1A1A1F;
+  --secondary: #1c1c22;
   --secondary-foreground: var(--pearl-white);
-  --muted: #1A1A1F;
-  --muted-foreground: #9CA3AF;
+  --muted: #1c1c22;
+  --muted-foreground: #9ca3af;
   --accent: var(--cyan-bloom);
   --accent-foreground: var(--ink-black);
-  --border: #2A2A30;
-  --input: #2A2A30;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Thin brand-colored scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--magenta-coral) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--magenta-coral);
+    border-radius: 99px;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -129,57 +161,268 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
-    font-weight: 900;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
   }
-  ::selection { background: var(--magenta-coral); color: var(--pearl-white); }
+
+  /* Italic display moments for expressiveness */
+  .display-italic {
+    font-style: italic;
+  }
+
+  ::selection {
+    background: var(--magenta-coral);
+    color: var(--ink-black);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--magenta-coral);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 }
 
-/* Grain texture overlay */
+/* ── Grain texture overlay ──────────────────────────────── */
 .grain::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.12;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-.tracking-display { letter-spacing: -0.035em; }
+/* ── Typography utilities ───────────────────────────────── */
+.tracking-display {
+  letter-spacing: -0.03em;
+}
 
-/* Steam drift */
+/* ── Glass card utility ─────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: color-mix(in oklab, var(--background) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+.glass-dark {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: color-mix(in oklab, var(--ink-black) 55%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* ── Image shine sweep on card hover ────────────────────── */
+.img-shine::after {
+  content: "";
+  position: absolute;
+  inset-y: 0;
+  left: -80%;
+  width: 60%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  transform: skewX(-12deg);
+  transition: left 0.75s ease-in-out;
+  pointer-events: none;
+}
+.group:hover .img-shine::after {
+  left: 130%;
+}
+
+/* ── Shimmer button effect ──────────────────────────────── */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.55s ease;
+}
+.btn-shimmer:hover::before {
+  transform: translateX(100%);
+}
+
+/* ── Link underline slide ───────────────────────────────── */
+.link-slide {
+  position: relative;
+  text-decoration: none;
+}
+.link-slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-slide:hover::after {
+  width: 100%;
+}
+
+/* ── Rotating border glow (CTA cards) ──────────────────── */
+@keyframes rotate-glow {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--glow-angle),
+    transparent 60%,
+    var(--magenta-coral) 75%,
+    var(--cyan-bloom) 85%,
+    transparent 100%
+  );
+  animation: rotate-glow 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: -1;
+}
+.glow-border:hover::before {
+  opacity: 1;
+}
+
+/* ── Steam drift ────────────────────────────────────────── */
 @keyframes steam-drift {
-  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
-  20%  { opacity: 0.6; }
-  100% { transform: translate3d(-12px, -120px, 0) scale(1.4); opacity: 0; }
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(-12px, -120px, 0) scale(1.4);
+    opacity: 0;
+  }
 }
 .steam {
   animation: steam-drift 6s ease-out infinite;
   filter: blur(14px);
 }
 
-/* Bean pulse */
+/* ── Bean pulse ─────────────────────────────────────────── */
 @keyframes bean-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.25); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
 }
-.bean-pulse { animation: bean-pulse 0.6s ease-out; }
+.bean-pulse {
+  animation: bean-pulse 0.6s ease-out;
+}
 
-/* Slow marquee for community hero */
+/* ── Marquee ────────────────────────────────────────────── */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-x {
+  animation: marquee-x 28s linear infinite;
+  display: inline-flex;
+  will-change: transform;
+}
+.marquee-x:hover {
+  animation-play-state: paused;
+}
+
 @keyframes drift-y {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
-.drift-y { animation: drift-y 60s linear infinite; }
+.drift-y {
+  animation: drift-y 60s linear infinite;
+}
 
-/* ============================================================
-   Scroll-driven section transitions (modern, all pages)
-   Uses CSS animation-timeline: view() — auto-applies to every
-   top-level <section> rendered inside <main.scroll-fx>.
-   ============================================================ */
+/* ── Cursor dot ─────────────────────────────────────────── */
+#cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--magenta-coral);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.08s ease,
+    opacity 0.3s;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--magenta-coral);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.25s,
+    height 0.25s,
+    opacity 0.3s;
+  opacity: 0.5;
+}
+body:has(a:hover, button:hover) #cursor-ring {
+  width: 56px;
+  height: 56px;
+  opacity: 0.8;
+}
+@media (pointer: coarse) {
+  #cursor-dot,
+  #cursor-ring {
+    display: none;
+  }
+}
+
+/* ── Scroll-driven section transitions ──────────────────── */
 @keyframes section-rise {
   from {
     opacity: 0;
@@ -192,13 +435,21 @@
 }
 
 @keyframes parallax-rise {
-  from { transform: translate3d(0, 6%, 0) scale(1.06); }
-  to   { transform: translate3d(0, -4%, 0) scale(1.06); }
+  from {
+    transform: translate3d(0, 6%, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(0, -4%, 0) scale(1.06);
+  }
 }
 
 @keyframes mask-sweep {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0 0 0); }
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 @supports (animation-timeline: view()) {
@@ -210,7 +461,6 @@
     will-change: transform, opacity;
   }
 
-  /* Hero never animates — it's the first paint */
   main.scroll-fx > section:first-child {
     animation: none !important;
     opacity: 1 !important;
@@ -231,10 +481,10 @@
   }
 }
 
-/* removed hard transition stripe — was visible as a band */
-
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

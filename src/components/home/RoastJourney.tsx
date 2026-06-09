@@ -8,12 +8,24 @@ import heimroaster from "@/assets/heimroester-hero.jpg";
 import espresso from "@/assets/journey-espresso.jpg";
 
 const CHAPTERS = [
-  { title: "Rohkaffee", body: "Jede Bohne beginnt mit Herkunft, Charakter und Potenzial.", img: rawImg },
+  {
+    title: "Rohkaffee",
+    body: "Jede Bohne beginnt mit Herkunft, Charakter und Potenzial.",
+    img: rawImg,
+  },
   { title: "Röstung", body: "In der Röstung entstehen Süße, Tiefe und Aroma.", img: roastImg },
   { title: "Rösterei", body: "Specialty-Röstereien, die ihr Handwerk verstehen.", img: roesterei },
   { title: "Zuhause", body: "Frisch gemahlen. Präzise gebrüht. In deiner Tasse.", img: espresso },
-  { title: "Heimrösten", body: "Mit dem Heimröster steuerst du Frische, Profil und Geschmack.", img: heimroaster },
-  { title: "Community", body: "Eine Bewegung von Menschen, die Kaffee neu denken.", img: community },
+  {
+    title: "Heimrösten",
+    body: "Mit dem Heimröster steuerst du Frische, Profil und Geschmack.",
+    img: heimroaster,
+  },
+  {
+    title: "Community",
+    body: "Eine Bewegung von Menschen, die Kaffee neu denken.",
+    img: community,
+  },
 ];
 
 export function RoastJourney() {
@@ -21,18 +33,38 @@ export function RoastJourney() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section ref={ref} className="theme-dark relative bg-ink-black text-pearl-white" style={{ height: `${CHAPTERS.length * 100}svh` }}>
+    <section
+      ref={ref}
+      className="theme-dark relative bg-ink-black text-pearl-white"
+      style={{ height: `${CHAPTERS.length * 100}svh` }}
+    >
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {CHAPTERS.map((ch, i) => {
           const start = i / CHAPTERS.length;
           const end = (i + 1) / CHAPTERS.length;
-          return <Chapter key={i} chapter={ch} index={i} total={CHAPTERS.length} progress={scrollYProgress} start={start} end={end} />;
+          return (
+            <Chapter
+              key={i}
+              chapter={ch}
+              index={i}
+              total={CHAPTERS.length}
+              progress={scrollYProgress}
+              start={start}
+              end={end}
+            />
+          );
         })}
 
-        {/* progress rail */}
-        <div className="absolute right-5 md:right-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-3 z-30">
+        {/* Progress rail */}
+        <div className="absolute right-5 md:right-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-4 z-30">
           {CHAPTERS.map((c, i) => (
-            <ProgressDot key={i} progress={scrollYProgress} index={i} total={CHAPTERS.length} label={c.title} />
+            <ProgressDot
+              key={i}
+              progress={scrollYProgress}
+              index={i}
+              total={CHAPTERS.length}
+              label={c.title}
+            />
           ))}
         </div>
       </div>
@@ -41,46 +73,105 @@ export function RoastJourney() {
 }
 
 function Chapter({
-  chapter, progress, start, end, index, total,
-}: { chapter: typeof CHAPTERS[number]; progress: any; start: number; end: number; index: number; total: number }) {
+  chapter,
+  progress,
+  start,
+  end,
+  index,
+  total,
+}: {
+  chapter: (typeof CHAPTERS)[number];
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  start: number;
+  end: number;
+  index: number;
+  total: number;
+}) {
   const isFirst = start === 0;
   const isLast = end === 1;
   const fadeIn = isFirst ? 0 : start - 0.05;
   const fadeOut = isLast ? 1 : end - 0.02;
   const opacity = useTransform(
     progress,
-    isFirst
-      ? [0, fadeOut - 0.02, fadeOut]
-      : [fadeIn, start + 0.02, fadeOut - 0.02, fadeOut],
+    isFirst ? [0, fadeOut - 0.02, fadeOut] : [fadeIn, start + 0.02, fadeOut - 0.02, fadeOut],
     isFirst ? [1, 1, 0] : [0, 1, 1, 0],
   );
-  const scale = useTransform(progress, [start, end], [1.08, 1.0]);
-  const y = useTransform(progress, [start, end], [40, -40]);
+  const scale = useTransform(progress, [start, end], [1.07, 1.0]);
+  const y = useTransform(progress, [start, end], [36, -36]);
 
   return (
-    <motion.div style={{ opacity }} className="absolute inset-0">
+    <motion.div style={{ opacity }} className="absolute inset-0 grain">
+      {/* Image with ken-burns scale */}
       <motion.div style={{ scale }} className="absolute inset-0">
-        <img src={chapter.img} alt={chapter.title} className="h-full w-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/35 to-ink-black/65" />
+        <img
+          src={chapter.img}
+          alt={chapter.title}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-black/90 via-ink-black/30 to-ink-black/60" />
       </motion.div>
-      <motion.div style={{ y }} className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-5 md:px-10 pb-24 md:pb-32">
-        <div className="text-xs uppercase tracking-[0.32em] text-cyan-bloom">Kapitel {String(index + 1).padStart(2, "0")} · von {String(total).padStart(2, "0")}</div>
-        <h2 className="mt-4 font-display tracking-display text-6xl md:text-8xl lg:text-[9rem] leading-[0.9]">{chapter.title}</h2>
-        <p className="mt-5 max-w-xl text-pearl-white/80 text-lg md:text-xl">{chapter.body}</p>
+
+      {/* Ghost chapter number — decorative */}
+      <div
+        className="absolute right-5 md:right-16 bottom-16 md:bottom-24 z-10 pointer-events-none select-none"
+        aria-hidden
+      >
+        <span
+          className="font-display font-bold leading-none text-pearl-white/[0.04]"
+          style={{ fontSize: "clamp(6rem, 20vw, 18rem)" }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+
+      {/* Text content */}
+      <motion.div
+        style={{ y }}
+        className="relative z-20 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-5 md:px-10 pb-28 md:pb-36"
+      >
+        <div className="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.34em] text-cyan-bloom">
+          <span className="h-px w-6 bg-cyan-bloom/60" />
+          Kapitel {String(index + 1).padStart(2, "0")} · von {String(total).padStart(2, "0")}
+        </div>
+        <h2
+          className="mt-5 font-display tracking-display leading-[0.88] font-bold"
+          style={{ fontSize: "clamp(3.5rem, 9vw, 9rem)" }}
+        >
+          {chapter.title}
+        </h2>
+        <p className="mt-5 max-w-lg text-pearl-white/70 text-lg md:text-xl font-light leading-relaxed">
+          {chapter.body}
+        </p>
       </motion.div>
     </motion.div>
   );
 }
 
-function ProgressDot({ progress, index, total, label }: { progress: any; index: number; total: number; label: string }) {
+function ProgressDot({
+  progress,
+  index,
+  total,
+  label,
+}: {
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  index: number;
+  total: number;
+  label: string;
+}) {
   const start = index / total;
   const end = (index + 1) / total;
   const active = useTransform(progress, [start, end], [0, 1]);
-  const w = useTransform(active, (v) => (v > 0.05 ? 32 : 8));
+  const w = useTransform(active, (v) => (v > 0.05 ? 28 : 6));
   return (
-    <div className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.24em]">
-      <motion.span style={{ width: w }} className="h-px bg-cyan-bloom transition-all duration-500" />
-      <motion.span style={{ opacity: useTransform(active, [0, 0.1], [0.4, 1]) }} className="text-pearl-white/85">{label}</motion.span>
+    <div className="flex items-center gap-2.5 text-[0.63rem] uppercase tracking-[0.26em]">
+      <motion.span style={{ width: w }} className="h-px bg-magenta-coral" />
+      <motion.span
+        style={{ opacity: useTransform(active, [0, 0.15], [0.35, 1]) }}
+        className="text-pearl-white/80"
+      >
+        {label}
+      </motion.span>
     </div>
   );
 }

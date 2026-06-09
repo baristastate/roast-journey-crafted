@@ -6,8 +6,12 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10 py-20">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="font-display text-3xl md:text-5xl tracking-display leading-[1.05] max-w-md">
-              Frisch geröstet. Bewusst ausgewählt.
+            <p
+              className="font-display tracking-display leading-[1.05] max-w-md"
+              style={{ fontSize: "clamp(1.8rem,3.5vw,3rem)" }}
+            >
+              Frisch geröstet.{" "}
+              <em className="not-italic display-italic text-magenta-coral">Bewusst ausgewählt.</em>
             </p>
             <p className="mt-6 text-sm text-cream/60 max-w-sm">
               Kuratierte Kaffees, Heimröster und Wissen für Menschen, die Kaffee verstehen wollen.
@@ -25,22 +29,34 @@ export function Footer() {
                 ["/shop", "Shop"],
               ].map(([to, label]) => (
                 <li key={to}>
-                  <Link to={to} className="text-cream/80 hover:text-cyan-bloom transition-colors">{label}</Link>
+                  <Link
+                    to={to}
+                    className="link-slide text-cream/80 hover:text-cream transition-colors"
+                  >
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
           <div className="md:col-span-4">
             <h4 className="text-xs uppercase tracking-[0.28em] text-cream/50">Bleib in Kontakt</h4>
-            <p className="mt-5 text-sm text-cream/70">Neue Kaffees, Röstereien und Heimröst-Notizen — einmal im Monat.</p>
-            <form className="mt-5 flex border-b border-cream/20" onSubmit={(e) => e.preventDefault()}>
+            <p className="mt-5 text-sm text-cream/70">
+              Neue Kaffees, Röstereien und Heimröst-Notizen — einmal im Monat.
+            </p>
+            <form
+              className="mt-5 flex border-b border-cream/20"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <input
                 type="email"
                 placeholder="deine@email.de"
                 aria-label="E-Mail"
                 className="flex-1 bg-transparent py-3 text-sm placeholder:text-cream/40 focus:outline-none"
               />
-              <button className="text-sm text-amber pl-3">Abonnieren →</button>
+              <button className="btn-shimmer text-sm text-magenta-coral pl-3 font-medium hover:text-cream transition-colors">
+                Abonnieren →
+              </button>
             </form>
           </div>
         </div>

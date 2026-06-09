@@ -14,14 +14,29 @@ export function HeimroesterTeaser() {
           <Reveal>
             <Eyebrow>Heimrösten · Tech</Eyebrow>
             <h2 className="mt-5 font-display tracking-display text-5xl md:text-7xl leading-[0.95]">
-              Röste deinen Kaffee<br />selbst. <span className="text-magenta-coral">Frame</span><br />by <span className="text-cyan-bloom">frame.</span>
+              Röste deinen Kaffee
+              <br />
+              selbst. <span className="text-magenta-coral">Frame</span>
+              <br />
+              by <span className="text-cyan-bloom">frame.</span>
             </h2>
             <p className="mt-6 max-w-md text-pearl-white/75 text-lg">
-              Rohkaffee rein. Profil wählen. Rösten. Genießen. Mit unseren Heimröstern steuerst du Frische, Röstgrad und Geschmack direkt zuhause.
+              Rohkaffee rein. Profil wählen. Rösten. Genießen. Mit unseren Heimröstern steuerst du
+              Frische, Röstgrad und Geschmack direkt zuhause.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/heimroester" className="rounded-full bg-magenta-coral text-ink-black px-7 py-4 text-sm font-medium shadow-[0_20px_60px_-15px_rgba(255,215,0,0.6)]">Heimröster entdecken</Link>
-              <Link to="/heimroester" className="rounded-full border border-pearl-white/25 px-7 py-4 text-sm hover:border-cyan-bloom hover:text-cyan-bloom transition-colors">So funktioniert es</Link>
+              <Link
+                to="/heimroester"
+                className="btn-shimmer rounded-full bg-magenta-coral text-ink-black px-7 py-4 text-sm font-semibold shadow-[0_20px_60px_-15px_rgba(255,215,0,0.6)] hover:-translate-y-px transition-transform"
+              >
+                Heimröster entdecken
+              </Link>
+              <Link
+                to="/heimroester"
+                className="rounded-full border border-pearl-white/25 px-7 py-4 text-sm hover:border-cyan-bloom hover:text-cyan-bloom transition-colors"
+              >
+                So funktioniert es
+              </Link>
             </div>
             <ul className="mt-10 grid sm:grid-cols-3 gap-4 text-sm">
               {[
@@ -39,9 +54,18 @@ export function HeimroesterTeaser() {
         </div>
         <Reveal delay={0.1}>
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden">
-            <img src={img} alt="Barista State Heimröster mit Rohkaffee" className="parallax-img h-full w-full object-cover" loading="lazy" />
+            <img
+              src={img}
+              alt="Barista State Heimröster mit Rohkaffee"
+              className="parallax-img h-full w-full object-cover"
+              loading="lazy"
+            />
             {/* hotspots */}
-            {[{t:"22%",l:"58%",lbl:"Profil wählen"},{t:"48%",l:"66%",lbl:"Temperatur"},{t:"74%",l:"42%",lbl:"Rohkaffee"}].map((h, i) => (
+            {[
+              { t: "22%", l: "58%", lbl: "Profil wählen" },
+              { t: "48%", l: "66%", lbl: "Temperatur" },
+              { t: "74%", l: "42%", lbl: "Rohkaffee" },
+            ].map((h, i) => (
               <div key={i} className="absolute" style={{ top: h.t, left: h.l }}>
                 <div className="relative">
                   <span className="block h-3 w-3 rounded-full bg-cyan-bloom ring-4 ring-cyan-bloom/30 animate-[ping_2.5s_ease-out_infinite]" />

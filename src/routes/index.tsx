@@ -9,9 +9,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Barista State — Frisch gerösteter Kaffee & Heimrösten" },
-      { name: "description", content: "Entdecke kuratierte Specialty-Kaffees von ausgewählten Röstereien und Heimröster, mit denen du Kaffee zuhause selbst röstest." },
+      {
+        name: "description",
+        content:
+          "Entdecke kuratierte Specialty-Kaffees von ausgewählten Röstereien und Heimröster, mit denen du Kaffee zuhause selbst röstest.",
+      },
       { property: "og:title", content: "Barista State — Roast Journey" },
-      { property: "og:description", content: "Eine ruhige, moderne Coffee-Welt. Von der grünen Bohne bis in deine Tasse." },
+      {
+        property: "og:description",
+        content: "Eine ruhige, moderne Coffee-Welt. Von der grünen Bohne bis in deine Tasse.",
+      },
     ],
   }),
   component: Index,
