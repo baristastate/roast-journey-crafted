@@ -107,7 +107,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <main>
+      <main className="scroll-fx">
         <Outlet />
       </main>
       <Footer />
