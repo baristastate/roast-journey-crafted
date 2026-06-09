@@ -34,10 +34,13 @@ export function CommunityPreview() {
                   />
                 </div>
                 <div className="mt-4 px-1">
-                  <div className="text-[0.7rem] uppercase tracking-[0.24em] text-amber">{p.category}</div>
+                  <div className="text-[0.7rem] uppercase tracking-[0.24em] text-cyan-bloom">{p.category}</div>
                   <h3 className="mt-2 font-display text-2xl leading-tight">{p.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">{p.teaser}</p>
-                  <div className="mt-3 text-xs text-muted-foreground">{p.author} · {p.readTime}</div>
+                  <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{p.author} · {p.readTime}</span>
+                    <span className="inline-flex items-center gap-1 text-magenta-coral">♥ <span className="tabular-nums">{120 + i * 37}</span></span>
+                  </div>
                 </div>
               </article>
             </Reveal>

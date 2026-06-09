@@ -8,12 +8,12 @@ import heimroaster from "@/assets/heimroester-hero.jpg";
 import espresso from "@/assets/journey-espresso.jpg";
 
 const CHAPTERS = [
-  { title: "Rohkaffee", body: "Jede Bohne beginnt mit Herkunft, Charakter und Potenzial.", img: rawImg, tone: "green" },
-  { title: "Röstung", body: "In der Röstung entstehen Süße, Tiefe und Aroma.", img: roastImg, tone: "fire" },
-  { title: "Rösterei", body: "Wir zeigen Kaffees von Röstereien, die ihr Handwerk verstehen.", img: roesterei, tone: "warm" },
-  { title: "Zuhause", body: "Du findest Kaffee, der zu deiner Zubereitung passt.", img: community, tone: "soft" },
-  { title: "Heimrösten", body: "Mit dem richtigen Röster wird aus Kaffee ein eigenes Erlebnis.", img: heimroaster, tone: "dark" },
-  { title: "Genuss", body: "Am Ende zählt der Moment in deiner Tasse.", img: espresso, tone: "espresso" },
+  { title: "Rohkaffee", body: "Jede Bohne beginnt mit Herkunft, Charakter und Potenzial.", img: rawImg },
+  { title: "Röstung", body: "In der Röstung entstehen Süße, Tiefe und Aroma.", img: roastImg },
+  { title: "Rösterei", body: "Specialty-Röstereien, die ihr Handwerk verstehen.", img: roesterei },
+  { title: "Zuhause", body: "Frisch gemahlen. Präzise gebrüht. In deiner Tasse.", img: espresso },
+  { title: "Heimrösten", body: "Mit dem Heimröster steuerst du Frische, Profil und Geschmack.", img: heimroaster },
+  { title: "Community", body: "Eine Bewegung von Menschen, die Kaffee neu denken.", img: community },
 ];
 
 export function RoastJourney() {
@@ -21,7 +21,7 @@ export function RoastJourney() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section ref={ref} className="theme-dark relative bg-espresso text-cream" style={{ height: `${CHAPTERS.length * 100}svh` }}>
+    <section ref={ref} className="theme-dark relative bg-ink-black text-pearl-white" style={{ height: `${CHAPTERS.length * 100}svh` }}>
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {CHAPTERS.map((ch, i) => {
           const start = i / CHAPTERS.length;
@@ -53,12 +53,12 @@ function Chapter({
     <motion.div style={{ opacity }} className="absolute inset-0">
       <motion.div style={{ scale }} className="absolute inset-0">
         <img src={chapter.img} alt={chapter.title} className="h-full w-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/30 to-espresso/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/35 to-ink-black/65" />
       </motion.div>
       <motion.div style={{ y }} className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-5 md:px-10 pb-24 md:pb-32">
-        <div className="text-xs uppercase tracking-[0.32em] text-cream/60">Kapitel {String(index + 1).padStart(2, "0")} · von {String(total).padStart(2, "0")}</div>
-        <h2 className="mt-4 font-display tracking-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">{chapter.title}</h2>
-        <p className="mt-5 max-w-xl text-cream/80 text-lg md:text-xl">{chapter.body}</p>
+        <div className="text-xs uppercase tracking-[0.32em] text-cyan-bloom">Kapitel {String(index + 1).padStart(2, "0")} · von {String(total).padStart(2, "0")}</div>
+        <h2 className="mt-4 font-display tracking-display text-6xl md:text-8xl lg:text-[9rem] leading-[0.9]">{chapter.title}</h2>
+        <p className="mt-5 max-w-xl text-pearl-white/80 text-lg md:text-xl">{chapter.body}</p>
       </motion.div>
     </motion.div>
   );
@@ -71,8 +71,8 @@ function ProgressDot({ progress, index, total, label }: { progress: any; index: 
   const w = useTransform(active, (v) => (v > 0.05 ? 32 : 8));
   return (
     <div className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.24em]">
-      <motion.span style={{ width: w }} className="h-px bg-cream/70 transition-all duration-500" />
-      <motion.span style={{ opacity: useTransform(active, [0, 0.1], [0.4, 1]) }} className="text-cream/80">{label}</motion.span>
+      <motion.span style={{ width: w }} className="h-px bg-cyan-bloom transition-all duration-500" />
+      <motion.span style={{ opacity: useTransform(active, [0, 0.1], [0.4, 1]) }} className="text-pearl-white/85">{label}</motion.span>
     </div>
   );
 }
