@@ -59,11 +59,11 @@
   --radius: 0.5rem;
 
   /* New brand palette */
-  --state-black: #11100E;
-  --warm-canvas: #F4E8D6;
-  --roast-coral: #E15F3C;
-  --electric-pistachio: #C7F464;
-  --origin-olive: #66724A;
+  --state-black: #0A0908;
+  --warm-canvas: #F5EFE6;
+  --roast-coral: #FF4A1C;
+  --electric-pistachio: #D4FF3A;
+  --origin-olive: #4A5D2A;
 
   /* Legacy aliases mapped to new brand */
   --espresso: var(--state-black);
