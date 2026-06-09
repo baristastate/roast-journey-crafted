@@ -112,7 +112,7 @@ function FeedCard({ post, liked, saved, onLike, onSave, delay }: {
             <span className="text-xs text-muted-foreground">{post.author}</span>
             <div className="flex items-center gap-1">
               <button onClick={onLike} aria-label="Like" className="h-8 w-8 grid place-items-center rounded-full hover:bg-muted">
-                <motion.span key={String(liked)} animate={liked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.4 }} className={liked ? "text-amber" : "text-muted-foreground"}>
+                <motion.span key={String(liked)} animate={liked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.4 }} className={liked ? "text-cyan-bloom" : "text-muted-foreground"}>
                   {liked ? "●" : "○"}
                 </motion.span>
               </button>
