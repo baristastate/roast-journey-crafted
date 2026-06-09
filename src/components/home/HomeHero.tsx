@@ -26,7 +26,7 @@ export function HomeHero() {
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px z-[6] bg-gradient-to-r from-transparent via-magenta-coral/60 to-transparent" />
 
 
-      <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-32 md:pt-40 pb-12 md:pb-14 min-h-[92svh] flex flex-col justify-between gap-12">
+      <motion.div style={{ y: yFg, opacity }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 pt-28 md:pt-36 pb-10 flex flex-col gap-10">
         <div className="max-w-5xl">
           <motion.span
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
