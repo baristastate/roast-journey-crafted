@@ -183,19 +183,17 @@
 @keyframes section-rise {
   from {
     opacity: 0;
-    transform: translate3d(0, 80px, 0) scale(0.96);
-    filter: blur(14px) saturate(0.85);
+    transform: translate3d(0, 32px, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: blur(0) saturate(1);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes parallax-rise {
-  from { transform: translate3d(0, 10%, 0) scale(1.08); }
-  to   { transform: translate3d(0, -8%, 0) scale(1.08); }
+  from { transform: translate3d(0, 6%, 0) scale(1.06); }
+  to   { transform: translate3d(0, -4%, 0) scale(1.06); }
 }
 
 @keyframes mask-sweep {
@@ -206,13 +204,19 @@
 @supports (animation-timeline: view()) {
   main.scroll-fx > section,
   main.scroll-fx section[data-fx="rise"] {
-    animation: section-rise linear both;
+    animation: section-rise cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-    will-change: transform, opacity, filter;
+    animation-range: entry 0% cover 40%;
+    will-change: transform, opacity;
   }
 
-  /* Parallax image — add class .parallax-img */
+  /* Hero never animates — it's the first paint */
+  main.scroll-fx > section:first-child {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   .parallax-img {
     animation: parallax-rise linear both;
     animation-timeline: view();
@@ -220,31 +224,14 @@
     will-change: transform;
   }
 
-  /* Sweep reveal — add class .fx-sweep */
   .fx-sweep {
     animation: mask-sweep cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-timeline: view();
-    animation-range: entry 10% cover 40%;
+    animation-range: entry 10% cover 50%;
   }
 }
 
-/* Soft transition stripe between consecutive sections */
-main.scroll-fx > section + section { position: relative; }
-main.scroll-fx > section + section::before {
-  content: "";
-  position: absolute;
-  inset: -1px 0 auto 0;
-  height: 120px;
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: overlay;
-  opacity: 0.5;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.18),
-    transparent 70%
-  );
-}
+/* removed hard transition stripe — was visible as a band */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
