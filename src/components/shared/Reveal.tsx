@@ -59,7 +59,7 @@ export function Reveal({
     <Comp
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, margin: "-80px" }}
+      viewport={{ once, margin: "-15% 0px -10% 0px" }}
       variants={VARIANTS[variant]}
       transition={{ delay }}
       className={className}
