@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import { ROASTERIES } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { Scrolly } from "@/components/shared/Scrolly";
 import heroImg from "@/assets/roesterei-hero.jpg";
+import journeyRaw from "@/assets/journey-raw.jpg";
+import journeyRoast from "@/assets/journey-roast.jpg";
+import journeyEspresso from "@/assets/journey-espresso.jpg";
 
 export const Route = createFileRoute("/roestereien")({
   head: () => ({
@@ -22,7 +26,7 @@ function Page() {
     <>
       <section className="relative min-h-[80svh] flex items-end theme-dark bg-espresso text-cream overflow-hidden pt-24">
         <div className="absolute inset-0 -z-10">
-          <img src={heroImg} alt="Rösterei: Hände am Sack vor Trommelröster" className="h-full w-full object-cover opacity-80" />
+          <img src={heroImg} alt="Rösterei: Hände am Sack vor Trommelröster" className="parallax-img h-full w-full object-cover opacity-80" />
           <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/40 to-espresso/30" />
         </div>
         <div className="mx-auto max-w-[1400px] px-5 md:px-10 pb-16 md:pb-24 w-full">
@@ -66,6 +70,37 @@ function Page() {
           </div>
         </div>
       </section>
+
+      {/* SCROLLYTELLING — So arbeiten wir zusammen */}
+      <Scrolly
+        side="right"
+        intro={{
+          eyebrow: "Partnerschaft · Schritt für Schritt",
+          title: "So arbeiten wir mit Röstereien.",
+          body: "Vom ersten Gespräch bis zum laufenden Listing — transparent, persönlich und ohne Reibung.",
+        }}
+        steps={[
+          {
+            eyebrow: "01 · Kennenlernen",
+            title: "Wir lernen euch persönlich kennen.",
+            body: "Besuch, Call, Tasting — wir wollen verstehen, was euer Kaffee besonders macht, bevor irgendetwas online geht.",
+            image: journeyRaw,
+          },
+          {
+            eyebrow: "02 · Storytelling",
+            title: "Eure Geschichte wird sichtbar.",
+            body: "Rösterei-Profil, Aroma-Notizen, echte Bilder. Kein Stockfoto-Look — eure Handschrift bleibt eure.",
+            image: journeyRoast,
+          },
+          {
+            eyebrow: "03 · Reichweite",
+            title: "Wir holen Käufer ab, ihr behaltet die Marke.",
+            body: "Wir kümmern uns um Sichtbarkeit, Versand und Service — Preis und Brand bleiben in eurer Hand.",
+            image: journeyEspresso,
+          },
+        ]}
+      />
+
 
       {/* PARTNERS */}
       <section className="bg-cream-warm py-24 md:py-32 border-t border-border">

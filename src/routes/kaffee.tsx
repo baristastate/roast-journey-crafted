@@ -3,7 +3,11 @@ import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { createFileRoute } from "@tanstack/react-router";
 import { PRODUCTS, AROMAS, type Aroma, type Roast, type Brew, type Product } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
+import { Scrolly } from "@/components/shared/Scrolly";
 import kaffeeHero from "@/assets/kaffee-hero.jpg";
+import journeyRaw from "@/assets/journey-raw.jpg";
+import journeyRoast from "@/assets/journey-roast.jpg";
+import journeyEspresso from "@/assets/journey-espresso.jpg";
 
 export const Route = createFileRoute("/kaffee")({
   head: () => ({
@@ -48,11 +52,44 @@ function KaffeePage() {
           </div>
           <div className="lg:col-span-5">
             <div className="relative rounded-3xl overflow-hidden aspect-[5/4]">
-              <img src={kaffeeHero} alt="Drei Kaffeebeutel im warmen Licht" className="h-full w-full object-cover" />
+              <img src={kaffeeHero} alt="Drei Kaffeebeutel im warmen Licht" className="parallax-img h-full w-full object-cover" />
             </div>
           </div>
         </div>
       </section>
+
+      {/* SCROLLYTELLING — Vom Anbau bis in die Tasse */}
+      <Scrolly
+        theme="dark"
+        intro={{
+          eyebrow: "Vom Anbau bis in die Tasse",
+          title: "Drei Kapitel, ein Geschmack.",
+          body: "Scroll dich durch die Reise jeder Bohne — vom Hochlandanbau bis zum Espresso in deiner Tasse.",
+        }}
+        steps={[
+          {
+            eyebrow: "Kapitel 01 · Herkunft",
+            title: "Rohkaffee mit Charakter.",
+            body: "Spezialitäten-Lots aus Höhenlagen — handgepflückt, fermentiert mit Methode, sortiert mit Geduld.",
+            image: journeyRaw,
+            alt: "Rohkaffee in einer Hand",
+          },
+          {
+            eyebrow: "Kapitel 02 · Röstung",
+            title: "Profil statt Routine.",
+            body: "Jeder Lot bekommt sein eigenes Profil. Süße, Säure und Körper werden präzise herausgearbeitet.",
+            image: journeyRoast,
+            alt: "Bohnen in der Trommel",
+          },
+          {
+            eyebrow: "Kapitel 03 · Tasse",
+            title: "Espresso, der bleibt.",
+            body: "Frische zählt. Wir versenden frisch geröstet — damit das Aroma in deiner Tasse landet.",
+            image: journeyEspresso,
+            alt: "Espresso in einer Tasse",
+          },
+        ]}
+      />
 
       {/* AROMA WHEEL */}
       <section className="bg-background py-20 md:py-28 border-t border-border">
