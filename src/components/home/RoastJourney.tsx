@@ -43,9 +43,17 @@ export function RoastJourney() {
 function Chapter({
   chapter, progress, start, end, index, total,
 }: { chapter: typeof CHAPTERS[number]; progress: any; start: number; end: number; index: number; total: number }) {
-  const fadeIn = start === 0 ? 0 : start - 0.05;
-  const fadeOut = end === 1 ? 1 : end - 0.02;
-  const opacity = useTransform(progress, [fadeIn, start + 0.02, fadeOut - 0.02, fadeOut], [0, 1, 1, 0]);
+  const isFirst = start === 0;
+  const isLast = end === 1;
+  const fadeIn = isFirst ? 0 : start - 0.05;
+  const fadeOut = isLast ? 1 : end - 0.02;
+  const opacity = useTransform(
+    progress,
+    isFirst
+      ? [0, fadeOut - 0.02, fadeOut]
+      : [fadeIn, start + 0.02, fadeOut - 0.02, fadeOut],
+    isFirst ? [1, 1, 0] : [0, 1, 1, 0],
+  );
   const scale = useTransform(progress, [start, end], [1.08, 1.0]);
   const y = useTransform(progress, [start, end], [40, -40]);
 
