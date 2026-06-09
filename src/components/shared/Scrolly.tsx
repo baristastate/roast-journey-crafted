@@ -111,8 +111,12 @@ function StepText({
 }: { step: ScrollyStep; index: number; total: number; progress: MotionValue<number>; dark: boolean }) {
   const start = index / total;
   const end = (index + 1) / total;
-  const opacity = useTransform(progress, [start - 0.05, start + 0.04, end - 0.06, end], [0, 1, 1, 0]);
-  const y = useTransform(progress, [start - 0.05, start + 0.04, end - 0.06, end], [40, 0, 0, -40]);
+  const a = Math.max(0, start - 0.05);
+  const b = Math.min(start + 0.04, end - 0.001);
+  const c = Math.max(end - 0.06, b + 0.001);
+  const d = end;
+  const opacity = useTransform(progress, [a, b, c, d], [0, 1, 1, 0]);
+  const y = useTransform(progress, [a, b, c, d], [40, 0, 0, -40]);
 
   return (
     <motion.div style={{ opacity, y }} className="absolute inset-0">
