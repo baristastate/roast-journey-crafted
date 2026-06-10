@@ -42,10 +42,10 @@ export function Scrolly({
       style={{ height: `${steps.length * 100}svh` }}
     >
       <div className="sticky top-0 h-[100svh] overflow-hidden">
-        <div className="mx-auto h-full max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+        <div className="mx-auto h-full max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-4 lg:gap-20 content-center lg:items-center">
           {/* Sticky visual */}
           <div
-            className={`relative h-[55svh] lg:h-[72svh] rounded-3xl overflow-hidden ${side === "right" ? "lg:order-2" : ""}`}
+            className={`relative h-[38svh] lg:h-[72svh] rounded-2xl lg:rounded-3xl overflow-hidden ${side === "right" ? "lg:order-2" : ""}`}
           >
             {steps.map((s, i) => (
               <StickyImage
@@ -64,7 +64,7 @@ export function Scrolly({
           {/* Narrative */}
           <div className="relative">
             {intro && (
-              <div className="mb-10">
+              <div className="mb-4 lg:mb-10">
                 {intro.eyebrow && (
                   <div
                     className={`text-xs uppercase tracking-[0.28em] ${dark ? "text-cyan-bloom" : "text-magenta-coral"}`}
@@ -72,19 +72,19 @@ export function Scrolly({
                     {intro.eyebrow}
                   </div>
                 )}
-                <h2 className="mt-3 font-display tracking-display text-4xl md:text-5xl leading-[1]">
+                <h2 className="mt-2 lg:mt-3 font-display tracking-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1]">
                   {intro.title}
                 </h2>
                 {intro.body && (
                   <p
-                    className={`mt-4 max-w-md ${dark ? "text-pearl-white/70" : "text-muted-foreground"}`}
+                    className={`mt-2 lg:mt-4 text-sm lg:text-base max-w-md hidden sm:block ${dark ? "text-pearl-white/70" : "text-muted-foreground"}`}
                   >
                     {intro.body}
                   </p>
                 )}
               </div>
             )}
-            <div className="relative h-[32svh] lg:h-[40svh]">
+            <div className="relative h-[22svh] sm:h-[28svh] lg:h-[40svh]">
               {steps.map((s, i) => (
                 <StepText
                   key={i}
@@ -168,11 +168,11 @@ function StepText({
       >
         {step.eyebrow ?? `Step ${String(index + 1).padStart(2, "0")}`}
       </div>
-      <h3 className="mt-4 font-display tracking-display text-4xl md:text-5xl lg:text-6xl leading-[0.95]">
+      <h3 className="mt-2 lg:mt-4 font-display tracking-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-[0.95]">
         {step.title}
       </h3>
       <p
-        className={`mt-5 max-w-lg text-lg ${dark ? "text-pearl-white/80" : "text-muted-foreground"}`}
+        className={`mt-2 lg:mt-5 max-w-lg text-sm sm:text-base lg:text-lg hidden sm:block ${dark ? "text-pearl-white/80" : "text-muted-foreground"}`}
       >
         {step.body}
       </p>

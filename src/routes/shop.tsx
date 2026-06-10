@@ -203,68 +203,73 @@ function ShopPage() {
                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-wrap items-center gap-2 pt-2 pb-1 text-xs border-b border-border/40">
-                  <FilterChips
-                    label="Röstgrad"
-                    selected={roasts}
-                    options={[
-                      ["hell", "Hell"],
-                      ["mittel", "Mittel"],
-                      ["dunkel", "Dunkel"],
-                      ["omni", "Omni"],
-                    ]}
-                    onToggle={toggleRoast}
-                    onClear={() => setRoasts([])}
-                  />
-                  <span className="w-px h-3.5 bg-border shrink-0" />
-                  <FilterChips
-                    label="Zubereitung"
-                    selected={brews}
-                    options={[
-                      ["espresso", "Espresso"],
-                      ["filter", "Filter"],
-                      ["milch", "Milch"],
-                    ]}
-                    onToggle={toggleBrew}
-                    onClear={() => setBrews([])}
-                  />
-                  <span className="w-px h-3.5 bg-border shrink-0" />
-                  <button
-                    onClick={() => setBio((b) => !b)}
-                    className={`rounded-full px-2.5 py-1 border text-[0.7rem] transition-colors ${
-                      bio
-                        ? "bg-foreground text-background border-foreground"
-                        : "border-border hover:border-foreground/50"
-                    }`}
-                  >
-                    Bio
-                  </button>
-                  <AnimatePresence>
-                    {hasFilters && (
-                      <motion.button
-                        initial={{ opacity: 0, x: -6 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -6 }}
-                        onClick={resetFilters}
-                        className="ml-auto text-[0.7rem] text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        Alles zurücksetzen ×
-                      </motion.button>
-                    )}
-                  </AnimatePresence>
+                {/* Filter row 1 — scrollable on mobile */}
+                <div className="overflow-x-auto -mx-5 px-5 md:mx-0 md:px-0 border-b border-border/40 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex items-center gap-2 pt-2 pb-1 text-xs min-w-max md:min-w-0 md:flex-wrap">
+                    <FilterChips
+                      label="Röstgrad"
+                      selected={roasts}
+                      options={[
+                        ["hell", "Hell"],
+                        ["mittel", "Mittel"],
+                        ["dunkel", "Dunkel"],
+                        ["omni", "Omni"],
+                      ]}
+                      onToggle={toggleRoast}
+                      onClear={() => setRoasts([])}
+                    />
+                    <span className="w-px h-3.5 bg-border shrink-0" />
+                    <FilterChips
+                      label="Zubereitung"
+                      selected={brews}
+                      options={[
+                        ["espresso", "Espresso"],
+                        ["filter", "Filter"],
+                        ["milch", "Milch"],
+                      ]}
+                      onToggle={toggleBrew}
+                      onClear={() => setBrews([])}
+                    />
+                    <span className="w-px h-3.5 bg-border shrink-0" />
+                    <button
+                      onClick={() => setBio((b) => !b)}
+                      className={`rounded-full px-2.5 py-1 border text-[0.7rem] transition-colors shrink-0 ${
+                        bio
+                          ? "bg-foreground text-background border-foreground"
+                          : "border-border hover:border-foreground/50"
+                      }`}
+                    >
+                      Bio
+                    </button>
+                    <AnimatePresence>
+                      {hasFilters && (
+                        <motion.button
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -6 }}
+                          onClick={resetFilters}
+                          className="ml-2 shrink-0 text-[0.7rem] text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          × Reset
+                        </motion.button>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
 
-                {/* Equipment filter row */}
-                <div className="flex flex-wrap items-center gap-2 py-1.5 pb-2 text-xs">
-                  <FilterChips
-                    label="Mein Equipment"
-                    selected={gears}
-                    options={(Object.entries(GEAR_LABELS) as [Gear, string][]).map(
-                      ([v, l]) => [v, l],
-                    )}
-                    onToggle={toggleGear}
-                    onClear={() => setGears([])}
-                  />
+                {/* Equipment filter row — scrollable on mobile */}
+                <div className="overflow-x-auto -mx-5 px-5 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex items-center gap-2 py-1.5 pb-2 text-xs min-w-max md:min-w-0 md:flex-wrap">
+                    <FilterChips
+                      label="Mein Equipment"
+                      selected={gears}
+                      options={(Object.entries(GEAR_LABELS) as [Gear, string][]).map(
+                        ([v, l]) => [v, l],
+                      )}
+                      onToggle={toggleGear}
+                      onClear={() => setGears([])}
+                    />
+                  </div>
                 </div>
 
                 {/* Active combination summary */}

@@ -95,7 +95,7 @@ function CommunityPage() {
       </section>
 
       {/* CATEGORIES */}
-      <section className="bg-background border-y border-border sticky top-16 z-30 backdrop-blur-xl bg-background/85">
+      <section className="bg-background border-y border-border sticky top-12 z-30 backdrop-blur-xl bg-background/85">
         <div className="mx-auto max-w-[1400px] px-5 md:px-10 py-3 flex gap-2 overflow-x-auto">
           {CATEGORIES.map((c) => (
             <button

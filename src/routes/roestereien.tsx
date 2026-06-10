@@ -190,7 +190,7 @@ function Page() {
         <div className="mx-auto max-w-[1100px] px-5 md:px-10 grid lg:grid-cols-2 gap-12 items-start">
           <Reveal>
             <Eyebrow>Partner werden</Eyebrow>
-            <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1]">
+            <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
               Lass uns über
               <br />
               <em className="not-italic display-italic text-magenta-coral">deinen Kaffee</em>{" "}

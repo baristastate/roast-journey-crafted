@@ -155,9 +155,15 @@ function RoastSequence() {
       style={{ height: "260svh" }}
     >
       <div className="sticky top-0 h-[100svh] flex items-center overflow-hidden">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="mx-auto max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-6 lg:gap-12 items-center w-full">
           <div className="relative flex items-center justify-center">
-            <RoastBeans idx={idx} stages={stages} />
+            <div className="w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] lg:w-[420px] lg:h-[420px] overflow-hidden relative shrink-0">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="[transform:scale(0.57)] sm:[transform:scale(0.76)] lg:[transform:scale(1)] origin-center">
+                  <RoastBeans idx={idx} stages={stages} />
+                </div>
+              </div>
+            </div>
           </div>
           <div>
             <Eyebrow>Frame-by-frame</Eyebrow>
@@ -268,7 +274,7 @@ function FirstCrack() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <Eyebrow>First Crack</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1]">
+          <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
             Der Moment, in dem
             <br />
             <em className="not-italic display-italic text-magenta-coral">Kaffee entsteht.</em>
@@ -336,7 +342,7 @@ function RoastSlider() {
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-5">
             <Eyebrow>Röstgrad-Profil</Eyebrow>
-            <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1]">
+            <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
               Wähle, wie weit
               <br />
               du gehst.
@@ -408,7 +414,7 @@ function Hotspots() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <Reveal>
           <Eyebrow>Maschine</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1] max-w-3xl">
+          <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1] max-w-3xl">
             Fünf Hebel, mit denen du deinen Kaffee in der Hand hast.
           </h2>
         </Reveal>
@@ -447,7 +453,7 @@ function MiniDemo() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="max-w-2xl">
           <Eyebrow>Mini-Demo</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1]">
+          <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
             Teste deine
             <br />
             erste Röstung.
@@ -610,7 +616,7 @@ function FAQ() {
     <section className="bg-cream-warm py-28 md:py-36 border-t border-border">
       <div className="mx-auto max-w-[1100px] px-5 md:px-10">
         <Eyebrow>Häufige Fragen</Eyebrow>
-        <h2 className="mt-4 font-display tracking-display text-5xl md:text-6xl leading-[1]">
+        <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
           Was du vielleicht noch wissen willst.
         </h2>
         <ul className="mt-12 divide-y divide-border border-y border-border">
@@ -629,7 +635,7 @@ function FAQ() {
                 animate={{ height: open === i ? "auto" : 0, opacity: open === i ? 1 : 0 }}
                 className="overflow-hidden"
               >
-                <p className="pb-6 pl-14 pr-10 text-muted-foreground max-w-3xl">{a}</p>
+                <p className="pb-6 pl-8 sm:pl-14 pr-4 sm:pr-10 text-muted-foreground max-w-3xl">{a}</p>
               </motion.div>
             </li>
           ))}
@@ -644,7 +650,7 @@ function CTA() {
     <section className="theme-dark bg-espresso text-cream py-28 md:py-36 text-center">
       <div className="mx-auto max-w-[900px] px-5 md:px-10">
         <Reveal>
-          <h2 className="font-display tracking-display text-5xl md:text-7xl leading-[1]">
+          <h2 className="font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl leading-[1]">
             Bereit für deine
             <br />
             <em className="not-italic display-italic text-magenta-coral">erste eigene Röstung?</em>

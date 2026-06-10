@@ -81,7 +81,7 @@ export function Header() {
         onMouseLeave={leave}
       >
         {/* ── Bar ─────────────────────────────────── */}
-        <div className="mx-auto grid h-12 max-w-[1400px] grid-cols-[200px_1fr_200px] items-center px-6 md:px-10">
+        <div className="mx-auto grid h-12 max-w-[1400px] grid-cols-[auto_1fr_auto] items-center px-5 md:px-10">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group w-fit">
