@@ -32,35 +32,26 @@ export const Route = createFileRoute("/roestereien")({
 function Page() {
   return (
     <>
-      <section className="grain relative min-h-[80svh] flex items-end theme-dark bg-espresso text-cream overflow-hidden pt-24">
-        <div className="absolute inset-0 -z-10">
-          <img
-            src={heroImg}
-            alt="Rösterei: Hände am Sack vor Trommelröster"
-            className="parallax-img h-full w-full object-cover opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/40 to-espresso/30" />
-        </div>
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10 pb-16 md:pb-24 w-full">
-          <Eyebrow>Röstereien · B2B</Eyebrow>
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="mt-5 font-display tracking-display leading-[0.95] max-w-5xl"
-            style={{ fontSize: "clamp(2.8rem,7vw,5.5rem)" }}
-          >
-            Mehr Sichtbarkeit für Röstereien.
-            <br />
-            <em className="not-italic display-italic text-magenta-coral">Mehr Auswahl</em> für
-            Kaffeeliebhaber.
-          </motion.h1>
-          <p className="mt-6 max-w-2xl text-cream/75 text-lg">
-            Barista State ist ein kuratierter zusätzlicher Kanal für Röstereien, die ihre Kaffees
-            sichtbarer machen wollen.
-          </p>
-        </div>
-      </section>
+      <PremiumHero
+        image={heroImg}
+        alt="Rösterei: Hände am Sack vor Trommelröster"
+        eyebrow="Röstereien · B2B"
+        eyebrowMeta="Partnerprogramm"
+        lines={[
+          { text: "Mehr Sichtbarkeit für Röstereien." },
+          { text: "Mehr Auswahl für Kaffeeliebhaber.", italic: true },
+        ]}
+        subtitle="Barista State ist ein kuratierter zusätzlicher Kanal für Röstereien, die ihre Kaffees sichtbarer machen wollen."
+        bgClass="theme-dark bg-espresso text-cream"
+        overlay="espresso"
+        orb="gold"
+        minH="92svh"
+        stats={[
+          { value: "12+", label: "Partner-Röstereien" },
+          { value: "80+", label: "Kaffees gelistet" },
+          { value: "0 %", label: "Markenkompromisse" },
+        ]}
+      />
 
       <section className="bg-background py-28 md:py-36">
         <div className="mx-auto max-w-[1400px] px-5 md:px-10">
