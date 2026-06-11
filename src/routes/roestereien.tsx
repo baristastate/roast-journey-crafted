@@ -120,16 +120,28 @@ function Page() {
       />
 
       {/* PARTNERS */}
-      <section className="bg-cream-warm py-24 md:py-32 border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-          <Eyebrow>Partner-Röstereien</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-4xl md:text-5xl">
-            Vier Häuser. Vier Handschriften.
-          </h2>
-          <div className="mt-12 grid md:grid-cols-2 gap-6">
+      <section className="bg-cream-warm section-y border-t border-border">
+        <div className="container-x">
+          <header className="section-head">
+            <Reveal>
+              <div>
+                <Eyebrow>Partner-Röstereien</Eyebrow>
+                <h2 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.4rem,5.2vw,4.5rem)] text-balance">
+                  Vier Häuser.{" "}
+                  <em className="not-italic display-italic text-magenta-coral">Vier Handschriften.</em>
+                </h2>
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="max-w-[42ch] text-[0.95rem] leading-relaxed opacity-70 lg:text-right lg:ml-auto">
+                Jede Rösterei bringt ihre eigene Philosophie mit — wir kuratieren, ohne zu glätten.
+              </p>
+            </Reveal>
+          </header>
+          <div className="grid md:grid-cols-2 gap-5 md:gap-6">
             {ROASTERIES.map((r) => (
               <Reveal key={r.name}>
-                <article className="group relative rounded-3xl overflow-hidden bg-card border border-border">
+                <article className="tile group h-full">
                   <div className="aspect-[16/10] overflow-hidden">
                     <img
                       src={r.image}
@@ -138,22 +150,22 @@ function Page() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-7">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-display text-2xl">{r.name}</h3>
-                        <div className="text-sm text-muted-foreground">
+                  <div className="p-7 md:p-8">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <h3 className="font-display font-bold text-2xl md:text-3xl truncate">{r.name}</h3>
+                        <div className="mt-1 text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground">
                           {r.city} · {r.region}
                         </div>
                       </div>
-                      <span className="grid h-10 w-10 place-items-center rounded-full border border-border font-display">
+                      <span className="shrink-0 grid h-11 w-11 place-items-center rounded-full border border-foreground/15 font-display font-bold">
                         {r.name[0]}
                       </span>
                     </div>
-                    <p className="mt-3 text-sm text-muted-foreground">{r.intro}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
+                    <p className="mt-5 text-sm text-muted-foreground leading-relaxed">{r.intro}</p>
+                    <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border pt-4">
                       {r.aromas.map((a) => (
-                        <span key={a} className="text-xs rounded-full bg-amber/15 px-2.5 py-1">
+                        <span key={a} className="text-[0.7rem] uppercase tracking-[0.14em] rounded-full bg-amber/15 px-2.5 py-1">
                           {a}
                         </span>
                       ))}
@@ -165,6 +177,7 @@ function Page() {
           </div>
         </div>
       </section>
+
 
       {/* CTA */}
       <section className="theme-dark bg-espresso text-cream py-28 md:py-36">
