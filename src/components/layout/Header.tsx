@@ -104,10 +104,10 @@ export function Header() {
                   to={n.to}
                   className={`relative flex items-center gap-1 px-3.5 py-2 text-[0.75rem] transition-colors duration-150 select-none ${
                     hovered === n.label
-                      ? "text-pearl-white"
-                      : "text-pearl-white/65 hover:text-pearl-white/90"
+                      ? "text-foreground"
+                      : "text-foreground/65 hover:text-foreground/90"
                   }`}
-                  activeProps={{ className: "!text-pearl-white" }}
+                  activeProps={{ className: "!text-foreground" }}
                 >
                   {n.label}
                   {n.items && (
