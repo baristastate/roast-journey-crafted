@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "framer-motion
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { PremiumHero } from "@/components/shared/PremiumHero";
 import { HEIMROESTER } from "@/lib/data";
 import heroImg from "@/assets/heimroester-hero.jpg";
 
