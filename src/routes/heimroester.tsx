@@ -726,15 +726,27 @@ function MiniDemo() {
         </div>
 
         {/* Sortiment */}
-        <div className="mt-24">
-          <Eyebrow>Sortiment</Eyebrow>
-          <h3 className="mt-4 font-display tracking-display text-4xl md:text-5xl">
-            Zwei Heimröster. Ein Versprechen.
-          </h3>
-          <div className="mt-10 grid md:grid-cols-2 gap-6">
+        <div className="mt-24 md:mt-32 pt-16 md:pt-20 border-t border-border">
+          <header className="section-head">
+            <Reveal>
+              <div>
+                <Eyebrow>Sortiment</Eyebrow>
+                <h3 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.2rem,4.8vw,4rem)] text-balance">
+                  Zwei Heimröster.{" "}
+                  <em className="not-italic display-italic text-magenta-coral">Ein Versprechen.</em>
+                </h3>
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="max-w-[40ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:text-right lg:ml-auto">
+                Einsteiger oder Tüftler — beide Modelle teilen dieselbe Frische-Garantie.
+              </p>
+            </Reveal>
+          </header>
+          <div className="grid md:grid-cols-2 gap-5 md:gap-6">
             {HEIMROESTER.map((m) => (
               <Reveal key={m.id}>
-                <article className="rounded-3xl border border-border bg-card overflow-hidden group">
+                <article className="tile group h-full">
                   <div className="aspect-[5/4] bg-espresso overflow-hidden">
                     <img
                       src={m.image}
@@ -743,22 +755,19 @@ function MiniDemo() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-8">
-                    <div className="flex items-baseline justify-between gap-4">
-                      <h4 className="font-display text-3xl">{m.name}</h4>
-                      <span className="font-display text-2xl">{m.price} €</span>
+                  <div className="p-7 md:p-8">
+                    <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
+                      <h4 className="font-display font-bold text-2xl md:text-3xl">{m.name}</h4>
+                      <span className="font-display font-bold text-xl md:text-2xl tabular-nums">{m.price} €</span>
                     </div>
-                    <p className="mt-1 text-muted-foreground">{m.subtitle}</p>
-                    <dl className="mt-5 grid grid-cols-2 gap-y-2 text-sm">
-                      <dt className="text-muted-foreground">Kapazität</dt>
-                      <dd>{m.capacity}</dd>
-                      <dt className="text-muted-foreground">Röstzeit</dt>
-                      <dd>{m.time}</dd>
+                    <p className="mt-4 text-muted-foreground leading-relaxed">{m.subtitle}</p>
+                    <dl className="mt-5 grid grid-cols-2 gap-y-2.5 text-sm">
+                      <dt className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">Kapazität</dt>
+                      <dd className="font-display">{m.capacity}</dd>
+                      <dt className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">Röstzeit</dt>
+                      <dd className="font-display">{m.time}</dd>
                     </dl>
-                    <Link
-                      to="/shop"
-                      className="mt-6 inline-flex rounded-full bg-foreground text-background px-5 py-2.5 text-sm"
-                    >
+                    <Link to="/shop" className="btn-pill mt-7 bg-foreground text-background">
                       Details ansehen →
                     </Link>
                   </div>
@@ -767,6 +776,7 @@ function MiniDemo() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );
