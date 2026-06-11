@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MobileMenu } from "./MobileMenu";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 type DropItem = { label: string; desc: string; to: string };
 type NavItem = { label: string; to: string; items?: DropItem[] };
