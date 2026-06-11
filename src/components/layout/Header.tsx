@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MobileMenu } from "./MobileMenu";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 type DropItem = { label: string; desc: string; to: string };
 type NavItem = { label: string; to: string; items?: DropItem[] };
@@ -71,12 +72,14 @@ export function Header() {
   return (
     <>
       <header
-        className="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-400"
+        className="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-400 text-foreground"
         style={{
-          background: showBg ? "rgba(18,18,20,0.94)" : "transparent",
+          background: showBg
+            ? "color-mix(in oklab, var(--background) 88%, transparent)"
+            : "transparent",
           backdropFilter: showBg ? "saturate(200%) blur(24px)" : "none",
           WebkitBackdropFilter: showBg ? "saturate(200%) blur(24px)" : "none",
-          borderBottom: `1px solid ${showBg ? "rgba(255,255,255,0.08)" : "transparent"}`,
+          borderBottom: `1px solid ${showBg ? "color-mix(in oklab, var(--foreground) 10%, transparent)" : "transparent"}`,
         }}
         onMouseLeave={leave}
       >
@@ -88,7 +91,7 @@ export function Header() {
             <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-magenta-coral text-ink-black text-[0.55rem] font-bold ring-2 ring-magenta-coral/0 group-hover:ring-magenta-coral/30 transition-all duration-300">
               B
             </span>
-            <span className="font-display text-[0.82rem] font-bold tracking-tight text-pearl-white/85 group-hover:text-pearl-white transition-colors duration-200">
+            <span className="font-display text-[0.82rem] font-bold tracking-tight text-foreground/85 group-hover:text-foreground transition-colors duration-200">
               Barista State
             </span>
           </Link>
@@ -101,10 +104,10 @@ export function Header() {
                   to={n.to}
                   className={`relative flex items-center gap-1 px-3.5 py-2 text-[0.75rem] transition-colors duration-150 select-none ${
                     hovered === n.label
-                      ? "text-pearl-white"
-                      : "text-pearl-white/65 hover:text-pearl-white/90"
+                      ? "text-foreground"
+                      : "text-foreground/65 hover:text-foreground/90"
                   }`}
-                  activeProps={{ className: "!text-pearl-white" }}
+                  activeProps={{ className: "!text-foreground" }}
                 >
                   {n.label}
                   {n.items && (
@@ -139,7 +142,7 @@ export function Header() {
           <div className="flex items-center justify-end gap-0">
             {/* Search */}
             <button
-              className="hidden lg:grid h-10 w-10 place-items-center text-pearl-white/55 hover:text-pearl-white transition-colors duration-150 rounded-full hover:bg-white/[0.06]"
+              className="hidden lg:grid h-10 w-10 place-items-center text-foreground/55 hover:text-foreground transition-colors duration-150 rounded-full hover:bg-foreground/[0.06]"
               aria-label="Suchen"
             >
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -153,10 +156,13 @@ export function Header() {
               </svg>
             </button>
 
+            {/* Theme toggle */}
+            <ThemeToggle className="hidden lg:grid" />
+
             {/* Cart */}
             <Link
               to="/shop"
-              className="hidden lg:grid h-10 w-10 place-items-center text-pearl-white/55 hover:text-pearl-white transition-colors duration-150 rounded-full hover:bg-white/[0.06]"
+              className="hidden lg:grid h-10 w-10 place-items-center text-foreground/55 hover:text-foreground transition-colors duration-150 rounded-full hover:bg-foreground/[0.06]"
               aria-label="Warenkorb"
             >
               <svg width="16" height="15" viewBox="0 0 16 15" fill="none">
@@ -175,10 +181,13 @@ export function Header() {
               </svg>
             </Link>
 
+            {/* Mobile theme toggle */}
+            <ThemeToggle className="lg:hidden" />
+
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden grid h-10 w-10 place-items-center text-pearl-white/70 hover:text-pearl-white transition-colors rounded-full hover:bg-white/[0.06]"
+              className="lg:hidden grid h-10 w-10 place-items-center text-foreground/70 hover:text-foreground transition-colors rounded-full hover:bg-foreground/[0.06]"
               aria-label="Menü öffnen"
             >
               <span className="flex flex-col gap-[5px] items-center">
@@ -200,7 +209,7 @@ export function Header() {
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }}
               onMouseEnter={() => enter(activeDropdown.label)}
-              className="border-t border-white/[0.06]"
+              className="border-t border-foreground/[0.06]"
             >
               <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-4">
                 <div className="flex gap-0.5">
@@ -215,12 +224,12 @@ export function Header() {
                       <Link
                         to={item.to}
                         onClick={() => setHovered(null)}
-                        className="group block rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-white/[0.07]"
+                        className="group block rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-foreground/[0.07]"
                       >
-                        <div className="text-[0.75rem] font-medium text-pearl-white/85 group-hover:text-pearl-white transition-colors duration-150 truncate">
+                        <div className="text-[0.75rem] font-medium text-foreground/85 group-hover:text-foreground transition-colors duration-150 truncate">
                           {item.label}
                         </div>
-                        <div className="mt-0.5 text-[0.68rem] text-pearl-white/35 group-hover:text-pearl-white/55 transition-colors duration-150 truncate">
+                        <div className="mt-0.5 text-[0.68rem] text-foreground/35 group-hover:text-foreground/55 transition-colors duration-150 truncate">
                           {item.desc}
                         </div>
                       </Link>
