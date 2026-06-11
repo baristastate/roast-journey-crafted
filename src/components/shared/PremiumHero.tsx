@@ -1,5 +1,10 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Line = { text: string; italic?: boolean };
 
@@ -29,14 +34,19 @@ export type PremiumHeroProps = {
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Stronger gradients than v1 so headline + dropcap reliably clear WCAG AA
+ * against very busy hero photography. Dark/espresso target white text;
+ * light/cream target ink-black text.
+ */
 const OVERLAYS: Record<NonNullable<PremiumHeroProps["overlay"]>, string> = {
-  dark: "bg-[linear-gradient(115deg,rgba(12,12,16,0.92)_0%,rgba(12,12,16,0.7)_45%,rgba(12,12,16,0.35)_75%,rgba(12,12,16,0.55)_100%)]",
+  dark: "bg-[linear-gradient(115deg,rgba(8,8,12,0.94)_0%,rgba(8,8,12,0.78)_42%,rgba(8,8,12,0.45)_74%,rgba(8,8,12,0.7)_100%)]",
   espresso:
-    "bg-[linear-gradient(115deg,rgba(48,28,20,0.92)_0%,rgba(48,28,20,0.7)_45%,rgba(48,28,20,0.3)_75%,rgba(48,28,20,0.55)_100%)]",
+    "bg-[linear-gradient(115deg,rgba(40,22,16,0.94)_0%,rgba(40,22,16,0.78)_42%,rgba(40,22,16,0.4)_74%,rgba(40,22,16,0.7)_100%)]",
   light:
-    "bg-[linear-gradient(115deg,rgba(250,250,247,0.92)_0%,rgba(250,250,247,0.7)_45%,rgba(250,250,247,0.3)_75%,rgba(250,250,247,0.55)_100%)]",
+    "bg-[linear-gradient(115deg,rgba(250,250,247,0.95)_0%,rgba(250,250,247,0.8)_42%,rgba(250,250,247,0.45)_74%,rgba(250,250,247,0.7)_100%)]",
   cream:
-    "bg-[linear-gradient(115deg,rgba(245,238,225,0.9)_0%,rgba(245,238,225,0.65)_45%,rgba(245,238,225,0.3)_75%,rgba(245,238,225,0.55)_100%)]",
+    "bg-[linear-gradient(115deg,rgba(245,238,225,0.94)_0%,rgba(245,238,225,0.78)_42%,rgba(245,238,225,0.45)_74%,rgba(245,238,225,0.7)_100%)]",
 };
 
 function formatIssue() {
@@ -48,6 +58,18 @@ function formatIssue() {
       7,
   );
   return `KW ${String(week).padStart(2, "0")} · ${d.getFullYear()}`;
+}
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px) and (pointer: fine)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return isDesktop;
 }
 
 export function PremiumHero({
@@ -64,29 +86,41 @@ export function PremiumHero({
   bottomFade = true,
   children,
   stats,
-  size = "clamp(3.6rem,11vw,10.5rem)",
-  italicSize = "clamp(3rem,9.5vw,9rem)",
+  size = "clamp(2.75rem,11vw,10.5rem)",
+  italicSize = "clamp(2.4rem,9.5vw,9rem)",
   eyebrowMeta,
   issue,
   caption,
   section = "Edition",
 }: PremiumHeroProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const prefersReduced = useReducedMotion();
+  const isDesktop = useIsDesktop();
+  const animate = !prefersReduced;
+  const parallax = animate && isDesktop;
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const yImg = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const scaleImg = useTransform(scrollYProgress, [0, 1], [1.05, 1.12]);
-  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const yImg = useTransform(scrollYProgress, [0, 1], parallax ? ["0%", "16%"] : ["0%", "0%"]);
+  const scaleImg = useTransform(
+    scrollYProgress,
+    [0, 1],
+    parallax ? [1.04, 1.1] : [1, 1],
+  );
+  const yText = useTransform(scrollYProgress, [0, 1], parallax ? ["0%", "-8%"] : ["0%", "0%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], animate ? [1, 0] : [1, 1]);
 
   const mastheadMeta = issue ?? formatIssue();
   const isDark = bgClass.includes("dark") || bgClass.includes("ink-black");
+  // Decorative alt → aria-hidden; the headline is the accessible name.
+  const decorative = !alt;
 
   return (
     <section
       ref={ref}
+      aria-label={alt || undefined}
       className={`relative isolate overflow-hidden ${bgClass}`}
       style={{ minHeight: minH }}
     >
@@ -94,136 +128,163 @@ export function PremiumHero({
       <motion.img
         src={image}
         alt={alt}
-        aria-hidden={!alt}
+        aria-hidden={decorative}
         style={{ y: yImg, scale: scaleImg }}
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 z-0 h-full w-full object-cover will-change-transform [transform:translateZ(0)]"
         fetchPriority="high"
+        decoding="async"
       />
-      <div className={`pointer-events-none absolute inset-0 z-[1] ${OVERLAYS[overlay]}`} />
-      {/* Subtle film grain via radial vignette */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 z-[1] ${OVERLAYS[overlay]}`}
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[2]"
         style={{
           background:
-            "radial-gradient(120% 80% at 20% 30%, transparent 40%, rgba(0,0,0,0.35) 100%)",
+            "radial-gradient(120% 80% at 20% 30%, transparent 38%, rgba(0,0,0,0.45) 100%)",
         }}
+      />
+      {/* Reading scrim behind headline column */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[70svh] lg:w-[78%] ${
+          isDark
+            ? "bg-gradient-to-t from-ink-black via-ink-black/60 to-transparent"
+            : "bg-gradient-to-t from-pearl-white via-pearl-white/65 to-transparent"
+        }`}
       />
 
       {/* ── Masthead bar ─────────────────────────────── */}
-      <div className="relative z-20 border-b border-current/10">
+      <div className="relative z-20 border-b border-current/15">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-3 md:px-10">
-          <div className="kicker flex items-center gap-3 opacity-80">
+          <p className="kicker flex items-center gap-3 opacity-90">
             <span className="font-serif italic normal-case tracking-normal text-base">№</span>
             <span>Roast Journal</span>
-            <span className="hidden h-px w-8 bg-current opacity-30 md:inline-block" />
+            <span aria-hidden className="hidden h-px w-8 bg-current opacity-40 md:inline-block" />
             <span className="hidden md:inline">{mastheadMeta}</span>
-          </div>
-          <div className="kicker hidden items-center gap-3 opacity-70 md:flex">
+          </p>
+          <p className="kicker hidden items-center gap-3 opacity-85 md:flex">
             <motion.span
+              aria-hidden
               className={`h-1.5 w-1.5 rounded-full ${accentClass.replace("text-", "bg-")}`}
-              animate={{ opacity: [0.35, 1, 0.35] }}
-              transition={{ duration: 2.2, repeat: Infinity }}
+              animate={animate ? { opacity: [0.4, 1, 0.4] } : { opacity: 1 }}
+              transition={animate ? { duration: 2.2, repeat: Infinity } : undefined}
             />
             Live · Frisch geröstet
-          </div>
+          </p>
         </div>
       </div>
 
-      {/* ── Rotated section marginalia ──────────────── */}
-      <div
+      {/* ── Rotated section marginalia (tall + wide only) ── */}
+      <p
         aria-hidden
-        className="kicker pointer-events-none absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 -rotate-90 origin-left opacity-60 md:block"
+        className="kicker pointer-events-none absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 -rotate-90 origin-left opacity-70 lg:[@media(min-height:760px)]:block"
       >
         <span className="mr-3 font-serif italic normal-case tracking-normal">— </span>
         {section}
-      </div>
+      </p>
 
-      {/* Register-mark crop ticks at the edges */}
-      <span className="pointer-events-none absolute left-4 top-16 z-20 h-3 w-3 border-l border-t border-current/50" />
-      <span className="pointer-events-none absolute right-4 top-16 z-20 h-3 w-3 border-r border-t border-current/50" />
-      <span className="pointer-events-none absolute left-4 bottom-16 z-20 h-3 w-3 border-l border-b border-current/50" />
-      <span className="pointer-events-none absolute right-4 bottom-16 z-20 h-3 w-3 border-r border-b border-current/50" />
+      {/* Adaptive register-mark crop ticks */}
+      {(
+        [
+          ["left-3 md:left-5", "top-[clamp(3.5rem,8svh,6rem)]", "border-l border-t"],
+          ["right-3 md:right-5", "top-[clamp(3.5rem,8svh,6rem)]", "border-r border-t"],
+          ["left-3 md:left-5", "bottom-[clamp(4rem,10svh,7rem)]", "border-l border-b"],
+          ["right-3 md:right-5", "bottom-[clamp(4rem,10svh,7rem)]", "border-r border-b"],
+        ] as const
+      ).map(([x, y, edges], i) => (
+        <span
+          key={i}
+          aria-hidden
+          className={`pointer-events-none absolute ${x} ${y} z-20 h-3 w-3 ${edges} border-current/60`}
+        />
+      ))}
 
       {/* ── Editorial content ───────────────────────── */}
       <motion.div
         style={{ y: yText, opacity }}
-        className="relative z-10 mx-auto flex max-w-[1500px] flex-col justify-end px-5 pt-16 pb-24 md:px-10 md:pt-24 md:pb-28"
-        // Push content downward so it sits on the lower 2/3 of the frame
+        className="relative z-10 mx-auto flex max-w-[1500px] flex-col justify-end px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-24"
       >
-        <div className="grid grid-cols-12 gap-6" style={{ minHeight: "calc(100svh - 14rem)" }}>
+        <div className="grid grid-cols-12 gap-6" style={{ minHeight: "calc(100svh - 12rem)" }}>
           <div className="col-span-12 flex flex-col justify-end lg:col-span-9 xl:col-span-8">
             {eyebrow && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
+              <motion.p
+                initial={animate ? { opacity: 0, y: 8 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, ease: EASE }}
-                className="kicker mb-6 flex flex-wrap items-center gap-3 opacity-85"
+                className="kicker mb-6 flex flex-wrap items-center gap-3 opacity-95"
               >
-                <span className="font-serif italic normal-case tracking-normal text-sm opacity-70">
+                <span className="font-serif italic normal-case tracking-normal text-sm opacity-75">
                   Editor's pick —
                 </span>
                 <span>{eyebrow}</span>
                 {eyebrowMeta && (
                   <>
-                    <span className="h-px w-6 bg-current opacity-40" />
-                    <span className="opacity-80">{eyebrowMeta}</span>
+                    <span aria-hidden className="h-px w-6 bg-current opacity-50" />
+                    <span className="opacity-90">{eyebrowMeta}</span>
                   </>
                 )}
-              </motion.div>
+              </motion.p>
             )}
 
-            <div className="mb-5 h-px w-24 origin-left bg-current/50 ink-sweep" />
+            <div aria-hidden className="mb-5 h-px w-24 origin-left bg-current/60 ink-sweep" />
 
             <h1
               className="font-serif font-bold leading-[0.88] tracking-tight"
-              style={{ textShadow: isDark ? "0 2px 30px rgba(0,0,0,0.45)" : "none" }}
+              style={{ textShadow: isDark ? "0 2px 28px rgba(0,0,0,0.5)" : "none" }}
             >
-              {lines.map((line, li) => {
-                const words = line.text.split(" ");
-                const baseDelay = 0.12 + li * 0.18;
-                return (
-                  <span
-                    key={li}
-                    className={`block ${line.italic ? `${accentClass} italic` : ""}`}
-                    style={{
-                      fontSize: line.italic ? italicSize : size,
-                      marginLeft: line.italic ? "-0.04em" : 0,
-                    }}
-                  >
-                    {words.map((w, i) => (
-                      <span
-                        key={w + i}
-                        className="mr-[0.18em] inline-block overflow-hidden last:mr-0"
-                      >
-                        <motion.span
-                          initial={{ y: "108%" }}
-                          animate={{ y: "0%" }}
-                          transition={{
-                            delay: baseDelay + i * 0.07,
-                            duration: 0.95,
-                            ease: EASE,
-                          }}
-                          className="inline-block will-change-transform"
+              <span className="sr-only">
+                {lines.map((l) => l.text).join(" ")}
+              </span>
+              <span aria-hidden>
+                {lines.map((line, li) => {
+                  const words = line.text.split(" ");
+                  const baseDelay = 0.12 + li * 0.18;
+                  return (
+                    <span
+                      key={li}
+                      className={`block ${line.italic ? `${accentClass} italic` : ""}`}
+                      style={{
+                        fontSize: line.italic ? italicSize : size,
+                        marginLeft: line.italic ? "-0.04em" : 0,
+                      }}
+                    >
+                      {words.map((w, i) => (
+                        <span
+                          key={w + i}
+                          className="mr-[0.18em] inline-block overflow-hidden last:mr-0"
                         >
-                          {w}
-                        </motion.span>
-                      </span>
-                    ))}
-                  </span>
-                );
-              })}
+                          <motion.span
+                            initial={animate ? { y: "108%" } : { y: 0, opacity: 0 }}
+                            animate={animate ? { y: "0%" } : { y: 0, opacity: 1 }}
+                            transition={{
+                              delay: animate ? baseDelay + i * 0.07 : 0,
+                              duration: animate ? 0.95 : 0.3,
+                              ease: EASE,
+                            }}
+                            className="inline-block will-change-transform"
+                          >
+                            {w}
+                          </motion.span>
+                        </span>
+                      ))}
+                    </span>
+                  );
+                })}
+              </span>
             </h1>
 
             {(subtitle || children) && (
               <motion.div
-                initial={{ opacity: 0, y: 14 }}
+                initial={animate ? { opacity: 0, y: 14 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
+                transition={{ duration: 0.8, delay: animate ? 0.75 : 0, ease: EASE }}
                 className="mt-8 max-w-[52ch]"
               >
                 {subtitle && (
-                  <p className="font-serif text-lg md:text-xl leading-[1.45] opacity-90 dropcap">
+                  <p className="font-serif text-lg md:text-xl leading-[1.45] opacity-95 dropcap">
                     {subtitle}
                   </p>
                 )}
@@ -234,42 +295,43 @@ export function PremiumHero({
             )}
 
             {caption && (
-              <div className="kicker mt-8 opacity-65">Fig. 01 — {caption}</div>
+              <p className="kicker mt-8 opacity-75">Fig. 01 — {caption}</p>
             )}
           </div>
 
           {/* Stats column anchored bottom-right */}
           {stats && (
             <div className="col-span-12 flex items-end lg:col-span-3 lg:col-start-10 xl:col-span-4 xl:col-start-9">
-              <div className="grid w-full grid-cols-3 gap-px overflow-hidden rounded-sm border border-current/20 bg-current/10 backdrop-blur-md">
+              <dl className="grid w-full grid-cols-3 gap-px overflow-hidden rounded-sm border border-current/25 bg-current/10 backdrop-blur-md">
                 {stats.map((s, i) => (
                   <motion.div
                     key={s.label}
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={animate ? { opacity: 0, y: 12 } : false}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9 + i * 0.08, duration: 0.55 }}
+                    transition={{ delay: animate ? 0.9 + i * 0.08 : 0, duration: 0.55 }}
                     className={`flex flex-col gap-1 px-4 py-5 ${
-                      isDark ? "bg-ink-black/70" : "bg-pearl-white/70"
+                      isDark ? "bg-ink-black/80" : "bg-pearl-white/85"
                     }`}
                   >
-                    <span className="font-serif text-3xl md:text-4xl font-bold leading-none">
+                    <dd className="font-serif text-3xl md:text-4xl font-bold leading-none">
                       {s.value}
-                    </span>
-                    <span className="kicker opacity-65 mt-2">{s.label}</span>
+                    </dd>
+                    <dt className="kicker opacity-80 mt-2">{s.label}</dt>
                   </motion.div>
                 ))}
-              </div>
+              </dl>
             </div>
           )}
         </div>
       </motion.div>
 
-      {scrollHint && (
+      {scrollHint && animate && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.75 }}
+          animate={{ opacity: 0.8 }}
           transition={{ delay: 1.4, duration: 0.8 }}
           className="pointer-events-none absolute bottom-5 right-6 z-20 flex items-center gap-2"
+          aria-hidden
         >
           <span className="kicker">Scroll</span>
           <motion.span
