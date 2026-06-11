@@ -77,14 +77,11 @@ function Reveal({
 
 type CtaKey = "discover" | "quiz" | "shop";
 
-const CTAS: Record<
-  CtaKey,
-  { label: string; sub: string; to: string; hash?: string }
-> = {
-  discover: { label: "Kollektion entdecken", sub: "Kuratiert · 80+ Kaffees", to: "/kaffee" },
+const CTAS = {
+  discover: { label: "Kollektion entdecken", sub: "Kuratiert · 80+ Kaffees", to: "/kaffee", hash: undefined },
   quiz: { label: "Finde deinen Kaffee", sub: "3-Schritte-Quiz", to: "/", hash: "finder" },
-  shop: { label: "Direkt zum Shop", sub: "Versandfertig in 24h", to: "/shop" },
-};
+  shop: { label: "Direkt zum Shop", sub: "Versandfertig in 24h", to: "/shop", hash: undefined },
+} as const;
 
 function CtaCluster({
   primary,
