@@ -54,44 +54,32 @@ function Page() {
         ]}
       />
 
-      <section className="bg-background py-28 md:py-36">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
+      <section className="bg-background section-y">
+        <div className="container-x">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             <div className="lg:col-span-5">
               <Eyebrow>Unser Versprechen</Eyebrow>
-              <h2 className="mt-4 font-display tracking-display text-4xl md:text-5xl leading-[1]">
+              <h2 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.2rem,4.8vw,4rem)] text-balance">
                 Wir ersetzen nicht
                 <br />
-                deinen Direktvertrieb.
+                <em className="not-italic display-italic text-magenta-coral">deinen Direktvertrieb.</em>
               </h2>
-              <p className="mt-5 text-muted-foreground">
+              <p className="mt-6 max-w-md text-muted-foreground leading-relaxed">
                 Wir erzählen deine Geschichte, listen deine Kaffees und bringen dich zu Menschen,
                 die besonderen Kaffee suchen. Du behältst Preis, Marke und Kontrolle.
               </p>
             </div>
-            <ol className="lg:col-span-7 grid sm:grid-cols-3 gap-6">
+            <ol className="lg:col-span-7 grid sm:grid-cols-3 gap-6 lg:gap-8">
               {[
-                [
-                  "01",
-                  "Onboarding",
-                  "Wir besuchen oder telefonieren mit dir, lernen deinen Stil kennen, schlagen Kaffees vor.",
-                ],
-                [
-                  "02",
-                  "Storytelling",
-                  "Eigenes Rösterei-Profil mit echten Bildern, Aromaprofilen und Herkunft.",
-                ],
-                [
-                  "03",
-                  "Vertrieb",
-                  "Du behältst Preis und Marke. Wir kümmern uns um Sichtbarkeit, Versand und Service.",
-                ],
+                ["01", "Onboarding", "Wir besuchen oder telefonieren mit dir, lernen deinen Stil kennen, schlagen Kaffees vor."],
+                ["02", "Storytelling", "Eigenes Rösterei-Profil mit echten Bildern, Aromaprofilen und Herkunft."],
+                ["03", "Vertrieb", "Du behältst Preis und Marke. Wir kümmern uns um Sichtbarkeit, Versand und Service."],
               ].map(([n, t, b]) => (
                 <Reveal key={n}>
-                  <li className="border-t border-border pt-5">
-                    <span className="font-display text-amber text-2xl">{n}</span>
-                    <h3 className="mt-2 font-display text-xl">{t}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{b}</p>
+                  <li className="border-t-2 border-foreground pt-5">
+                    <span className="font-display font-bold text-amber text-3xl tabular-nums">{n}</span>
+                    <h3 className="mt-3 font-display font-bold text-xl">{t}</h3>
+                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{b}</p>
                   </li>
                 </Reveal>
               ))}
@@ -99,6 +87,7 @@ function Page() {
           </div>
         </div>
       </section>
+
 
       {/* SCROLLYTELLING — So arbeiten wir zusammen */}
       <Scrolly
