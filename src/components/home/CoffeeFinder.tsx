@@ -66,7 +66,7 @@ export function CoffeeFinder() {
   };
 
   return (
-    <section className="theme-dark relative overflow-hidden bg-ink-black text-pearl-white py-28 md:py-44">
+    <section id="finder" className="theme-dark relative overflow-hidden bg-ink-black text-pearl-white py-28 md:py-44">
       {/* Grain */}
       <div className="pointer-events-none absolute inset-0 grain opacity-50" />
 
