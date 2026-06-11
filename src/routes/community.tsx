@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { POSTS, type Post } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { PremiumHero } from "@/components/shared/PremiumHero";
 import heroImg from "@/assets/community-hero.jpg";
 
 export const Route = createFileRoute("/community")({
@@ -50,49 +51,20 @@ function CommunityPage() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="grain relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden bg-cream-warm min-h-[70svh]">
-        <div className="absolute inset-0 -z-10">
-          <img
-            src={heroImg}
-            alt=""
-            aria-hidden
-            className="parallax-img h-full w-full object-cover opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-cream-warm/70 via-cream-warm/40 to-cream-warm" />
-        </div>
-        <div className="absolute inset-0 -z-10 opacity-20">
-          <div className="drift-y absolute inset-0 grid grid-cols-3 gap-2">
-            {[...POSTS, ...POSTS].map((p, i) => (
-              <img
-                key={i}
-                src={p.image}
-                alt=""
-                aria-hidden
-                className="aspect-square object-cover rounded-xl"
-                loading="lazy"
-              />
-            ))}
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-cream-warm via-cream-warm/70 to-cream-warm" />
-        </div>
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10 relative">
-          <Eyebrow>Community</Eyebrow>
-          <h1
-            className="mt-5 font-display tracking-display leading-[0.95] max-w-4xl"
-            style={{ fontSize: "clamp(2.8rem,7vw,5.5rem)" }}
-          >
-            Die Community für Kaffee,
-            <br />
-            <em className="not-italic display-italic text-magenta-coral">
-              Röstung & Home-Barista-Kultur.
-            </em>
-          </h1>
-          <p className="mt-7 max-w-xl text-muted-foreground text-lg">
-            Lerne, entdecke, speichere und teile Wissen rund um besseren Kaffee.
-          </p>
-        </div>
-      </section>
+      <PremiumHero
+        image={heroImg}
+        eyebrow="Community"
+        eyebrowMeta="Barista State · 2026"
+        lines={[
+          { text: "Die Community für Kaffee," },
+          { text: "Röstung & Home-Barista-Kultur.", italic: true },
+        ]}
+        subtitle="Lerne, entdecke, speichere und teile Wissen rund um besseren Kaffee."
+        bgClass="theme-dark bg-ink-black text-pearl-white"
+        overlay="dark"
+        orb="cyan"
+        minH="88svh"
+      />
 
       {/* CATEGORIES */}
       <section className="bg-background border-y border-border sticky top-12 z-30 backdrop-blur-xl bg-background/85">

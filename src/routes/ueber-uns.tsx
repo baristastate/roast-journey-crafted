@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { PremiumHero } from "@/components/shared/PremiumHero";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
 import { Scrolly } from "@/components/shared/Scrolly";
@@ -44,33 +44,21 @@ const VALUES = [
 function Page() {
   return (
     <>
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-cream-warm">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10 grid lg:grid-cols-12 gap-10 items-end">
-          <div className="lg:col-span-7">
-            <Eyebrow>Über uns</Eyebrow>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9 }}
-              className="mt-5 font-display tracking-display leading-[0.95]"
-              style={{ fontSize: "clamp(3rem,7vw,5.5rem)" }}
-            >
-              Wir bringen dich näher an
-              <br />
-              <em className="not-italic display-italic text-magenta-coral">besseren Kaffee.</em>
-            </motion.h1>
-          </div>
-          <div className="lg:col-span-5">
-            <div className="rounded-3xl overflow-hidden aspect-[5/4]">
-              <img
-                src={heroImg}
-                alt="Tasse Kaffee neben Notizbuch und Bohnen"
-                className="parallax-img h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PremiumHero
+        image={heroImg}
+        alt="Tasse Kaffee neben Notizbuch und Bohnen"
+        eyebrow="Über uns"
+        eyebrowMeta="Manifest"
+        lines={[
+          { text: "Wir bringen dich näher an" },
+          { text: "besseren Kaffee.", italic: true },
+        ]}
+        subtitle="Kuratiert. Transparent. Mit echtem Handwerk — von der grünen Bohne bis in deine Tasse."
+        bgClass="theme-dark bg-ink-black text-pearl-white"
+        overlay="dark"
+        orb="magenta"
+        minH="90svh"
+      />
 
       {/* SCROLLYTELLING — Werte */}
       <Scrolly
