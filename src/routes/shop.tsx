@@ -101,66 +101,25 @@ function ShopPage() {
   return (
     <>
       {/* ── HERO ────────────────────────────────── */}
-      <section className="grain relative bg-ink-black text-pearl-white overflow-hidden pt-24 pb-16 md:pt-32 md:pb-20 min-h-[56svh] flex items-end">
-        {/* Parallax image */}
-        <div className="absolute inset-0 -z-10">
-          <img
-            src={shopHero}
-            alt=""
-            aria-hidden
-            fetchPriority="high"
-            className="parallax-img h-full w-full object-cover opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/70 to-ink-black/10" />
-        </div>
-
-        {/* Ambient floating orbs */}
-        <div className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
-          <motion.div
-            className="absolute top-[20%] right-[15%] h-[420px] w-[420px] rounded-full bg-magenta-coral/10 blur-[100px]"
-            animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-[10%] left-[10%] h-[300px] w-[300px] rounded-full bg-cyan-bloom/7 blur-[80px]"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div
-            className="absolute top-[50%] left-[40%] h-[200px] w-[200px] rounded-full bg-magenta-coral/8 blur-[60px]"
-            animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          />
-        </div>
-
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10 w-full">
-          <Eyebrow>Shop · Barista State</Eyebrow>
-          <h1
-            className="mt-5 font-display tracking-display leading-[0.92] max-w-3xl"
-            style={{ fontSize: "clamp(3rem,8vw,7rem)" }}
-          >
-            Alles, was du brauchst.
-            <br />
-            <em className="not-italic display-italic text-magenta-coral">Auf einer Seite.</em>
-          </h1>
-          <div className="mt-10 flex flex-wrap gap-8">
-            {([
-              [12, "+", "Röstereien"],
-              [PRODUCTS.length, "", "Kaffees"],
-              [HEIMROESTER.length, "", "Heimröster"],
-            ] as [number, string, string][]).map(([n, suffix, l]) => (
-              <div key={l}>
-                <div className="font-display font-bold text-2xl text-pearl-white">
-                  <CountUp to={n} />{suffix}
-                </div>
-                <div className="text-pearl-white/45 text-[0.65rem] uppercase tracking-[0.22em] mt-0.5">
-                  {l}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <PremiumHero
+        image={shopHero}
+        eyebrow="Shop · Barista State"
+        eyebrowMeta={`${PRODUCTS.length} Kaffees · ${HEIMROESTER.length} Heimröster`}
+        lines={[
+          { text: "Alles, was du brauchst." },
+          { text: "Auf einer Seite.", italic: true },
+        ]}
+        subtitle="Frisch geröstete Specialty-Kaffees und Heimröster — kuratiert von 12 deutschen Röstereien."
+        bgClass="theme-dark bg-ink-black text-pearl-white"
+        overlay="dark"
+        orb="magenta"
+        minH="78svh"
+        stats={[
+          { value: `${PRODUCTS.length}`, label: "Kaffees" },
+          { value: `${HEIMROESTER.length}`, label: "Heimröster" },
+          { value: "12+", label: "Röstereien" },
+        ]}
+      />
 
       {/* ── STICKY TAB + FILTER BAR ─────────────── */}
       <div className="sticky top-12 z-40 bg-background/92 backdrop-blur-2xl border-b border-border">
