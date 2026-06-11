@@ -30,6 +30,7 @@ const GEAR_LABELS: Record<Gear, string> = {
 };
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { PremiumHero } from "@/components/shared/PremiumHero";
 import shopHero from "@/assets/kaffee-hero.jpg";
 
 export const Route = createFileRoute("/shop")({
