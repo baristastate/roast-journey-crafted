@@ -142,7 +142,7 @@ export function Header() {
           <div className="flex items-center justify-end gap-0">
             {/* Search */}
             <button
-              className="hidden lg:grid h-10 w-10 place-items-center text-pearl-white/55 hover:text-pearl-white transition-colors duration-150 rounded-full hover:bg-white/[0.06]"
+              className="hidden lg:grid h-10 w-10 place-items-center text-foreground/55 hover:text-foreground transition-colors duration-150 rounded-full hover:bg-foreground/[0.06]"
               aria-label="Suchen"
             >
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -156,10 +156,13 @@ export function Header() {
               </svg>
             </button>
 
+            {/* Theme toggle */}
+            <ThemeToggle className="hidden lg:grid" />
+
             {/* Cart */}
             <Link
               to="/shop"
-              className="hidden lg:grid h-10 w-10 place-items-center text-pearl-white/55 hover:text-pearl-white transition-colors duration-150 rounded-full hover:bg-white/[0.06]"
+              className="hidden lg:grid h-10 w-10 place-items-center text-foreground/55 hover:text-foreground transition-colors duration-150 rounded-full hover:bg-foreground/[0.06]"
               aria-label="Warenkorb"
             >
               <svg width="16" height="15" viewBox="0 0 16 15" fill="none">
@@ -178,10 +181,13 @@ export function Header() {
               </svg>
             </Link>
 
+            {/* Mobile theme toggle */}
+            <ThemeToggle className="lg:hidden" />
+
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden grid h-10 w-10 place-items-center text-pearl-white/70 hover:text-pearl-white transition-colors rounded-full hover:bg-white/[0.06]"
+              className="lg:hidden grid h-10 w-10 place-items-center text-foreground/70 hover:text-foreground transition-colors rounded-full hover:bg-foreground/[0.06]"
               aria-label="Menü öffnen"
             >
               <span className="flex flex-col gap-[5px] items-center">
