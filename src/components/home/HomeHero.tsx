@@ -137,12 +137,7 @@ function CtaCluster({
         {renderPrimary(primary)}
         {rest.map(renderSecondary)}
       </div>
-      <p className="kicker mt-3 text-pearl-white/65">
-        <span className="font-serif italic normal-case tracking-normal opacity-75">
-          Empfohlen jetzt —
-        </span>{" "}
-        {CTAS[primary].sub}
-      </p>
+      <p className="kicker mt-3 text-pearl-white/65">{CTAS[primary].sub}</p>
     </motion.div>
   );
 }
@@ -225,52 +220,6 @@ export function HomeHero() {
         Zum Inhalt springen
       </a>
 
-      {/* ── Masthead ─────────────────────────────── */}
-      <div className="relative z-20 border-b border-pearl-white/15">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-3 md:px-10">
-          <p className="kicker flex items-center gap-3 text-pearl-white">
-            <span className="font-serif italic normal-case tracking-normal text-base">№ 47</span>
-            <span>Roast Journal</span>
-            <span aria-hidden className="hidden h-px w-8 bg-pearl-white/40 md:inline-block" />
-            <span className="hidden md:inline opacity-85">Edition DE · 2026</span>
-          </p>
-          <p className="kicker hidden items-center gap-3 text-pearl-white md:flex">
-            <motion.span
-              aria-hidden
-              className="h-1.5 w-1.5 rounded-full bg-magenta-coral"
-              animate={animate ? { opacity: [0.4, 1, 0.4] } : { opacity: 1 }}
-              transition={animate ? { duration: 2.2, repeat: Infinity } : undefined}
-            />
-            <span className="opacity-90">Heute frisch aus 12 Röstereien</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Rotated marginalia — only on tall, wide screens to avoid clipping */}
-      <p
-        aria-hidden
-        className="kicker pointer-events-none absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 -rotate-90 origin-left text-pearl-white/75 lg:[@media(min-height:760px)]:block"
-      >
-        <span className="mr-3 font-serif italic normal-case tracking-normal">— </span>
-        Cover Story
-      </p>
-
-      {/* Adaptive register-mark crop ticks — clamp away from header/footer */}
-      {(
-        [
-          ["left-3 md:left-5", "top-[clamp(3.5rem,8svh,6rem)]", "border-l border-t"],
-          ["right-3 md:right-5", "top-[clamp(3.5rem,8svh,6rem)]", "border-r border-t"],
-          ["left-3 md:left-5", "bottom-[clamp(5rem,12svh,8rem)]", "border-l border-b"],
-          ["right-3 md:right-5", "bottom-[clamp(5rem,12svh,8rem)]", "border-r border-b"],
-        ] as const
-      ).map(([x, y, edges], i) => (
-        <span
-          key={i}
-          aria-hidden
-          className={`pointer-events-none absolute ${x} ${y} z-20 h-3 w-3 ${edges} border-pearl-white/70`}
-        />
-      ))}
-
       {/* ── Editorial content ───────────────────────── */}
       <motion.div
         id="main-content"
@@ -288,12 +237,7 @@ export function HomeHero() {
               transition={{ duration: 0.7, ease: EASE }}
               className="kicker mb-6 flex flex-wrap items-center gap-3 text-pearl-white"
             >
-              <span className="font-serif italic normal-case tracking-normal text-sm opacity-80">
-                Cover —
-              </span>
-              The Coffee Movement
-              <span aria-hidden className="h-px w-6 bg-pearl-white/50" />
-              <span className="text-cyan-bloom">Frühjahr 2026</span>
+              <span className="text-cyan-bloom">Specialty Coffee, endlich zu Hause</span>
             </motion.p>
 
             <div aria-hidden className="mb-5 h-px w-24 origin-left bg-pearl-white/60 ink-sweep" />
