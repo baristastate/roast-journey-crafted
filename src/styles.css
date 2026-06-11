@@ -25,6 +25,8 @@
   --radius-3xl: calc(var(--radius) + 12px);
 
   --font-display: "Satoshi", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
 
   /* Brand */
