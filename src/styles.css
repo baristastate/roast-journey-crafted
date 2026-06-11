@@ -112,8 +112,10 @@
   --ring: var(--magenta-coral);
 }
 
-/* Dark section override */
-.theme-dark {
+/* Dark section override (per-section AND global dark mode on <html>) */
+.theme-dark,
+html.dark,
+html.dark body {
   --background: var(--ink-black);
   --foreground: var(--pearl-white);
   --card: #141418;
@@ -131,6 +133,29 @@
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.08);
 }
+
+/* Light "theme-light" islands inside global dark mode */
+html.dark .theme-light {
+  --background: var(--pearl-white);
+  --foreground: var(--ink-black);
+  --card: #ffffff;
+  --card-foreground: var(--ink-black);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink-black);
+  --primary: var(--ink-black);
+  --primary-foreground: var(--pearl-white);
+  --secondary: #e6e7e9;
+  --secondary-foreground: var(--ink-black);
+  --muted: #e6e7e9;
+  --muted-foreground: #6b7280;
+  --accent: var(--magenta-coral);
+  --accent-foreground: var(--ink-black);
+  --border: rgba(0, 0, 0, 0.1);
+  --input: #d1d5db;
+}
+
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
 
 @layer base {
   * {
