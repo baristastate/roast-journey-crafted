@@ -91,7 +91,7 @@ export function Header() {
             <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-magenta-coral text-ink-black text-[0.55rem] font-bold ring-2 ring-magenta-coral/0 group-hover:ring-magenta-coral/30 transition-all duration-300">
               B
             </span>
-            <span className="font-display text-[0.82rem] font-bold tracking-tight text-pearl-white/85 group-hover:text-pearl-white transition-colors duration-200">
+            <span className="font-display text-[0.82rem] font-bold tracking-tight text-foreground/85 group-hover:text-foreground transition-colors duration-200">
               Barista State
             </span>
           </Link>
