@@ -72,12 +72,14 @@ export function Header() {
   return (
     <>
       <header
-        className="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-400"
+        className="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-400 text-foreground"
         style={{
-          background: showBg ? "rgba(18,18,20,0.94)" : "transparent",
+          background: showBg
+            ? "color-mix(in oklab, var(--background) 88%, transparent)"
+            : "transparent",
           backdropFilter: showBg ? "saturate(200%) blur(24px)" : "none",
           WebkitBackdropFilter: showBg ? "saturate(200%) blur(24px)" : "none",
-          borderBottom: `1px solid ${showBg ? "rgba(255,255,255,0.08)" : "transparent"}`,
+          borderBottom: `1px solid ${showBg ? "color-mix(in oklab, var(--foreground) 10%, transparent)" : "transparent"}`,
         }}
         onMouseLeave={leave}
       >
