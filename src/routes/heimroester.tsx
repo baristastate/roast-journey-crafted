@@ -63,72 +63,31 @@ function HeimroesterPage() {
 
 function Hero() {
   return (
-    <section className="theme-dark relative bg-espresso text-cream overflow-hidden min-h-[100svh] flex items-center pt-24">
-      <div className="absolute inset-0 -z-10">
-        <img
-          src={heroImg}
-          alt="Heimröster im Lichtkegel"
-          className="h-full w-full object-cover opacity-70"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-espresso/80 via-espresso/40 to-espresso" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,180,90,0.18),transparent_55%)]" />
-      </div>
-      <div className="mx-auto max-w-[1400px] px-5 md:px-10 py-20 grid lg:grid-cols-12 gap-10 items-center">
-        <div className="lg:col-span-7">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <Eyebrow>USP · Heimrösten</Eyebrow>
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-5 font-display tracking-display leading-[0.95]"
-            style={{ fontSize: "clamp(2.8rem,8vw,7rem)" }}
-          >
-            Röste deinen Kaffee selbst.
-            <br />
-            <em className="not-italic display-italic text-magenta-coral">Einfacher,</em> als du
-            denkst.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3 }}
-            className="mt-7 max-w-xl text-cream/75 text-lg"
-          >
-            Mit unseren Heimröstern steuerst du Frische, Röstgrad und Geschmack direkt zuhause.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            className="mt-10 flex flex-wrap gap-3"
-          >
-            <a
-              href="#sortiment"
-              className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3.5 text-sm font-semibold text-ink-black hover:-translate-y-px transition-transform shadow-[0_12px_40px_-10px_rgba(245,200,66,0.45)]"
-            >
-              Heimröster entdecken
-            </a>
-            <a href="#so-gehts" className="rounded-full border border-cream/30 px-6 py-3.5 text-sm">
-              So funktioniert es
-            </a>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="mt-12 text-sm text-cream/60 max-w-md"
-          >
-            Rohkaffee rein. Profil wählen. Rösten. Genießen.
-          </motion.p>
-        </div>
-      </div>
-    </section>
+    <PremiumHero
+      image={heroImg}
+      alt="Heimröster im Lichtkegel"
+      eyebrow="USP · Heimrösten"
+      eyebrowMeta="Rohkaffee → Tasse"
+      lines={[
+        { text: "Röste deinen Kaffee selbst." },
+        { text: "Einfacher, als du denkst.", italic: true },
+      ]}
+      subtitle="Mit unseren Heimröstern steuerst du Frische, Röstgrad und Geschmack direkt zuhause."
+      bgClass="theme-dark bg-espresso text-cream"
+      overlay="espresso"
+      orb="gold"
+      minH="100svh"
+    >
+      <a
+        href="#sortiment"
+        className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3.5 text-sm font-semibold text-ink-black hover:-translate-y-px transition-transform shadow-[0_12px_40px_-10px_rgba(245,200,66,0.45)]"
+      >
+        Heimröster entdecken
+      </a>
+      <a href="#so-gehts" className="rounded-full border border-cream/30 px-6 py-3.5 text-sm">
+        So funktioniert es
+      </a>
+    </PremiumHero>
   );
 }
 
