@@ -209,7 +209,7 @@ export function Header() {
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }}
               onMouseEnter={() => enter(activeDropdown.label)}
-              className="border-t border-white/[0.06]"
+              className="border-t border-foreground/[0.06]"
             >
               <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-4">
                 <div className="flex gap-0.5">
@@ -224,12 +224,12 @@ export function Header() {
                       <Link
                         to={item.to}
                         onClick={() => setHovered(null)}
-                        className="group block rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-white/[0.07]"
+                        className="group block rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-foreground/[0.07]"
                       >
-                        <div className="text-[0.75rem] font-medium text-pearl-white/85 group-hover:text-pearl-white transition-colors duration-150 truncate">
+                        <div className="text-[0.75rem] font-medium text-foreground/85 group-hover:text-foreground transition-colors duration-150 truncate">
                           {item.label}
                         </div>
-                        <div className="mt-0.5 text-[0.68rem] text-pearl-white/35 group-hover:text-pearl-white/55 transition-colors duration-150 truncate">
+                        <div className="mt-0.5 text-[0.68rem] text-foreground/35 group-hover:text-foreground/55 transition-colors duration-150 truncate">
                           {item.desc}
                         </div>
                       </Link>
