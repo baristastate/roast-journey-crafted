@@ -1,11 +1,5 @@
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { useEffect, useRef, type ReactNode } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, type ReactNode } from "react";
 
 type Line = { text: string; italic?: boolean };
 
@@ -15,47 +9,47 @@ export type PremiumHeroProps = {
   eyebrow?: ReactNode;
   lines: Line[];
   subtitle?: ReactNode;
-  /** Tailwind classes for outer section bg + text */
   bgClass?: string;
-  /** Color class for italic accent line (default: text-magenta-coral) */
   accentClass?: string;
-  /** Overlay gradient strength preset */
   overlay?: "dark" | "light" | "espresso" | "cream";
-  /** Minimum height (default 92svh) */
   minH?: string;
-  /** Show animated scroll hint */
   scrollHint?: boolean;
-  /** Show cursor-following glow */
+  /** kept for API compat, no longer renders the AI-style cursor blob */
   cursorGlow?: boolean;
-  /** Show bottom fade into next section */
   bottomFade?: boolean;
-  /** Accent color for ambient orbs (e.g. "magenta-coral", "cyan-bloom") */
   orb?: "magenta" | "cyan" | "gold";
-  /** Extra content under subtitle (CTAs etc.) */
   children?: ReactNode;
-  /** Optional right-column stats */
   stats?: { value: string; label: string }[];
-  /** Headline font-size clamp() value */
   size?: string;
   italicSize?: string;
-  /** Eyebrow trailing chip text */
   eyebrowMeta?: string;
+  /** Optional issue/edition meta shown in masthead */
+  issue?: string;
+  /** Optional editorial caption shown next to the image */
+  caption?: string;
+  /** Optional section label in marginalia (rotated) */
+  section?: string;
 };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const OVERLAYS: Record<NonNullable<PremiumHeroProps["overlay"]>, string> = {
-  dark: "bg-gradient-to-t from-ink-black/96 via-ink-black/45 to-ink-black/15",
-  espresso: "bg-gradient-to-t from-espresso via-espresso/55 to-espresso/25",
-  light: "bg-gradient-to-t from-pearl-white via-pearl-white/55 to-pearl-white/15",
-  cream: "bg-gradient-to-b from-cream-warm/70 via-cream-warm/40 to-cream-warm",
+  dark: "bg-gradient-to-tr from-ink-black/85 via-ink-black/40 to-transparent",
+  espresso: "bg-gradient-to-tr from-espresso/85 via-espresso/45 to-transparent",
+  light: "bg-gradient-to-tr from-pearl-white/85 via-pearl-white/45 to-transparent",
+  cream: "bg-gradient-to-b from-cream-warm/60 via-cream-warm/30 to-cream-warm",
 };
 
-const ORB_COLORS: Record<NonNullable<PremiumHeroProps["orb"]>, [string, string]> = {
-  magenta: ["bg-magenta-coral/[0.13]", "bg-cyan-bloom/[0.08]"],
-  cyan: ["bg-cyan-bloom/[0.13]", "bg-magenta-coral/[0.08]"],
-  gold: ["bg-amber-400/[0.12]", "bg-magenta-coral/[0.08]"],
-};
+function formatIssue() {
+  const d = new Date();
+  const week = Math.ceil(
+    ((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 +
+      new Date(d.getFullYear(), 0, 1).getDay() +
+      1) /
+      7,
+  );
+  return `KW ${String(week).padStart(2, "0")} · ${d.getFullYear()}`;
+}
 
 export function PremiumHero({
   image,
@@ -66,203 +60,256 @@ export function PremiumHero({
   bgClass = "theme-dark bg-ink-black text-pearl-white",
   accentClass = "text-magenta-coral",
   overlay = "dark",
-  minH = "92svh",
+  minH = "94svh",
   scrollHint = true,
-  cursorGlow = true,
   bottomFade = true,
-  orb = "magenta",
   children,
   stats,
-  size = "clamp(3.2rem,9vw,8rem)",
-  italicSize = "clamp(2.6rem,7.6vw,6.8rem)",
+  size = "clamp(3.4rem,10.5vw,9.5rem)",
+  italicSize = "clamp(2.8rem,9vw,8.2rem)",
   eyebrowMeta,
+  issue,
+  caption,
+  section = "Edition",
 }: PremiumHeroProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "24%"]);
-  const scaleBg = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const yFg = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // restrained parallax — editorial, not "scroll funhouse"
+  const yImg = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const rotImg = useTransform(scrollYProgress, [0, 1], [0, -1.4]);
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  // Cursor warm glow
-  const cx = useMotionValue(-600);
-  const cy = useMotionValue(-600);
-  const gx = useSpring(cx, { damping: 28, stiffness: 90 });
-  const gy = useSpring(cy, { damping: 28, stiffness: 90 });
-
-  useEffect(() => {
-    if (!cursorGlow) return;
-    const onMove = (e: MouseEvent) => {
-      cx.set(e.clientX);
-      cy.set(e.clientY);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [cursorGlow, cx, cy]);
-
-  const [orbA, orbB] = ORB_COLORS[orb];
+  const mastheadMeta = issue ?? formatIssue();
+  const isDark = bgClass.includes("dark") || bgClass.includes("ink-black");
 
   return (
     <section
       ref={ref}
-      className={`grain relative isolate overflow-hidden ${bgClass}`}
+      className={`relative isolate overflow-hidden ${bgClass}`}
       style={{ minHeight: minH }}
     >
-      {/* Parallax background */}
-      <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 -z-10">
-        <img
-          src={image}
-          alt={alt}
-          aria-hidden={!alt}
-          className="h-full w-full object-cover"
-          fetchPriority="high"
-        />
-        <div className={`absolute inset-0 ${OVERLAYS[overlay]}`} />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
-      </motion.div>
-
-      {/* Cursor-following glow */}
-      {cursorGlow && (
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute z-0 h-[640px] w-[640px] rounded-full bg-magenta-coral/[0.10] blur-[130px]"
-          style={{ left: gx, top: gy, translateX: "-50%", translateY: "-50%" }}
-        />
-      )}
-
-      {/* Ambient orbs */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          className={`absolute -top-32 -left-32 h-[70vh] w-[70vh] rounded-full blur-[130px] ${orbA}`}
-          animate={{ scale: [1, 1.12, 1], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className={`absolute top-1/3 -right-24 h-[48vh] w-[48vh] rounded-full blur-[110px] ${orbB}`}
-          animate={{ scale: [1, 1.15, 1], opacity: [0.45, 0.85, 0.45] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        />
+      {/* ── Masthead bar ─────────────────────────────── */}
+      <div className="relative z-20 border-b border-current/10">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-3 md:px-10">
+          <div className="kicker flex items-center gap-3 opacity-70">
+            <span className="font-serif italic normal-case tracking-normal text-base">№</span>
+            <span>Roast Journal</span>
+            <span className="hidden h-px w-8 bg-current opacity-30 md:inline-block" />
+            <span className="hidden md:inline">{mastheadMeta}</span>
+          </div>
+          <div className="kicker hidden items-center gap-3 opacity-60 md:flex">
+            <motion.span
+              className={`h-1.5 w-1.5 rounded-full ${accentClass.replace("text-", "bg-")}`}
+              animate={{ opacity: [0.35, 1, 0.35] }}
+              transition={{ duration: 2.2, repeat: Infinity }}
+            />
+            Live · Frisch geröstet
+          </div>
+        </div>
       </div>
 
-      {/* Bottom fade */}
-      {bottomFade && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[18svh] bg-gradient-to-b from-transparent to-current opacity-[0.001]"
-          style={{ background: "linear-gradient(to bottom, transparent, var(--hero-fade, rgba(0,0,0,0.0)))" }}
-        />
-      )}
-
-      {/* Main */}
-      <motion.div
-        style={{ y: yFg, opacity }}
-        className="relative z-10 mx-auto flex max-w-[1400px] flex-col gap-10 px-5 pt-28 pb-20 md:px-10 md:pt-40 md:pb-28"
+      {/* ── Rotated section marginalia ──────────────── */}
+      <div
+        aria-hidden
+        className="kicker pointer-events-none absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 -rotate-90 origin-left opacity-50 md:block"
       >
-        {eyebrow && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.36em] opacity-70"
-          >
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-magenta-coral" />
-            <span>{eyebrow}</span>
-            {eyebrowMeta && (
-              <>
-                <span className="h-px w-8 bg-current opacity-25" />
-                <span className="opacity-70">{eyebrowMeta}</span>
-              </>
-            )}
-          </motion.div>
-        )}
+        <span className="mr-3 font-serif italic normal-case tracking-normal">— </span>
+        {section}
+      </div>
 
-        <h1 className="font-display font-bold leading-[0.9] tracking-display">
-          {lines.map((line, li) => {
-            const words = line.text.split(" ");
-            const baseDelay = 0.18 + li * 0.22;
-            return (
-              <span
-                key={li}
-                className={`block ${line.italic ? `${accentClass} display-italic` : ""}`}
-                style={{ fontSize: line.italic ? italicSize : size }}
+      {/* ── Main editorial grid ─────────────────────── */}
+      <motion.div
+        style={{ y: yText, opacity }}
+        className="relative z-10 mx-auto max-w-[1500px] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28"
+      >
+        <div className="editorial-grid">
+          {/* LEFT — headline + lede */}
+          <div className="col-span-12 lg:col-span-7 xl:col-span-7">
+            {eyebrow && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: EASE }}
+                className="kicker mb-6 flex flex-wrap items-center gap-3 opacity-75"
               >
-                {words.map((w, i) => (
-                  <motion.span
-                    key={w + i}
-                    initial={{ opacity: 0, y: 60, filter: "blur(22px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{
-                      delay: baseDelay + i * 0.09,
-                      duration: 1,
-                      ease: EASE,
-                    }}
-                    className="mr-[0.22em] inline-block last:mr-0"
-                  >
-                    {w}
-                  </motion.span>
-                ))}
-              </span>
-            );
-          })}
-        </h1>
+                <span className="font-serif italic normal-case tracking-normal text-sm opacity-60">
+                  Editor's pick —
+                </span>
+                <span>{eyebrow}</span>
+                {eyebrowMeta && (
+                  <>
+                    <span className="h-px w-6 bg-current opacity-30" />
+                    <span className="opacity-70">{eyebrowMeta}</span>
+                  </>
+                )}
+              </motion.div>
+            )}
 
-        {(subtitle || children || stats) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
-            className="mt-2 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
-          >
-            <div className="max-w-xl">
-              {subtitle && (
-                <p className="text-base md:text-lg leading-relaxed font-light opacity-75">
-                  {subtitle}
-                </p>
-              )}
-              {children && <div className="mt-7 flex flex-wrap gap-3">{children}</div>}
-            </div>
+            {/* animated rule */}
+            <div className="mb-5 h-px w-24 origin-left bg-current/40 ink-sweep" />
+
+            <h1 className="font-serif font-bold leading-[0.88] tracking-tight">
+              {lines.map((line, li) => {
+                const words = line.text.split(" ");
+                const baseDelay = 0.12 + li * 0.18;
+                return (
+                  <span
+                    key={li}
+                    className={`block ${line.italic ? `${accentClass} italic` : ""}`}
+                    style={{
+                      fontSize: line.italic ? italicSize : size,
+                      // editorial moves: tighter leading and a slight negative left margin on italics
+                      marginLeft: line.italic ? "-0.04em" : 0,
+                    }}
+                  >
+                    {words.map((w, i) => (
+                      <span key={w + i} className="mr-[0.18em] inline-block overflow-hidden last:mr-0">
+                        <motion.span
+                          initial={{ y: "108%" }}
+                          animate={{ y: "0%" }}
+                          transition={{
+                            delay: baseDelay + i * 0.07,
+                            duration: 0.95,
+                            ease: EASE,
+                          }}
+                          className="inline-block will-change-transform"
+                        >
+                          {w}
+                        </motion.span>
+                      </span>
+                    ))}
+                  </span>
+                );
+              })}
+            </h1>
+
+            {/* lede + actions */}
+            {(subtitle || children) && (
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
+                className="mt-10 grid grid-cols-12 gap-6"
+              >
+                <div className="col-span-12 md:col-span-1 hidden md:flex justify-end">
+                  <span className="kicker rotate-180 [writing-mode:vertical-rl] opacity-50">
+                    Lede / 01
+                  </span>
+                </div>
+                <div className="col-span-12 md:col-span-11">
+                  {subtitle && (
+                    <p className="font-serif text-lg md:text-xl leading-[1.45] opacity-85 max-w-[44ch] dropcap">
+                      {subtitle}
+                    </p>
+                  )}
+                  {children && (
+                    <div className="mt-7 flex flex-wrap items-center gap-3">{children}</div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* RIGHT — image plate + caption + stats */}
+          <div className="col-span-12 lg:col-span-5 xl:col-span-5 mt-10 lg:mt-0">
+            <motion.figure
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.1, delay: 0.25, ease: EASE }}
+              className="relative"
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm border border-current/15">
+                <motion.img
+                  src={image}
+                  alt={alt}
+                  aria-hidden={!alt}
+                  style={{ y: yImg, rotate: rotImg }}
+                  className="h-[112%] w-full object-cover"
+                  fetchPriority="high"
+                />
+                <div className={`pointer-events-none absolute inset-0 ${OVERLAYS[overlay]}`} />
+                {/* register-mark crop ticks */}
+                <span className="absolute left-2 top-2 h-3 w-3 border-l border-t border-current/60" />
+                <span className="absolute right-2 top-2 h-3 w-3 border-r border-t border-current/60" />
+                <span className="absolute left-2 bottom-2 h-3 w-3 border-l border-b border-current/60" />
+                <span className="absolute right-2 bottom-2 h-3 w-3 border-r border-b border-current/60" />
+              </div>
+              <figcaption className="mt-3 flex items-start justify-between gap-4">
+                <span className="kicker opacity-60">
+                  Fig. 01 — {caption ?? "Single Origin, frisch geröstet"}
+                </span>
+                <span className="font-serif italic text-sm opacity-60">
+                  Photographed in studio
+                </span>
+              </figcaption>
+            </motion.figure>
+
+            {/* stats as editorial sidebar */}
             {stats && (
-              <div className="hidden lg:flex flex-col gap-5 text-right">
+              <div className="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-current/15 bg-current/10">
                 {stats.map((s, i) => (
                   <motion.div
                     key={s.label}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1.2 + i * 0.1, duration: 0.6 }}
-                    className="border-r border-current/15 pr-5 opacity-90"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 + i * 0.08, duration: 0.55 }}
+                    className={`flex flex-col gap-1 px-4 py-5 ${
+                      isDark ? "bg-ink-black" : "bg-pearl-white"
+                    }`}
                   >
-                    <div className="font-display text-3xl md:text-4xl font-bold">{s.value}</div>
-                    <div className="opacity-50 text-[0.62rem] uppercase tracking-[0.26em] mt-1">
-                      {s.label}
-                    </div>
+                    <span className="font-serif text-3xl md:text-4xl font-bold leading-none">
+                      {s.value}
+                    </span>
+                    <span className="kicker opacity-55 mt-2">{s.label}</span>
                   </motion.div>
                 ))}
               </div>
             )}
-          </motion.div>
-        )}
+          </div>
+        </div>
 
-        {scrollHint && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.7 }}
-            transition={{ delay: 1.6, duration: 0.8 }}
-            className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="flex h-9 w-5 items-start justify-center rounded-full border border-current/30 pt-1.5"
-            >
-              <div className="h-1.5 w-px rounded-full bg-current/60" />
-            </motion.div>
-            <span className="text-[0.6rem] uppercase tracking-[0.4em] opacity-50">Scroll</span>
-          </motion.div>
-        )}
+        {/* bottom rule + colophon */}
+        <div className="mt-14 hidden items-end justify-between gap-6 md:flex">
+          <div className="flex-1 rule" />
+          <span className="kicker whitespace-nowrap opacity-50">
+            Folio / Continued below ↓
+          </span>
+        </div>
       </motion.div>
+
+      {scrollHint && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+          className="pointer-events-none absolute bottom-5 right-6 z-20 flex items-center gap-2"
+        >
+          <span className="kicker opacity-70">Scroll</span>
+          <motion.span
+            animate={{ x: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="font-serif italic"
+          >
+            →
+          </motion.span>
+        </motion.div>
+      )}
+
+      {bottomFade && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[10svh]"
+          style={{
+            background: isDark
+              ? "linear-gradient(to bottom, transparent, rgba(12,12,16,0.95))"
+              : "linear-gradient(to bottom, transparent, rgba(250,250,247,0.95))",
+          }}
+        />
+      )}
     </section>
   );
 }
