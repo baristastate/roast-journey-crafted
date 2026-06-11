@@ -30,6 +30,13 @@ const ROAST_PROFILES = [
     color: "oklch(0.55 0.09 60)",
     aroma: "Fruchtig, klar, lebendig.",
     profile: "Höhere Temperatur, kurze Entwicklung. Säure bleibt erhalten.",
+    temp: 196,
+    time: 10.5,
+    agtron: 75,
+    acidity: 0.85,
+    body: 0.35,
+    sweetness: 0.55,
+    chips: ["Bergamotte", "Hibiskus", "Honig", "Zitrus"],
   },
   {
     id: "mittel",
@@ -37,6 +44,13 @@ const ROAST_PROFILES = [
     color: "oklch(0.38 0.07 45)",
     aroma: "Ausgewogen, süß, rund.",
     profile: "Mittlere Entwicklung. Süße und Körper im Vordergrund.",
+    temp: 210,
+    time: 12.5,
+    agtron: 55,
+    acidity: 0.55,
+    body: 0.65,
+    sweetness: 0.85,
+    chips: ["Karamell", "Milchschokolade", "Mandel", "Rohrzucker"],
   },
   {
     id: "dunkel",
@@ -44,8 +58,16 @@ const ROAST_PROFILES = [
     color: "oklch(0.22 0.04 35)",
     aroma: "Kräftig, schokoladig, intensiv.",
     profile: "Längere Röstung. Tiefe Aromen, weniger Säure.",
+    temp: 224,
+    time: 14.5,
+    agtron: 35,
+    acidity: 0.25,
+    body: 0.95,
+    sweetness: 0.6,
+    chips: ["Zartbitter", "Tabak", "Walnuss", "Melasse"],
   },
 ] as const;
+
 
 function HeimroesterPage() {
   return (
