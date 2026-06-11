@@ -30,6 +30,13 @@ const ROAST_PROFILES = [
     color: "oklch(0.55 0.09 60)",
     aroma: "Fruchtig, klar, lebendig.",
     profile: "Höhere Temperatur, kurze Entwicklung. Säure bleibt erhalten.",
+    temp: 196,
+    time: 10.5,
+    agtron: 75,
+    acidity: 0.85,
+    body: 0.35,
+    sweetness: 0.55,
+    chips: ["Bergamotte", "Hibiskus", "Honig", "Zitrus"],
   },
   {
     id: "mittel",
@@ -37,6 +44,13 @@ const ROAST_PROFILES = [
     color: "oklch(0.38 0.07 45)",
     aroma: "Ausgewogen, süß, rund.",
     profile: "Mittlere Entwicklung. Süße und Körper im Vordergrund.",
+    temp: 210,
+    time: 12.5,
+    agtron: 55,
+    acidity: 0.55,
+    body: 0.65,
+    sweetness: 0.85,
+    chips: ["Karamell", "Milchschokolade", "Mandel", "Rohrzucker"],
   },
   {
     id: "dunkel",
@@ -44,8 +58,16 @@ const ROAST_PROFILES = [
     color: "oklch(0.22 0.04 35)",
     aroma: "Kräftig, schokoladig, intensiv.",
     profile: "Längere Röstung. Tiefe Aromen, weniger Säure.",
+    temp: 224,
+    time: 14.5,
+    agtron: 35,
+    acidity: 0.25,
+    body: 0.95,
+    sweetness: 0.6,
+    chips: ["Zartbitter", "Tabak", "Walnuss", "Melasse"],
   },
 ] as const;
+
 
 function HeimroesterPage() {
   return (
@@ -294,8 +316,69 @@ function TempCurve() {
 }
 
 function RoastSlider() {
-  const [i, setI] = useState(1);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [t, setT] = useState(0.5); // 0..1 continuous
+  const [dragging, setDragging] = useState(false);
+  const lastIdxRef = useRef(1);
+
+  const idxFloat = t * (ROAST_PROFILES.length - 1);
+  const i = Math.round(idxFloat);
   const p = ROAST_PROFILES[i];
+
+  // Interpolate readouts between neighbours for tactile feel.
+  const lo = ROAST_PROFILES[Math.floor(idxFloat)];
+  const hi = ROAST_PROFILES[Math.min(ROAST_PROFILES.length - 1, Math.floor(idxFloat) + 1)];
+  const k = idxFloat - Math.floor(idxFloat);
+  const lerp = (a: number, b: number) => a + (b - a) * k;
+  const liveTemp = lerp(lo.temp, hi.temp);
+  const liveTime = lerp(lo.time, hi.time);
+  const liveAgtron = lerp(lo.agtron, hi.agtron);
+  const liveAcidity = lerp(lo.acidity, hi.acidity);
+  const liveBody = lerp(lo.body, hi.body);
+  const liveSweet = lerp(lo.sweetness, hi.sweetness);
+
+  // Snap & haptic when active index changes.
+  if (lastIdxRef.current !== i) {
+    lastIdxRef.current = i;
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+      try {
+        (navigator as Navigator & { vibrate?: (p: number) => void }).vibrate?.(8);
+      } catch {
+        /* noop */
+      }
+    }
+  }
+
+  const setFromClientX = (clientX: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const next = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    setT(next);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    setDragging(true);
+    setFromClientX(e.clientX);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging) return;
+    setFromClientX(e.clientX);
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    setDragging(false);
+    // snap to nearest profile with eased motion
+    setT(Math.round(t * (ROAST_PROFILES.length - 1)) / (ROAST_PROFILES.length - 1));
+    (e.target as Element).releasePointerCapture?.(e.pointerId);
+  };
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight")
+      setT(Math.min(1, (i + 1) / (ROAST_PROFILES.length - 1)));
+    if (e.key === "ArrowLeft")
+      setT(Math.max(0, (i - 1) / (ROAST_PROFILES.length - 1)));
+  };
+
   return (
     <section className="bg-cream-warm py-28 md:py-36">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
@@ -308,47 +391,166 @@ function RoastSlider() {
               du gehst.
             </h2>
             <p className="mt-5 text-muted-foreground max-w-md">
-              Bewege den Slider und sieh in Echtzeit, wie sich Bohne, Aroma und Profil verändern.
+              Greif den Knopf, zieh ihn — und spür, wie sich Bohne, Säure und Aroma in Echtzeit
+              verändern.
             </p>
+            <div className="mt-8 grid grid-cols-3 gap-3 max-w-sm">
+              <Readout label="Temperatur" value={`${liveTemp.toFixed(0)}°C`} />
+              <Readout label="Röstzeit" value={`${liveTime.toFixed(1)} min`} />
+              <Readout label="Agtron" value={liveAgtron.toFixed(0)} />
+            </div>
           </div>
+
           <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-border bg-card p-8 md:p-10">
-              <div className="flex items-center justify-center mb-8 gap-12">
+            <div className="relative rounded-3xl border border-border bg-card p-8 md:p-12 overflow-hidden">
+              {/* Bean morph */}
+              <div className="flex items-center justify-center mb-10 h-40">
                 <motion.div
-                  key={p.id}
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="h-32 w-48 rounded-[50%] shadow-[inset_-6px_-8px_18px_rgba(0,0,0,0.25)]"
-                  style={{ background: p.color }}
-                />
+                  className="relative h-32 w-48 rounded-[50%]"
+                  animate={{
+                    background: p.color,
+                    scale: dragging ? 1.06 : 1,
+                    rotate: (idxFloat - 1) * 4,
+                  }}
+                  transition={{ type: "spring", stiffness: 220, damping: 22 }}
+                  style={{
+                    boxShadow:
+                      "inset -8px -10px 22px rgba(0,0,0,0.32), inset 6px 8px 18px rgba(255,255,255,0.06)",
+                  }}
+                >
+                  {/* steam */}
+                  {[0, 1, 2].map((s) => (
+                    <motion.span
+                      key={s}
+                      className="absolute left-1/2 top-0 h-10 w-1 -translate-x-1/2 rounded-full bg-foreground/15"
+                      animate={{ y: [-4, -36], opacity: [0, 0.7, 0], scaleX: [1, 1.6, 0.4] }}
+                      transition={{
+                        duration: 2.4 + s * 0.4,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                        delay: s * 0.6,
+                      }}
+                      style={{ left: `${40 + s * 12}%` }}
+                    />
+                  ))}
+                </motion.div>
               </div>
-              <div className="px-2">
-                <input
-                  type="range"
-                  min={0}
-                  max={2}
-                  step={1}
-                  value={i}
-                  onChange={(e) => setI(Number(e.target.value))}
-                  className="w-full accent-amber"
-                />
+
+              {/* Tactile slider */}
+              <div className="px-2 select-none">
+                <div
+                  ref={trackRef}
+                  onPointerDown={onPointerDown}
+                  onPointerMove={onPointerMove}
+                  onPointerUp={onPointerUp}
+                  onPointerCancel={onPointerUp}
+                  className="relative h-12 cursor-grab active:cursor-grabbing touch-none"
+                  role="slider"
+                  tabIndex={0}
+                  aria-valuemin={0}
+                  aria-valuemax={2}
+                  aria-valuenow={i}
+                  aria-label="Röstgrad"
+                  onKeyDown={onKey}
+                >
+                  {/* track gradient */}
+                  <div
+                    className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-2 rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, oklch(0.62 0.10 70), oklch(0.40 0.08 50), oklch(0.20 0.04 30))",
+                    }}
+                  />
+                  {/* ticks */}
+                  {ROAST_PROFILES.map((_, n) => {
+                    const pos = n / (ROAST_PROFILES.length - 1);
+                    const active = n === i;
+                    return (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => setT(pos)}
+                        aria-label={ROAST_PROFILES[n].label}
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 grid place-items-center"
+                        style={{ left: `${pos * 100}%` }}
+                      >
+                        <span
+                          className={`block rounded-full transition-all duration-300 ${active ? "h-4 w-4 bg-amber ring-4 ring-amber/25" : "h-2 w-2 bg-foreground/40"}`}
+                        />
+                      </button>
+                    );
+                  })}
+                  {/* knob */}
+                  <motion.div
+                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-none"
+                    animate={{
+                      left: `${t * 100}%`,
+                      scale: dragging ? 1.15 : 1,
+                    }}
+                    transition={
+                      dragging
+                        ? { duration: 0 }
+                        : { type: "spring", stiffness: 360, damping: 26 }
+                    }
+                  >
+                    <div className="relative">
+                      <span
+                        className="block h-10 w-10 rounded-full border border-foreground/15 bg-card shadow-[0_10px_28px_-8px_rgba(0,0,0,0.35),inset_0_-3px_6px_rgba(0,0,0,0.12),inset_0_2px_3px_rgba(255,255,255,0.6)]"
+                      />
+                      <span
+                        className="absolute inset-1.5 rounded-full"
+                        style={{ background: p.color }}
+                      />
+                      {/* value bubble */}
+                      <motion.div
+                        initial={false}
+                        animate={{ opacity: dragging ? 1 : 0, y: dragging ? -6 : 0 }}
+                        className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-foreground text-background px-3 py-1 text-[0.7rem] uppercase tracking-[0.18em]"
+                      >
+                        {p.label}
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </div>
+
                 <div className="mt-3 flex justify-between text-xs uppercase tracking-[0.2em] text-muted-foreground">
                   {ROAST_PROFILES.map((r) => (
                     <span key={r.id}>{r.label}</span>
                   ))}
                 </div>
               </div>
-              <motion.div
-                key={`txt-${p.id}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-8 border-t border-border pt-6"
-              >
-                <h3 className="font-display text-2xl">
-                  {p.label} · {p.aroma}
-                </h3>
-                <p className="mt-2 text-muted-foreground text-sm">{p.profile}</p>
-              </motion.div>
+
+              {/* Profile body */}
+              <div className="mt-10 border-t border-border pt-6 grid sm:grid-cols-2 gap-6">
+                <motion.div
+                  key={`txt-${p.id}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <h3 className="font-display text-2xl">
+                    {p.label} · {p.aroma}
+                  </h3>
+                  <p className="mt-2 text-muted-foreground text-sm">{p.profile}</p>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {p.chips.map((c) => (
+                      <motion.span
+                        key={c}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-full border border-foreground/15 px-2.5 py-1 text-[0.7rem] uppercase tracking-[0.16em]"
+                      >
+                        {c}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+                <div className="space-y-3">
+                  <Meter label="Säure" value={liveAcidity} />
+                  <Meter label="Körper" value={liveBody} />
+                  <Meter label="Süße" value={liveSweet} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -356,6 +558,36 @@ function RoastSlider() {
     </section>
   );
 }
+
+function Readout({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-3">
+      <div className="text-[0.62rem] uppercase tracking-[0.22em] text-muted-foreground">
+        {label}
+      </div>
+      <div className="font-display text-xl tabular-nums mt-0.5">{value}</div>
+    </div>
+  );
+}
+
+function Meter({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <div className="flex justify-between text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
+        <span>{label}</span>
+        <span className="tabular-nums">{Math.round(value * 100)}</span>
+      </div>
+      <div className="mt-1.5 h-1.5 rounded-full bg-foreground/10 overflow-hidden">
+        <motion.div
+          className="h-full bg-amber"
+          animate={{ width: `${value * 100}%` }}
+          transition={{ type: "spring", stiffness: 180, damping: 24 }}
+        />
+      </div>
+    </div>
+  );
+}
+
 
 function Hotspots() {
   const items = [
