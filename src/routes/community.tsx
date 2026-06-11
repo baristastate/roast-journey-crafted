@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { POSTS, type Post } from "@/lib/data";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { Reveal } from "@/components/shared/Reveal";
+import { PremiumHero } from "@/components/shared/PremiumHero";
 import heroImg from "@/assets/community-hero.jpg";
 
 export const Route = createFileRoute("/community")({
