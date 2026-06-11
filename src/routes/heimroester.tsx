@@ -835,29 +835,50 @@ function FAQ() {
   ];
   const [open, setOpen] = useState(0);
   return (
-    <section className="bg-cream-warm py-28 md:py-36 border-t border-border">
-      <div className="mx-auto max-w-[1100px] px-5 md:px-10">
-        <Eyebrow>Häufige Fragen</Eyebrow>
-        <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
-          Was du vielleicht noch wissen willst.
-        </h2>
-        <ul className="mt-12 divide-y divide-border border-y border-border">
+    <section className="bg-cream-warm section-y border-t border-border">
+      <div className="container-narrow">
+        <header className="section-head">
+          <Reveal>
+            <div>
+              <Eyebrow>Häufige Fragen</Eyebrow>
+              <h2 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.2rem,4.8vw,4rem)] text-balance">
+                Was du vielleicht{" "}
+                <em className="not-italic display-italic text-magenta-coral">noch wissen willst.</em>
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="max-w-[38ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:text-right lg:ml-auto">
+              Antworten auf das, was Einsteiger uns am häufigsten fragen.
+            </p>
+          </Reveal>
+        </header>
+        <ul className="divide-y divide-border border-y border-border">
           {items.map(([q, a], i) => (
             <li key={q}>
               <button
                 onClick={() => setOpen(open === i ? -1 : i)}
-                className="w-full text-left py-6 flex items-start gap-6"
+                className="w-full text-left py-7 flex items-start gap-6 group"
+                aria-expanded={open === i}
               >
-                <span className="font-display text-sm text-amber w-8">0{i + 1}</span>
-                <span className="flex-1 font-display text-2xl md:text-3xl">{q}</span>
-                <span className="text-2xl font-light pt-1">{open === i ? "−" : "+"}</span>
+                <span className="font-display font-bold text-sm text-amber w-10 tabular-nums pt-2">
+                  0{i + 1}
+                </span>
+                <span className="flex-1 font-display font-bold text-xl md:text-2xl leading-snug group-hover:text-magenta-coral transition-colors">
+                  {q}
+                </span>
+                <span className="text-2xl font-light pt-1 text-muted-foreground">
+                  {open === i ? "−" : "+"}
+                </span>
               </button>
               <motion.div
                 initial={false}
                 animate={{ height: open === i ? "auto" : 0, opacity: open === i ? 1 : 0 }}
                 className="overflow-hidden"
               >
-                <p className="pb-6 pl-8 sm:pl-14 pr-4 sm:pr-10 text-muted-foreground max-w-3xl">{a}</p>
+                <p className="pb-7 pl-10 sm:pl-16 pr-4 sm:pr-10 text-muted-foreground leading-relaxed max-w-3xl">
+                  {a}
+                </p>
               </motion.div>
             </li>
           ))}
@@ -869,25 +890,21 @@ function FAQ() {
 
 function CTA() {
   return (
-    <section className="theme-dark bg-espresso text-cream py-28 md:py-36 text-center">
-      <div className="mx-auto max-w-[900px] px-5 md:px-10">
+    <section className="theme-dark bg-espresso text-cream section-y text-center">
+      <div className="container-narrow">
         <Reveal>
-          <h2 className="font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl leading-[1]">
-            Bereit für deine
-            <br />
+          <div className="text-[0.7rem] uppercase tracking-[0.32em] text-cyan-bloom mb-5">
+            Letzter Schritt
+          </div>
+          <h2 className="font-display font-bold tracking-display leading-[0.95] text-[clamp(2.6rem,6vw,5.5rem)] text-balance max-w-3xl mx-auto">
+            Bereit für deine{" "}
             <em className="not-italic display-italic text-magenta-coral">erste eigene Röstung?</em>
           </h2>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/shop"
-              className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3.5 text-sm font-semibold text-ink-black hover:-translate-y-px transition-transform"
-            >
-              Heimröster kaufen
+            <Link to="/shop" className="btn-pill btn-primary btn-shimmer">
+              Heimröster kaufen →
             </Link>
-            <Link
-              to="/kaffee"
-              className="rounded-full border border-cream/30 px-6 py-3.5 text-sm hover:border-cyan-bloom hover:text-cyan-bloom transition-colors"
-            >
+            <Link to="/kaffee" className="btn-pill btn-ghost">
               Rohkaffee ansehen
             </Link>
           </div>
@@ -896,3 +913,4 @@ function CTA() {
     </section>
   );
 }
+
