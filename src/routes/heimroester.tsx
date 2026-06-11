@@ -602,27 +602,38 @@ function Hotspots() {
     ["05", "Für zuhause gemacht", "Leise, kompakt, geruchsarm — der Küche zugewandt."],
   ];
   return (
-    <section className="theme-dark bg-espresso text-cream py-28 md:py-36 border-y border-cream/10">
-      <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <Reveal>
-          <Eyebrow>Maschine</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1] max-w-3xl">
-            Fünf Hebel, mit denen du deinen Kaffee in der Hand hast.
-          </h2>
-        </Reveal>
-        <ul className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10 rounded-3xl overflow-hidden">
+    <section className="theme-dark bg-espresso text-cream section-y border-y border-cream/10">
+      <div className="container-x">
+        <header className="section-head">
+          <Reveal>
+            <div>
+              <Eyebrow dark>Maschine</Eyebrow>
+              <h2 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.4rem,5.2vw,4.5rem)] text-balance max-w-3xl">
+                Fünf Hebel, mit denen du deinen{" "}
+                <em className="not-italic display-italic text-magenta-coral">Kaffee in der Hand hast.</em>
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="max-w-[40ch] text-[0.95rem] leading-relaxed text-cream/65 lg:text-right lg:ml-auto">
+              Jeder Parameter ist dokumentiert, jeder Knopf macht eine Sache. Keine Magie — nur ehrliches Handwerk.
+            </p>
+          </Reveal>
+        </header>
+        <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10 rounded-3xl overflow-hidden">
           {items.map(([n, t, b], i) => (
             <Reveal key={n} delay={i * 0.05}>
-              <li className="bg-espresso p-8 h-full">
-                <div className="font-display text-amber text-3xl">{n}</div>
-                <h3 className="mt-3 font-display text-2xl">{t}</h3>
-                <p className="mt-3 text-cream/65 text-sm">{b}</p>
+              <li className="bg-espresso p-8 md:p-9 h-full transition-colors duration-300 hover:bg-espresso-soft">
+                <div className="font-display font-bold text-amber text-3xl tabular-nums">{n}</div>
+                <h3 className="mt-4 font-display font-bold text-xl md:text-2xl leading-snug">{t}</h3>
+                <p className="mt-3 text-cream/65 text-sm leading-relaxed">{b}</p>
               </li>
             </Reveal>
           ))}
         </ul>
       </div>
     </section>
+
   );
 }
 
@@ -641,16 +652,25 @@ function MiniDemo() {
   const r = roasts.find((rr) => rr.id === roast);
 
   return (
-    <section id="sortiment" className="bg-background py-28 md:py-36">
-      <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="max-w-2xl">
-          <Eyebrow>Mini-Demo</Eyebrow>
-          <h2 className="mt-4 font-display tracking-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
-            Teste deine
-            <br />
-            erste Röstung.
-          </h2>
-        </div>
+    <section id="sortiment" className="bg-background section-y">
+      <div className="container-x">
+        <header className="section-head">
+          <Reveal>
+            <div>
+              <Eyebrow>Mini-Demo</Eyebrow>
+              <h2 className="mt-4 font-display font-bold tracking-display leading-[0.95] text-[clamp(2.4rem,5.2vw,4.5rem)] text-balance">
+                Teste deine{" "}
+                <em className="not-italic display-italic text-magenta-coral">erste Röstung.</em>
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="max-w-[40ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:text-right lg:ml-auto">
+              Drei Schritte — Bohne, Röstgrad, Start. So fühlt sich die echte App-Steuerung an.
+            </p>
+          </Reveal>
+        </header>
+
         <div className="mt-12 grid md:grid-cols-3 gap-4">
           <DemoStep n={1} title="Rohkaffee auswählen" active={!bean}>
             <div className="grid gap-2">
