@@ -101,15 +101,13 @@ function Hero() {
       orb="gold"
       minH="100svh"
     >
-      <a
-        href="#sortiment"
-        className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3.5 text-sm font-semibold text-ink-black hover:-translate-y-px transition-transform shadow-[0_12px_40px_-10px_rgba(245,200,66,0.45)]"
-      >
+      <a href="#sortiment" className="btn-pill btn-primary btn-shimmer">
         Heimröster entdecken
       </a>
-      <a href="#so-gehts" className="rounded-full border border-cream/30 px-6 py-3.5 text-sm">
+      <a href="#so-gehts" className="btn-pill btn-ghost">
         So funktioniert es
       </a>
+
     </PremiumHero>
   );
 }
@@ -705,7 +703,7 @@ function MiniDemo() {
             <button
               disabled={!roast}
               onClick={() => setStarted(true)}
-              className="w-full rounded-xl bg-amber text-espresso py-3 disabled:opacity-40 font-medium"
+              className="w-full rounded-xl bg-brand-accent text-brand-accent-foreground py-3 disabled:opacity-40 font-medium"
             >
               Röstung starten →
             </button>
@@ -747,7 +745,7 @@ function MiniDemo() {
             {HEIMROESTER.map((m) => (
               <Reveal key={m.id}>
                 <article className="tile group h-full">
-                  <div className="aspect-[5/4] bg-espresso overflow-hidden">
+                  <div className="aspect-[5/4] bg-surface-feature overflow-hidden">
                     <img
                       src={m.image}
                       alt={m.name}
@@ -799,7 +797,7 @@ function DemoStep({
     >
       <div className="flex items-center gap-3 mb-4">
         <span
-          className={`grid h-7 w-7 place-items-center rounded-full text-xs ${active ? "bg-amber text-espresso" : "bg-muted text-muted-foreground"}`}
+          className={`grid h-7 w-7 place-items-center rounded-full text-xs ${active ? "bg-brand-accent text-brand-accent-foreground" : "bg-muted text-muted-foreground"}`}
         >
           {n}
         </span>

@@ -111,7 +111,7 @@ function ShopPage() {
           { text: "Auf einer Seite.", italic: true },
         ]}
         subtitle="Frisch geröstete Specialty-Kaffees und Heimröster — kuratiert von 12 deutschen Röstereien."
-        bgClass="theme-dark bg-ink-black text-pearl-white"
+        bgClass="theme-dark bg-surface-feature text-surface-feature-foreground"
         overlay="dark"
         orb="magenta"
         minH="78svh"
@@ -278,23 +278,23 @@ function ShopPage() {
         >
           {/* HEIMRÖSTER */}
           {showHeimroester && (
-            <section className="relative bg-ink-black py-16 md:py-20 border-b border-border overflow-hidden">
+            <section className="theme-dark relative bg-background text-foreground py-16 md:py-20 border-b border-border overflow-hidden">
               {/* Background glow */}
               <div className="pointer-events-none absolute inset-0">
-                <div className="absolute top-0 left-1/4 h-[300px] w-[500px] rounded-full bg-magenta-coral/5 blur-[80px]" />
+                <div className="absolute top-0 left-1/4 h-[300px] w-[500px] rounded-full bg-brand-accent/5 blur-[80px]" />
               </div>
               <div className="mx-auto max-w-[1400px] px-5 md:px-10 relative">
                 <div className="flex items-baseline justify-between mb-8">
-                  <h2 className="font-display font-bold text-3xl md:text-4xl text-pearl-white">Heimröster</h2>
-                  <span className="text-sm text-pearl-white/40">
+                  <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">Heimröster</h2>
+                  <span className="text-sm text-muted-foreground">
                     {HEIMROESTER.length} Modelle
                   </span>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
                   {HEIMROESTER.map((m, i) => (
                     <Reveal key={m.id} delay={i * 0.1}>
-                      <article className="group rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden hover:border-magenta-coral/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_0_0_1px_rgba(245,200,66,0.2),0_40px_80px_-24px_rgba(245,200,66,0.15)]">
-                        <div className="relative aspect-[5/4] overflow-hidden bg-ink-black/50">
+                      <article className="tile group">
+                        <div className="relative aspect-[5/4] overflow-hidden bg-muted">
                           <img
                             src={m.image}
                             alt={m.name}
@@ -305,9 +305,9 @@ function ShopPage() {
                           <div className="absolute inset-0 overflow-hidden pointer-events-none">
                             <div className="img-shine absolute inset-0" />
                           </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
-                          <div className="absolute bottom-5 left-6 text-pearl-white">
-                            <div className="text-[0.65rem] uppercase tracking-[0.24em] text-pearl-white/50 mb-1">
+                          <div className="absolute inset-0 bg-gradient-to-t from-surface-feature/85 via-surface-feature/20 to-transparent" />
+                          <div className="absolute bottom-5 left-6 text-surface-feature-foreground">
+                            <div className="text-[0.65rem] uppercase tracking-[0.24em] opacity-60 mb-1">
                               Heimröster
                             </div>
                             <div className="font-display font-bold text-2xl">{m.name}</div>
@@ -319,12 +319,12 @@ function ShopPage() {
                             ].map(([v, l]) => (
                               <div
                                 key={l}
-                                className="rounded-xl bg-ink-black/80 backdrop-blur px-3 py-1.5 text-center border border-white/10"
+                                className="rounded-xl badge-outline px-3 py-1.5 text-center normal-case tracking-normal"
                               >
-                                <div className="text-[0.68rem] font-semibold text-pearl-white">
+                                <div className="text-[0.68rem] font-semibold text-foreground">
                                   {v}
                                 </div>
-                                <div className="text-[0.58rem] text-pearl-white/45 uppercase tracking-[0.15em]">
+                                <div className="text-[0.58rem] text-muted-foreground uppercase tracking-[0.15em]">
                                   {l}
                                 </div>
                               </div>
@@ -333,12 +333,12 @@ function ShopPage() {
                         </div>
                         <div className="p-7 flex items-center justify-between gap-4">
                           <div>
-                            <p className="text-pearl-white/50 text-sm">{m.subtitle}</p>
-                            <div className="font-display font-bold text-3xl mt-2 text-pearl-white">
+                            <p className="text-muted-foreground text-sm">{m.subtitle}</p>
+                            <div className="font-display font-bold text-3xl mt-2 text-foreground">
                               {m.price.toLocaleString("de")} €
                             </div>
                           </div>
-                          <button className="btn-shimmer shrink-0 rounded-full bg-magenta-coral text-ink-black px-5 py-2.5 text-sm font-semibold hover:-translate-y-px transition-transform shadow-[0_8px_24px_-8px_rgba(245,200,66,0.4)]">
+                          <button className="btn-pill btn-primary btn-shimmer">
                             In den Warenkorb
                           </button>
                         </div>
@@ -348,6 +348,7 @@ function ShopPage() {
                 </div>
               </div>
             </section>
+
           )}
 
           {/* KAFFEE */}
@@ -457,21 +458,17 @@ function ShopPage() {
                                 {p.roast}
                               </span>
                               {p.bio && (
-                                <span className="text-[0.62rem] uppercase tracking-[0.2em] bg-raw-green text-espresso px-2 py-1 rounded-full">
-                                  Bio
-                                </span>
+                                <span className="badge badge-success">Bio</span>
                               )}
                             </div>
                             <div className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               {p.notes.map((n) => (
-                                <span
-                                  key={n}
-                                  className="text-[0.65rem] rounded-full bg-magenta-coral/90 text-espresso px-2 py-0.5"
-                                >
+                                <span key={n} className="badge badge-brand normal-case tracking-normal text-[0.65rem]">
                                   {n}
                                 </span>
                               ))}
                             </div>
+
                           </motion.div>
                           <div className="p-5">
                             <div className="text-[0.65rem] uppercase tracking-[0.22em] text-muted-foreground">
@@ -803,7 +800,7 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
     <AnimatePresence>
       {product && (
         <motion.div
-          className="fixed inset-0 z-[70] bg-espresso/65 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-8"
+          className="fixed inset-0 z-[70] bg-surface-feature/65 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -842,14 +839,12 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
               </div>
               <div className="mt-5 flex flex-wrap gap-1.5">
                 {product.notes.map((n) => (
-                  <span
-                    key={n}
-                    className="text-xs rounded-full bg-magenta-coral/15 text-foreground px-2.5 py-1"
-                  >
+                  <span key={n} className="badge badge-brand-soft normal-case tracking-normal text-xs">
                     {n}
                   </span>
                 ))}
               </div>
+
               <dl className="mt-8 grid grid-cols-2 gap-y-3 text-sm border-t border-border pt-6">
                 <dt className="text-muted-foreground">Röstgrad</dt>
                 <dd className="capitalize font-medium">{product.roast}</dd>
@@ -875,9 +870,10 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
                 <span className="font-display font-bold text-3xl">
                   {product.price.toFixed(2)} €
                 </span>
-                <button className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3 text-sm font-semibold text-espresso hover:-translate-y-px transition-transform">
+                <button className="btn-pill btn-primary btn-shimmer">
                   In den Warenkorb
                 </button>
+
               </div>
             </div>
           </motion.div>

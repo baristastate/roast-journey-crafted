@@ -68,13 +68,9 @@ export function HeimroesterTeaser() {
               loading="lazy"
             />
             {/* Editorial overlay tag */}
-            <div className="absolute top-5 left-5 right-5 flex items-center justify-between text-[0.6rem] uppercase tracking-[0.3em] text-pearl-white/80">
-              <span className="rounded-full bg-ink-black/60 backdrop-blur px-3 py-1.5 border border-pearl-white/15">
-                Modell · Drum 250
-              </span>
-              <span className="rounded-full bg-magenta-coral text-ink-black px-3 py-1.5 font-semibold">
-                Live
-              </span>
+            <div className="absolute top-5 left-5 right-5 flex items-center justify-between">
+              <span className="badge badge-outline">Modell · Drum 250</span>
+              <span className="badge badge-brand badge-live">Live</span>
             </div>
 
             {/* Hotspots */}
@@ -85,13 +81,14 @@ export function HeimroesterTeaser() {
             ].map((h, i) => (
               <div key={i} className="absolute" style={{ top: h.t, left: h.l }}>
                 <div className="relative">
-                  <span className="block h-3 w-3 rounded-full bg-cyan-bloom ring-4 ring-cyan-bloom/30 animate-[ping_2.5s_ease-out_infinite]" />
-                  <span className="absolute left-5 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink-black/85 backdrop-blur px-3 py-1 text-[0.68rem] border border-cyan-bloom/40 text-pearl-white">
+                  <span className="block h-3 w-3 rounded-full bg-brand-cyan ring-4 ring-brand-cyan/30 animate-[ping_2.5s_ease-out_infinite]" />
+                  <span className="absolute left-5 top-1/2 -translate-y-1/2 badge badge-outline normal-case tracking-normal text-[0.68rem]">
                     {h.lbl}
                   </span>
                 </div>
               </div>
             ))}
+
           </div>
         </Reveal>
       </div>
