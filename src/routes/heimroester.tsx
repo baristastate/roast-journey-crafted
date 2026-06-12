@@ -101,15 +101,13 @@ function Hero() {
       orb="gold"
       minH="100svh"
     >
-      <a
-        href="#sortiment"
-        className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3.5 text-sm font-semibold text-ink-black hover:-translate-y-px transition-transform shadow-[0_12px_40px_-10px_rgba(245,200,66,0.45)]"
-      >
+      <a href="#sortiment" className="btn-pill btn-primary btn-shimmer">
         Heimröster entdecken
       </a>
-      <a href="#so-gehts" className="rounded-full border border-cream/30 px-6 py-3.5 text-sm">
+      <a href="#so-gehts" className="btn-pill btn-ghost">
         So funktioniert es
       </a>
+
     </PremiumHero>
   );
 }
