@@ -870,9 +870,10 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
                 <span className="font-display font-bold text-3xl">
                   {product.price.toFixed(2)} €
                 </span>
-                <button className="btn-shimmer rounded-full bg-magenta-coral px-6 py-3 text-sm font-semibold text-espresso hover:-translate-y-px transition-transform">
+                <button className="btn-pill btn-primary btn-shimmer">
                   In den Warenkorb
                 </button>
+
               </div>
             </div>
           </motion.div>
