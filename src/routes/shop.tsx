@@ -844,7 +844,7 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
                 {product.notes.map((n) => (
                   <span
                     key={n}
-                    className="text-xs rounded-full bg-magenta-coral/15 text-espresso px-2.5 py-1"
+                    className="text-xs rounded-full bg-magenta-coral/15 text-foreground px-2.5 py-1"
                   >
                     {n}
                   </span>
