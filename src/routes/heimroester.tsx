@@ -380,7 +380,7 @@ function RoastSlider() {
   };
 
   return (
-    <section className="bg-cream-warm py-28 md:py-36">
+    <section className="theme-light bg-cream-warm py-28 md:py-36">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-5">
@@ -835,7 +835,7 @@ function FAQ() {
   ];
   const [open, setOpen] = useState(0);
   return (
-    <section className="bg-cream-warm section-y border-t border-border">
+    <section className="theme-light bg-cream-warm section-y border-t border-border">
       <div className="container-narrow">
         <header className="section-head">
           <Reveal>

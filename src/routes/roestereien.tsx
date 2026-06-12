@@ -120,7 +120,7 @@ function Page() {
       />
 
       {/* PARTNERS */}
-      <section className="bg-cream-warm section-y border-t border-border">
+      <section className="theme-light bg-cream-warm section-y border-t border-border">
         <div className="container-x">
           <header className="section-head">
             <Reveal>
