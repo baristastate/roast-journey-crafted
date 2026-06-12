@@ -123,7 +123,7 @@ export function CommunityPreview() {
           <p className="text-sm text-muted-foreground max-w-md text-center sm:text-left">
             Werde Teil unserer Community aus leidenschaftlichen Kaffeetrinkern, Röstern und Home-Baristas.
           </p>
-          <Link to="/community" className="btn-pill bg-ink-black text-pearl-white">
+          <Link to="/community" className="btn-pill bg-foreground text-background">
             Jetzt mitmachen →
           </Link>
         </div>
