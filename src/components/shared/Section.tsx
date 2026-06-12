@@ -8,7 +8,7 @@ type Size = "sm" | "md" | "lg";
 const TONES: Record<Tone, string> = {
   light: "bg-background text-foreground",
   dark: "theme-dark bg-ink-black text-pearl-white",
-  warm: "bg-cream-warm text-foreground",
+  warm: "theme-light bg-cream-warm text-foreground",
   espresso: "theme-dark bg-espresso text-cream",
 };
 
