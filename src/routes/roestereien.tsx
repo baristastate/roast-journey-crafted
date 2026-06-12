@@ -165,11 +165,12 @@ function Page() {
                     <p className="mt-5 text-sm text-muted-foreground leading-relaxed">{r.intro}</p>
                     <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border pt-4">
                       {r.aromas.map((a) => (
-                        <span key={a} className="text-[0.7rem] uppercase tracking-[0.14em] rounded-full bg-amber/15 px-2.5 py-1">
+                        <span key={a} className="badge badge-brand-soft normal-case tracking-[0.14em] text-[0.7rem]">
                           {a}
                         </span>
                       ))}
                     </div>
+
                   </div>
                 </article>
               </Reveal>
