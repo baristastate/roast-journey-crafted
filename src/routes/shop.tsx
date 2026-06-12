@@ -800,7 +800,7 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
     <AnimatePresence>
       {product && (
         <motion.div
-          className="fixed inset-0 z-[70] bg-espresso/65 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-8"
+          className="fixed inset-0 z-[70] bg-surface-feature/65 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
