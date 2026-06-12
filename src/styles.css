@@ -47,6 +47,25 @@
   --color-cyan-bloom: var(--cyan-bloom);
   --color-soft-silver: var(--soft-silver);
 
+  /* Constant brand surfaces — identical in light & dark, ideal for editorial
+     feature cards, hero tiles and image overlays where brand identity must
+     not flip with theme. */
+  --color-surface-feature: var(--ink-black);
+  --color-surface-feature-foreground: var(--pearl-white);
+  --color-surface-feature-muted: rgba(250, 250, 247, 0.65);
+  --color-surface-feature-subtle: rgba(250, 250, 247, 0.10);
+
+  /* Constant brand accents — badges/pills that must always read as "brand",
+     regardless of section theme. */
+  --color-brand-accent: var(--magenta-coral);
+  --color-brand-accent-foreground: var(--ink-black);
+  --color-brand-cyan: var(--cyan-bloom);
+  --color-brand-cyan-foreground: var(--ink-black);
+  --color-brand-success: var(--raw-green);
+  --color-brand-success-foreground: var(--ink-black);
+
+
+
   /* Semantic */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
