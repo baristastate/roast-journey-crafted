@@ -53,7 +53,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="rounded-full bg-amber px-4 py-2 text-sm font-medium text-espresso"
+            className="rounded-full bg-brand-accent px-4 py-2 text-sm font-medium text-brand-accent-foreground"
           >
             Nochmal versuchen
           </button>
