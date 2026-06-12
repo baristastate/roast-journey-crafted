@@ -222,12 +222,10 @@ function Page() {
                   placeholder="Stil, Lots, was euch wichtig ist."
                 />
               </label>
-              <button
-                type="submit"
-                className="btn-shimmer mt-4 rounded-full bg-amber px-6 py-3 text-sm font-semibold text-espresso hover:-translate-y-px transition-transform"
-              >
+              <button type="submit" className="btn-pill btn-primary btn-shimmer mt-4">
                 Anfrage senden →
               </button>
+
             </form>
           </Reveal>
         </div>
