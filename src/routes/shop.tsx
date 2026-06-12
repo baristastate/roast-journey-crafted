@@ -352,7 +352,7 @@ function ShopPage() {
 
           {/* KAFFEE */}
           {showKaffee && (
-            <section className="relative bg-cream-warm py-16 md:py-24 overflow-hidden">
+            <section className="theme-light relative bg-cream-warm py-16 md:py-24 overflow-hidden">
               {/* Ambient background glow */}
               <div className="pointer-events-none absolute inset-0">
                 <div className="absolute top-1/3 right-0 h-[400px] w-[400px] rounded-full bg-magenta-coral/8 blur-[100px]" />
@@ -844,7 +844,7 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
                 {product.notes.map((n) => (
                   <span
                     key={n}
-                    className="text-xs rounded-full bg-magenta-coral/15 text-espresso px-2.5 py-1"
+                    className="text-xs rounded-full bg-magenta-coral/15 text-foreground px-2.5 py-1"
                   >
                     {n}
                   </span>
