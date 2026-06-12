@@ -839,14 +839,12 @@ function ProductOverlay({ product, onClose }: { product: Product | null; onClose
               </div>
               <div className="mt-5 flex flex-wrap gap-1.5">
                 {product.notes.map((n) => (
-                  <span
-                    key={n}
-                    className="text-xs rounded-full bg-magenta-coral/15 text-foreground px-2.5 py-1"
-                  >
+                  <span key={n} className="badge badge-brand-soft normal-case tracking-normal text-xs">
                     {n}
                   </span>
                 ))}
               </div>
+
               <dl className="mt-8 grid grid-cols-2 gap-y-3 text-sm border-t border-border pt-6">
                 <dt className="text-muted-foreground">Röstgrad</dt>
                 <dd className="capitalize font-medium">{product.roast}</dd>
