@@ -111,7 +111,7 @@ function ShopPage() {
           { text: "Auf einer Seite.", italic: true },
         ]}
         subtitle="Frisch geröstete Specialty-Kaffees und Heimröster — kuratiert von 12 deutschen Röstereien."
-        bgClass="theme-dark bg-ink-black text-pearl-white"
+        bgClass="theme-dark bg-surface-feature text-surface-feature-foreground"
         overlay="dark"
         orb="magenta"
         minH="78svh"
