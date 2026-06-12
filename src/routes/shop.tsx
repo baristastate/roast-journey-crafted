@@ -457,21 +457,17 @@ function ShopPage() {
                                 {p.roast}
                               </span>
                               {p.bio && (
-                                <span className="text-[0.62rem] uppercase tracking-[0.2em] bg-raw-green text-espresso px-2 py-1 rounded-full">
-                                  Bio
-                                </span>
+                                <span className="badge badge-success">Bio</span>
                               )}
                             </div>
                             <div className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               {p.notes.map((n) => (
-                                <span
-                                  key={n}
-                                  className="text-[0.65rem] rounded-full bg-magenta-coral/90 text-espresso px-2 py-0.5"
-                                >
+                                <span key={n} className="badge badge-brand normal-case tracking-normal text-[0.65rem]">
                                   {n}
                                 </span>
                               ))}
                             </div>
+
                           </motion.div>
                           <div className="p-5">
                             <div className="text-[0.65rem] uppercase tracking-[0.22em] text-muted-foreground">
