@@ -30,27 +30,27 @@ export function CommunityPreview() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
         {/* Featured */}
         <Reveal className="lg:col-span-7 lg:row-span-2">
-          <article className="group relative h-full min-h-[460px] overflow-hidden rounded-3xl bg-ink-black">
+          <article className="card-feature group relative h-full min-h-[460px]">
             <img
               src={featured.image}
               alt={featured.title}
               className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-[1.04]"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-feature via-surface-feature/40 to-transparent" />
             <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
-              <div className="text-[0.62rem] uppercase tracking-[0.28em] text-cyan-bloom mb-3">
+              <div className="text-[0.62rem] uppercase tracking-[0.28em] text-brand-cyan mb-3">
                 Editor’s Pick · {featured.category}
               </div>
-              <h3 className="font-display font-bold text-pearl-white text-3xl md:text-4xl leading-[1.02] max-w-xl">
+              <h3 className="font-display font-bold text-3xl md:text-4xl leading-[1.02] max-w-xl">
                 {featured.title}
               </h3>
-              <p className="mt-4 text-pearl-white/65 text-sm md:text-base leading-relaxed max-w-md">
+              <p className="feature-muted mt-4 text-sm md:text-base leading-relaxed max-w-md">
                 {featured.teaser}
               </p>
-              <div className="mt-6 flex items-center justify-between text-xs text-pearl-white/45 border-t border-pearl-white/10 pt-4">
+              <div className="feature-rule mt-6 flex items-center justify-between text-xs feature-muted border-t pt-4">
                 <span>{featured.author} · {featured.readTime}</span>
-                <span className="inline-flex items-center gap-1 text-magenta-coral/80">♥ 120</span>
+                <span className="inline-flex items-center gap-1 text-brand-accent">♥ 120</span>
               </div>
             </div>
           </article>
@@ -59,29 +59,30 @@ export function CommunityPreview() {
         {/* Two medium cards right */}
         {rest.slice(0, 2).map((p, i) => (
           <Reveal key={p.id} delay={i * 0.07} className="lg:col-span-5">
-            <article className="group relative overflow-hidden rounded-3xl bg-ink-black min-h-[220px] h-full">
+            <article className="card-feature group relative min-h-[220px] h-full">
               <img
                 src={p.image}
                 alt={p.title}
                 className="absolute inset-0 h-full w-full object-cover opacity-65 transition-transform duration-700 group-hover:scale-[1.04]"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-black/90 via-ink-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-feature/90 via-surface-feature/20 to-transparent" />
               <div className="absolute inset-0 p-6 md:p-7 flex flex-col justify-end">
-                <div className="text-[0.6rem] uppercase tracking-[0.26em] text-cyan-bloom mb-2">
+                <div className="text-[0.6rem] uppercase tracking-[0.26em] text-brand-cyan mb-2">
                   {p.category}
                 </div>
-                <h3 className="font-display font-bold text-pearl-white text-xl md:text-2xl leading-tight">
+                <h3 className="font-display font-bold text-xl md:text-2xl leading-tight">
                   {p.title}
                 </h3>
-                <div className="mt-3 flex items-center justify-between text-[0.7rem] text-pearl-white/40">
+                <div className="mt-3 flex items-center justify-between text-[0.7rem] feature-muted">
                   <span>{p.author} · {p.readTime}</span>
-                  <span className="text-magenta-coral/70">♥ {120 + i * 37}</span>
+                  <span className="text-brand-accent/80">♥ {120 + i * 37}</span>
                 </div>
               </div>
             </article>
           </Reveal>
         ))}
+
 
         {/* Bottom row — 3 uniform small cards */}
         {rest.slice(2, 5).map((p, i) => (
