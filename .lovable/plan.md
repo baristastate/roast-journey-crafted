@@ -1,152 +1,173 @@
+# Port-Plan: React App → Shopify Liquid Theme
 
-# Barista State — Roast Journey Interface
+**Ziel:** `barista-state-theme.zip`, das du in Shopify Admin → Themes → "Add theme → Upload zip" hochladen kannst. Alle visuellen Effekte, Animationen, Inhalte aus der React-App werden in Liquid + CSS + Vanilla JS reproduziert.
 
-A premium, editorial coffee experience. Not a shop template: a scroll-driven journey from green bean to cup, with interactive tools (Aroma Wheel, Coffee Finder, Roast Slider) and a tactile, warm visual language.
+---
 
-## Design system
+## Erwartungs-Reality-Check (wichtig vorab)
 
-**Palette (oklch tokens in `src/styles.css`)**
-- `--espresso` deep near-black brown (background base)
-- `--cream` warm off-white (light surfaces)
-- `--beige` warm sand (secondary surface)
-- `--roast` mid roasted brown
-- `--amber` copper accent (CTAs, highlights)
-- `--raw-green` muted raw-coffee green (small accents, finder/quiz)
-- Plus semantic mappings (background, foreground, primary, muted, border) for both light and dark sections; sections switch palette as the journey progresses.
+| Feature der React-App | Im Liquid-Theme |
+|---|---|
+| Framer-Motion (`useScroll`, `useTransform`, shared-layout) | Ersetzt durch **Intersection Observer + CSS `animation-timeline: view()` + CSS-Transitions**. Visuell gleichwertig. |
+| Shared-Layout Modal (Produkt → Overlay expansion) | **Vereinfacht zu FLIP-Animation** (vanilla JS) — Klick-Bild fliegt zur Overlay-Position. ~90% des Effekts. |
+| RoastSequence (260svh sticky scroll, 22 OKLCH-Beans) | **Sticky + Scroll-Timeline CSS-Animationen**, 1:1 möglich da modernes CSS dies nativ kann. |
+| Roast-Slider (Pointer-Drag, Spring-Physik, live OKLCH-Interpolation) | Vanilla JS Pointer-Events + `requestAnimationFrame`. **1:1 reproduzierbar**, ~250 Zeilen JS. |
+| Aroma-Wheel (SVG, klickbare Segmente, rotierender Außenring) | **Inline SVG in Liquid + Vanilla JS**. 1:1. |
+| Custom Cursor (Dot + Ring mit Lerp) | **1:1** via Vanilla JS. |
+| Theme-Toggle (Light/Dark + System) | **1:1** via inline `<script>` in `theme.liquid` + localStorage. |
+| Coffee-Finder Quiz (Multi-Step, Produkt-Scoring) | **1:1** Vanilla JS, Produkte aus Shopify-Liquid-Loop. |
+| TanStack Router | **Shopify URL-Struktur**: `/` Home, `/collections/kaffee`, `/collections/heimroester`, `/pages/heimroester`, `/pages/community`, `/pages/roestereien`, `/pages/ueber-uns`. Redirect `/kaffee → /shop` via `redirects.csv`. |
+| Daten aus `data.ts` (PRODUCTS, ROASTERIES, POSTS) | **Shopify Products + Metafields + Metaobjects + Blog Articles** (siehe Step 4). |
 
-**Typography**
-- Display: an elegant modern serif (e.g. Fraunces or Instrument Serif) for headlines and editorial moments.
-- UI/body: a refined geometric sans (e.g. Inter Tight or Geist) for navigation, product cards, body copy.
-- Loaded via `<link>` in `__root.tsx`, registered as `--font-display` / `--font-sans` in `@theme`.
+**Was du nach dem Upload manuell tun musst** (kann ich nicht im ZIP automatisieren):
+1. **8 Demo-Produkte** + **2 Heimröster-Produkte** anlegen (oder per CSV-Import — ich liefere `products.csv`).
+2. **4 Röstereien als Metaobjects** anlegen (ich liefere `metaobject-definitions.json` als Anleitung).
+3. **Blog "Community"** mit 8 Beispiel-Artikeln.
+4. **Metafield-Definitionen** für Produkte (roast, brews, gear, aromas, notes, bio) — ich liefere die genaue Anleitung in `SETUP.md`.
 
-**Motion principles**
-- Calm, weighty, cinematic. No bouncy springs, no glow stacks.
-- Framer Motion for component animation; native `IntersectionObserver` + scroll progress for sticky scrollytelling; CSS transitions for hover micro-interactions.
-- Mobile: simplify (fade/translate only), keep story beats, drop heavy parallax and frame sequences.
-- Respects `prefers-reduced-motion`.
+---
 
-**Image strategy**
-- Generated editorial imagery (beans, steam, portafilter, roastery hands, packaging, raw vs roasted beans, home roaster product shots) via `imagegen` into `src/assets/`, imported as ES modules.
-- Frame-by-frame roast sequence: ~12 generated bean stages (green → yellow → cinnamon → city → full city → dark) preloaded and swapped on scroll progress.
+## Struktur des Theme-ZIP
 
-## Routes (file-based, TanStack Router)
-
-```
-src/routes/
-  __root.tsx              shell, fonts, header, footer
-  index.tsx               Home — Roast Journey
-  kaffee.tsx              Coffee catalog with Aroma Wheel + filters
-  heimroester.tsx         Home roaster landing (key USP)
-  community.tsx           Editorial feed (Blog/Community)
-  roestereien.tsx         Roasteries / B2B partner page
-  ueber-uns.tsx           Editorial About
-  shop.tsx                Product overview grid
-```
-
-Each route sets distinct `head()` meta (title, description, og:title/description; og:image on leaves only).
-
-## Global chrome (`__root.tsx`)
-
-- Sticky header: transparent over hero, becomes `backdrop-blur` + cream/8% background on scroll.
-- Logo (wordmark) left, nav center (Kaffee · Heimröster · Community · Röstereien · Über uns · Shop), amber CTA "Kaffee entdecken" right.
-- Mobile: fullscreen overlay menu with large serif links, slow stagger.
-- Footer: editorial three-column (Brand story snippet · Navigation · Newsletter), warm beige on espresso.
-
-## Home — the Roast Journey
-
-1. **Cinematic hero** — layered parallax: background roastery photo, mid-layer steam (slow drift via CSS), foreground bean cluster, staggered headline → subheadline → dual CTA reveal. Subtle film grain overlay.
-2. **Signature sticky scrollytelling** — pinned viewport, 6 chapters (Rohkaffee → Röstung → Rösterei → Zuhause → Heimrösten → Genuss). Background color, image, and copy crossfade with scroll progress. Palette shifts from raw-green tint → roast browns → cream.
-3. **Coffee Finder quiz** — 3-step interactive card; soft transitions between steps; on completion reveals 3 matched coffee cards with amber tag highlights. State is local React.
-4. **Heimröster teaser** — dark split-screen, product reveal from light cone, CTA to `/heimroester`.
-5. **Community preview** — 6-card masonry with category chips, hover lift, link to `/community`.
-6. **Tassenfüllung scroll-progress** — slim cup-fill indicator in corner that fills as the page is read.
-
-## Kaffee page
-
-- Warm light hero, large serif headline.
-- **Aroma Wheel** — SVG radial of 8 aromas (Schokoladig, Nussig, Fruchtig, Floral, Karamellig, Würzig, Kräftig, Mild). Click an aroma → product grid filters with soft fade/stagger; selected segment glows amber.
-- Sticky filter bar (brew method, roast level, region, certifications, flavor) — chip toggles, multi-select.
-- Product cards: image, roastery, origin, aroma tags, roast indicator, brew icon, price, primary "In den Warenkorb" + secondary "Details". Hover: bean tags surface, image scale 1.03, lift.
-- "View-transition-like" detail open: clicking a card uses Framer Motion `layoutId` to expand the card into a full overlay product view.
-
-## Heimröster page (USP centerpiece)
-
-1. **Dark cinematic product reveal** — espresso background, light-cone gradient mask, machine image fades in with subtle scale; floating feature hotspots animate in after.
-2. **Frame-by-frame roast scroll** — sticky canvas, ~12 bean-stage frames swapped via scroll progress; copy alongside.
-3. **First-Crack moment** — pulsing temperature curve (SVG path stroke-dashoffset loop), bean micro-jitter, headline reveal.
-4. **Roast-grade slider** — three-stop slider (hell/mittel/dunkel); bean image, aroma copy, profile hint, and recommended product update reactively.
-5. **Machine hotspots** — annotated product diagram with 5 numbered points; click reveals a side panel.
-6. **Mini-demo "Teste deine erste Röstung"** — 3-step interactive (Rohkaffee → Röstgrad → Profil), result card.
-7. **FAQ** — accordion (shadcn), 5 entries.
-8. Final CTA band.
-
-## Community page
-
-- Hero with slowly drifting background masonry (CSS keyframe translate, very slow).
-- Category filter chips.
-- Editorial masonry feed (CSS columns) — cards with image, category, title, teaser, author, read time, like/comment/save microinteractions (bean-pulse on like, fill on save).
-- Save/like state is local (no backend in this phase).
-
-## Röstereien / B2B
-
-- Roastery atmosphere hero.
-- Depth-effect partner cards: image with subtle parallax on hover, stable logo, region, aroma tags.
-- "Wie wir Röstereien stärken" 3-step editorial block.
-- Partner-werden CTA section with simple inquiry form (client-only, posts to a stubbed handler — no backend yet).
-
-## Über uns
-
-- Calm editorial hero (cup, notes, beans).
-- Long-form story block with serif headline + sans body.
-- Five values as editorial photo cards (not icon cards) — image + title + 1–2 line caption.
-- Closing CTA to Kaffee.
-
-## Shop
-
-- Lightweight overview: same product card component as `/kaffee`, simpler filters (category, price), banner linking to Heimröster.
-
-## Shared components
-
-```
-src/components/
-  layout/  Header.tsx · Footer.tsx · MobileMenu.tsx · CupProgress.tsx
-  home/    Hero.tsx · RoastJourney.tsx · CoffeeFinder.tsx · HeimroesterTeaser.tsx · CommunityPreview.tsx
-  coffee/  AromaWheel.tsx · ProductCard.tsx · ProductDetailOverlay.tsx · FilterBar.tsx
-  roaster/ ProductReveal.tsx · RoastFrames.tsx · FirstCrack.tsx · RoastSlider.tsx · Hotspots.tsx · MiniDemo.tsx
-  community/ FeedCard.tsx · CategoryChips.tsx
-  shared/  SectionHeading.tsx · CTAButton.tsx · Grain.tsx · Reveal.tsx (in-view fade/translate)
-src/lib/
-  motion.ts (variants, easings) · products.ts (mock catalog) · posts.ts (mock feed) · roasteries.ts
+```text
+barista-state-theme/
+├── layout/
+│   └── theme.liquid              # HTML-Shell, Fonts, Theme-Toggle-Script, Header/Footer include
+├── templates/
+│   ├── index.json                # Home — JSON-Template mit allen Home-Sections
+│   ├── product.json              # Produkt-Detail (ersetzt React-Overlay als eigene Seite)
+│   ├── collection.kaffee.json    # Shop-Page (Kaffee)
+│   ├── collection.heimroester.json
+│   ├── page.heimroester.json
+│   ├── page.community.json
+│   ├── page.roestereien.json
+│   ├── page.ueber-uns.json
+│   ├── blog.json                 # Community-Feed (alternative)
+│   ├── article.json
+│   ├── cart.json
+│   ├── 404.json
+│   └── search.json
+├── sections/
+│   ├── header.liquid             # Sticky Header mit Dropdown + Theme-Toggle
+│   ├── footer.liquid
+│   ├── home-hero.liquid          # HomeHero mit Parallax + Word-Reveal
+│   ├── roast-journey.liquid      # 600svh sticky scrollytelling
+│   ├── manifesto-strip.liquid
+│   ├── coffee-finder.liquid      # Quiz
+│   ├── heimroester-teaser.liquid # mit Hotspots
+│   ├── community-preview.liquid  # Bento-Grid
+│   ├── premium-hero.liquid       # Wiederverwendbar (Shop, Community, etc.)
+│   ├── shop-filters.liquid       # Tabs + Filter-Chips + Aroma-Wheel
+│   ├── shop-products.liquid      # Produkt-Grid mit FLIP zur Detail-Page
+│   ├── heimroester-sequence.liquid # 260svh scroll
+│   ├── heimroester-firstcrack.liquid
+│   ├── heimroester-slider.liquid   # Roast-Slider
+│   ├── heimroester-hotspots.liquid
+│   ├── heimroester-minidemo.liquid
+│   ├── heimroester-faq.liquid
+│   ├── heimroester-cta.liquid
+│   ├── roestereien-promise.liquid
+│   ├── roestereien-scrolly.liquid
+│   ├── roestereien-partners.liquid
+│   ├── roestereien-contact.liquid  # Contact-Form via Shopify `{% form 'contact' %}`
+│   ├── community-feed.liquid       # Masonry, Like/Save (LocalStorage)
+│   ├── ueber-uns-scrolly.liquid
+│   ├── ueber-uns-story.liquid
+│   ├── ueber-uns-values.liquid
+│   └── ueber-uns-cta.liquid
+├── snippets/
+│   ├── product-card.liquid
+│   ├── feed-card.liquid
+│   ├── roastery-card.liquid
+│   ├── badge.liquid
+│   ├── reveal.liquid              # Scroll-reveal wrapper
+│   ├── eyebrow.liquid
+│   ├── icon-*.liquid              # Heart, Save, Search, Cart, Chevron, etc.
+│   └── meta-tags.liquid           # SEO/OG aus head()
+├── assets/
+│   ├── theme.css                  # Komplettes Design-Token-System + Utility-Klassen aus styles.css
+│   ├── theme.js                   # Custom Cursor, CupProgress, Theme-Toggle, Header-Scroll
+│   ├── home.js                    # HomeHero, RoastJourney, ManifestoStrip, CoffeeFinder
+│   ├── shop.js                    # Filter-Logic, Aroma-Wheel, FLIP-Overlay
+│   ├── heimroester.js             # Sequence, Slider, MiniDemo, FAQ
+│   ├── scrolly.js                 # Wiederverwendbares Scrollytelling-Modul
+│   ├── reveal.js                  # Intersection-Observer Reveal
+│   ├── mobile-menu.js
+│   ├── hero-home.jpg              # Alle 16 Bilder aus src/assets/
+│   ├── journey-raw.jpg
+│   ├── … (alle Bilder)
+│   ├── product-1.jpg
+│   ├── feed-1.jpg … feed-6.jpg
+│   └── grain.svg                  # extrahiert aus styles.css
+├── config/
+│   ├── settings_schema.json       # Theme-Editor-Einstellungen (Farben, Fonts, Toggles)
+│   └── settings_data.json
+├── locales/
+│   ├── de.default.json            # Alle UI-Strings (Quiz-Fragen, FAQ, Buttons, etc.)
+│   └── en.json                    # Englische Fallbacks
+├── redirects.csv                  # /kaffee → /collections/kaffee
+├── products.csv                   # 8 Demo-Produkte für Bulk-Import
+├── SETUP.md                       # Schritt-für-Schritt für Metafields, Metaobjects, Blog
+└── README.md
 ```
 
-## Performance & accessibility
+---
 
-- Generated images sized appropriately, `loading="lazy"` below the fold, explicit width/height to prevent CLS.
-- Frame sequences preloaded via hidden `<link rel="preload" as="image">`; gated behind reduced-motion.
-- All interactive controls are real buttons with focus rings (amber on espresso, espresso on cream).
-- Color contrast verified on both palettes.
-- Semantic HTML, single H1 per route, alt text on every image.
+## Implementierungs-Schritte
 
-## Out of scope (this phase)
+Da das Volumen enorm ist (~30 Sections, ~6000 Zeilen Liquid/CSS/JS), schlage ich vor das in **5 Build-Phasen** zu liefern. Nach jeder Phase kannst du Preview machen und Feedback geben.
 
-- No cart/checkout backend, no auth, no CMS. Product/post data is typed mocks so layouts and flows are real and a backend can be wired later without refactor.
-- No payments integration.
+### Phase 1 — Theme-Skelett & Design-System (Foundation)
+- `layout/theme.liquid` mit Fonts, Theme-Toggle-Inline-Script, Meta-Tags
+- `assets/theme.css` — kompletter Token-Port aus `src/styles.css` (Palette, Typo, alle Utility-Klassen, Section-Tones, Animations, Light/Dark)
+- `assets/theme.js` — Custom Cursor, CupProgress, Theme-Toggle, Header-Scroll-State, Reveal-Observer
+- `sections/header.liquid` mit Dropdown-Mega-Menu + Mobile-Menu
+- `sections/footer.liquid`
+- `config/settings_schema.json` Basis
+- Alle 16 Bilder + Fonts in `assets/`
 
-## Technical notes
+**Output Phase 1:** Theme uploadbar, Home-Page leer, aber Chrome (Header/Footer/Theme-Toggle/Cursor/Progress) funktioniert vollständig.
 
-- Add deps: `framer-motion`.
-- Tailwind v4: tokens in `src/styles.css` `@theme`; section-level palette swaps via data attributes + CSS variables, not utility overrides.
-- All routes are public (no auth middleware); safe to use loaders if needed, though most data is static mocks imported directly.
-- View-transition-like card→detail uses Framer Motion `layoutId` (works without the View Transitions API and degrades cleanly).
-- Frame-by-frame roast: bean images generated as a numbered sequence in `src/assets/roast/`, imported via `import.meta.glob` eagerly so Vite fingerprints them.
+### Phase 2 — Home (`/`)
+- `home-hero.liquid` (Parallax + Word-Reveal + Stats + Marquee)
+- `roast-journey.liquid` (600svh sticky scrollytelling, 6 chapters)
+- `manifesto-strip.liquid`
+- `coffee-finder.liquid` (Quiz mit JS)
+- `heimroester-teaser.liquid` (mit Ping-Hotspots)
+- `community-preview.liquid` (Bento-Grid)
+- `templates/index.json`
 
-## Build order
+### Phase 3 — Shop & Produkt-Detail
+- `premium-hero.liquid` (wiederverwendbar)
+- `shop-filters.liquid` (Tabs, Filter-Chips, Aroma-Wheel SVG)
+- `shop-products.liquid` (Grid + FLIP-Animation zur Product-Page)
+- `templates/collection.kaffee.json`, `collection.heimroester.json`
+- `templates/product.json` mit Notes/Specs/Aromas/Gear-Anzeige
+- `products.csv` mit 8 Demo-Produkten + Metafield-Werten
+- `SETUP.md` Abschnitt "Metafields anlegen"
 
-1. Design tokens, fonts, base layout (`__root.tsx`, Header, Footer, MobileMenu).
-2. Mock data (`products.ts`, `posts.ts`, `roasteries.ts`).
-3. Generate hero + section imagery in batches (parallel `imagegen` calls).
-4. Home route (hero → roast journey → coffee finder → teaser → community preview).
-5. Kaffee (Aroma Wheel + filters + cards + detail overlay).
-6. Heimröster (reveal → frame scroll → first-crack → slider → hotspots → mini-demo → FAQ).
-7. Community, Röstereien, Über uns, Shop.
-8. Polish pass: reduced-motion, mobile simplification, meta tags, accessibility sweep, slop-sweep.
+### Phase 4 — Heimröster, Röstereien, Über uns
+- Alle 8 Heimröster-Sections (Sequence, FirstCrack, Slider, Hotspots, MiniDemo, FAQ, CTA)
+- Alle 5 Röstereien-Sections (Promise, Scrolly, Partners, Contact-Form)
+- Alle 5 Über-uns-Sections (Scrolly, Story, Values-Bento, CTA)
+- Metaobject-Definition "Roastery"
+
+### Phase 5 — Community + Polish + ZIP
+- `community-feed.liquid` (Masonry + Like/Save via LocalStorage)
+- Blog-Template oder Page-basierte Lösung
+- `redirects.csv`
+- `locales/de.default.json` finalisieren (alle Strings)
+- `README.md` + `SETUP.md` finalisieren
+- **ZIP-Erstellung** und Bereitstellung als `<presentation-artifact>` (Download in `/mnt/documents/`)
+
+---
+
+## Was ich JETZT brauche von dir
+
+1. **OK für Phase 1 starten?** (Skelett + Design-System + Header/Footer/Chrome) — ohne diese Foundation kann ich keine Section bauen.
+2. **Theme-Sprache: nur Deutsch** oder **auch Englisch parallel** (i18n)?
+3. **Demo-Produkte:** Soll ich `products.csv` mit den 8 Beispiel-Kaffees aus `data.ts` mitliefern (damit du sie per Bulk-Import in 1 Klick hast), oder reicht leeres Theme + Anleitung?
+4. **Custom Cursor:** Auf Touch-Geräten automatisch aus, auf Desktop aktiv — ist das ok, oder im Theme-Editor als Toggle?
+5. **Browser-Support:** Modern only (Chrome/Safari/Firefox aktuell) — okay? CSS `animation-timeline: view()` ist in Firefox noch hinter Flag, dort fallback ohne Parallax. Acceptable trade-off?
+
+Sobald du diese 5 Punkte bestätigst, starte ich Phase 1 sofort und liefere am Ende jeder Phase eine Vorab-Preview-ZIP, damit du iterieren kannst.
